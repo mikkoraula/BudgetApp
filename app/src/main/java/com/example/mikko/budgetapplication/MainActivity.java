@@ -1,5 +1,6 @@
 package com.example.mikko.budgetapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,14 +30,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "start new activity", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+                /*
                 BackendlessUser user = new BackendlessUser();
                 user.setEmail( "meide94@hotmail.com" );
                 user.setPassword( "password" );
 
                 Backendless.UserService.register( user, new BackendlessCallback<BackendlessUser>()
+
                 {
                     @Override
                     public void handleResponse( BackendlessUser backendlessUser )
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("Registration", backendlessUser.getEmail() + " successfully registered");
                     }
                 } );
+                */
             }
         });
     }

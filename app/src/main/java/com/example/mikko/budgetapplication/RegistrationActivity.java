@@ -104,7 +104,7 @@ public class RegistrationActivity extends Activity
             public void handleResponse( BackendlessUser registeredUser )
             {
                 super.handleResponse( registeredUser );
-                Toast.makeText( RegistrationActivity.this, String.format( getString( R.string.info_registered ), registeredUser.getObjectId() ), Toast.LENGTH_LONG ).show();
+                Toast.makeText( RegistrationActivity.this, String.format( getString( R.string.info_registered_success ), registeredUser.getObjectId() ), Toast.LENGTH_LONG ).show();
             }
         };
     }
