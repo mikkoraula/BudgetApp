@@ -5,4 +5,6 @@
     <dimen name="header_margin">64dp</dimen>
     <dimen name="view_horizontal_margin">8dp</dimen>
     <dimen name="view_vertical_margin">8dp</dimen>
+
+    <dimen name="payment_type_picker_square_size">55dp</dimen>
 </resources>

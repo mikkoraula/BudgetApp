@@ -6,8 +6,7 @@ import android.content.Context;
 /**
  * Provides static methods to create necessary dialogs.
  */
-public class DialogHelper
-{
+public class DialogHelper {
     /**
      * Creates a dialog box displaying error message.
      *
@@ -24,4 +23,14 @@ public class DialogHelper
                 .setIcon( android.R.drawable.ic_dialog_alert )
                 .create();
     }
+
+    public static AlertDialog createHelpDialog( Context context, String title, String message )
+    {
+        return new AlertDialog.Builder( context )
+                .setTitle( title )
+                .setMessage( message )
+                .setIcon( R.drawable.ic_help_icon )
+                .create();
+    }
+
 }

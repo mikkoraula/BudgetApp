@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorTransparent">
+
+    <!-- put a new layout inside to do paddings -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/header_margin"
+        android:layout_marginBottom="@dimen/header_margin"
+        android:background="@color/colorWhite">
+
+        <!-- another layout to do paddings around the actual popupwindow -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/view_horizontal_margin">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:text="Create new Income Type"
+                />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="1"
+                android:id="@+id/income_type_creator_name_grid_layout"
+                android:layout_marginBottom="@dimen/view_vertical_margin"
+                android:layout_marginTop="@dimen/header_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Income Type name"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:id="@+id/edit_text_new_income_type_name" />
+
+            </GridLayout>
+
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/income_type_color_picker_grid_view"
+                android:layout_below="@id/income_type_creator_name_grid_layout"
+                android:layout_centerHorizontal="true"
+                android:columnWidth="@dimen/payment_type_picker_square_size"
+                android:numColumns="auto_fit"
+                android:verticalSpacing="0dp"
+                android:horizontalSpacing="0dp"
+                android:stretchMode="columnWidth"
+                android:isScrollContainer="false"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:listSelector="#00000000"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_cancel"
+                android:id="@+id/button_popup_new_income_type_creator_cancel"
+                android:onClick="cancelNewType"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/activity_vertical_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="save income"
+                android:id="@+id/button_popup_new_income_type_creator_save"
+                android:onClick="saveNewType"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/activity_vertical_margin" />
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

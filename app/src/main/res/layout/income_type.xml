@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/income_type_picker_frame_layout">
+
+    <addincome.IncomeTypeToggleButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="@dimen/payment_type_picker_square_size"
+        android:minHeight="@dimen/payment_type_picker_square_size"
+        android:id="@+id/income_type_button"
+        android:foreground="@drawable/payment_type_selector"
+        android:clickable="true"
+        android:longClickable="true" />
+
+</FrameLayout>

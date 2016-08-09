@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.example.mikko.budgetapplication.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+
+    <include layout="@layout/app_toolbar"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <Button
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:text="@string/button_add_payment"
+            android:id="@+id/button_add_payment"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="addPayment"/>
 
-    </android.support.design.widget.AppBarLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_add_income"
+            android:id="@+id/button_add_income"
+            android:layout_below="@+id/button_add_payment"
+            android:layout_centerHorizontal="true"
+            android:onClick="addIncome"/>
 
-    <include layout="@layout/content_main" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_see_history"
+            android:id="@+id/button_see_history"
+            android:layout_below="@+id/button_add_income"
+            android:layout_centerHorizontal="true"
+            android:onClick="seeHistory"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:src="@android:drawable/ic_dialog_email" />
 
-</android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

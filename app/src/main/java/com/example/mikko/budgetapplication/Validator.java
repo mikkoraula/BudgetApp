@@ -18,8 +18,7 @@ public class Validator
      * @param name           user's name to be validated
      * @return true if name is valid, false if validation failed
      */
-    public static boolean isNameValid( Context currentContext, CharSequence name )
-    {
+    public static boolean isNameValid( Context currentContext, CharSequence name ) {
         if( name.toString().isEmpty() )
         {
             Toast.makeText( currentContext, currentContext.getString( R.string.warning_name_empty ), Toast.LENGTH_LONG ).show();
@@ -77,5 +76,24 @@ public class Validator
         }
 
         return true;
+    }
+
+    /**
+     * Validates if expense is valid
+     *
+     * @param currentContext context, in which validation occurs
+     * @param expense expense to be validated
+     * @return true if expense valid, false if not
+     */
+    public static boolean isExpenseValid( Context currentContext, CharSequence expense) {
+        if (expense.toString().isEmpty()) {
+            Toast.makeText( currentContext, currentContext.getString( R.string.warning_field_empty), Toast.LENGTH_LONG ).show();
+            return false;
+        } else if (Double.parseDouble(expense.toString()) < 0) {
+            Toast.makeText( currentContext, currentContext.getString( R.string.warning_number_negative), Toast.LENGTH_LONG ).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 }
