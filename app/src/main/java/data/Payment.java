@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  *
  * the basic payment object, these are saved in backendless
  */
-public class Payment extends Transaction {
+public class Payment extends Transaction  implements Serializable{
     private String location;
     private PaymentType paymentType;
 

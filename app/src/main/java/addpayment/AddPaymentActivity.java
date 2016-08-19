@@ -52,8 +52,6 @@ public class AddPaymentActivity extends MyBaseActivity implements BackendlessDat
 
     private ArrayList<PaymentType> paymentTypes;
 
-    private PopupWindow newTypeCreatorPopup;
-
     private PaymentType contextMenuPaymentType;
 
     @Override
@@ -240,6 +238,8 @@ public class AddPaymentActivity extends MyBaseActivity implements BackendlessDat
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
+                recreate();
+                /*
                 System.out.println("paymentypes.size before: " + paymentTypes.size());
                 PaymentType newType = (PaymentType) data.getSerializableExtra(NEW_PAYMENT_TYPE_SEND_CODE);
                 System.out.println("caught a " + newType + " back in AddPayment");
@@ -252,18 +252,9 @@ public class AddPaymentActivity extends MyBaseActivity implements BackendlessDat
                 // if we get here, means we need to update the paymenttypelist, since a new paymenttype has been added
                 //loadPaymentTypes();
                 refreshPaymentTypes();
+                */
             }
         }
-    }
-
-    public void cancelNewType(View view) {
-        newTypeCreatorPopup.dismiss();
-    }
-
-    public void saveNewType(View view) {
-
-
-        newTypeCreatorPopup.dismiss();
     }
 
     @Override

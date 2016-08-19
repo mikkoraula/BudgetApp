@@ -1,5 +1,6 @@
 package com.example.mikko.budgetapplication;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
@@ -24,4 +25,19 @@ public class SharedPreferencesHandler {
         loginPreferencesEditor.apply();
     }
     */
+
+    public static SharedPreferences.Editor getEditor(Context context, String preferenceKey) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceKey, context.MODE_PRIVATE);
+        return sharedPreferences.edit();
+    }
+
+    public static String getString(Context context, String preferenceKey, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceKey, context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, "");
+    }
+
+    public static Long getLong(Context context, String preferenceKey, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceKey, context.MODE_PRIVATE);
+        return sharedPreferences.getLong(key, 0);
+    }
 }

@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  *
  * Created by Mikko on 8.8.2016.
  */
-public class Transaction {
+public class Transaction implements Serializable {
     protected double amount;
     protected String payer;
     protected boolean shared;

@@ -1,5 +1,6 @@
 package com.example.mikko.budgetapplication;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,5 +53,21 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void deleteInternalStorageTransactions(View view) {
+        SharedPreferences.Editor editor =
+                SharedPreferencesHandler.getEditor(this, SharedPreferencesSettings.TRANSACTIONS_KEY);
+        editor.putString(SharedPreferencesSettings.PAYMENTS_KEY_STRING, "");
+        editor.putString(SharedPreferencesSettings.INCOMES_KEY_STRING, "");
+        editor.putLong(SharedPreferencesSettings.LAST_BACKENDLESS_LOAD_LONG, 0);
+        editor.apply();
+        System.out.println("Deleted payments and incomes from internal storage and resetted last load time");
+
+    }
+
+    public void loadTransactionsToInternalStorage(View view) {
+
     }
 }

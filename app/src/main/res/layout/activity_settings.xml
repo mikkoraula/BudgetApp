@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_prompt_exit"
@@ -44,6 +44,42 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Advanced dev Settings"
+                android:id="@+id/text_view_advanced_dev_settings"
+                android:layout_above="@+id/button_settings_delete_transactions_internal"
+                android:layout_centerHorizontal="true" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorTransparent"
+                android:id="@+id/settings_bottom_dummy_view"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/settings_bottom_dummy_view"
+                android:text="Delete all transactions from internal storage"
+                android:id="@+id/button_settings_delete_transactions_internal"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="deleteInternalStorageTransactions"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/settings_bottom_dummy_view"
+                android:text="Load all transactions from backendless to internal"
+                android:id="@+id/button2"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="loadTransactionsToInternalStorage"/>
 
 
         </RelativeLayout>

@@ -236,6 +236,8 @@ public class AddIncomeActivity extends MyBaseActivity
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
+                recreate();
+                /*
                 IncomeType newType = (IncomeType) data.getSerializableExtra(NEW_INCOME_TYPE_SEND_CODE);
                 System.out.println("caught a " + newType + " back in AddIncome");
                 if (incomeTypes.size() > 0)
@@ -245,6 +247,7 @@ public class AddIncomeActivity extends MyBaseActivity
 
                 // if we get here, means we need to update the incometypelist, since a new incometype has been added
                 refreshIncomeTypes();
+                */
             }
         }
     }

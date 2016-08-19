@@ -1,9 +1,11 @@
 package data;
 
+import java.io.Serializable;
+
 /**
  * Created by Mikko on 8.8.2016.
  */
-public class TransactionType {
+public class TransactionType implements Serializable {
     protected String name;
     protected int colorId;
 

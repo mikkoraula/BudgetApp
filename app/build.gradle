@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
 
     compile 'com.backendless:backendless:3.0.8.2'
+    compile 'com.google.code.gson:gson:2.7'
 }

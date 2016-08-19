@@ -18,12 +18,14 @@ import com.example.mikko.budgetapplication.R;
 public class TabFragment extends Fragment {
 
     private String tabName = "";
+    private int numberOfMonths;
 
     // newInstance constructor for creating fragment with arguments
-    public static TabFragment newInstance(String title) {
+    public static TabFragment newInstance(String title, int numberOfMonths) {
         TabFragment tabFragment = new TabFragment();
         Bundle args = new Bundle();
         args.putString("someTitle", title);
+        args.putInt("someInt", numberOfMonths);
         tabFragment.setArguments(args);
         return tabFragment;
     }
@@ -33,6 +35,7 @@ public class TabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tabName = getArguments().getString("someTitle");
+        numberOfMonths = getArguments().getInt("someInt");
     }
 
     @Override
@@ -41,8 +44,9 @@ public class TabFragment extends Fragment {
 
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.monthly_view_pager);
         final MonthlyPagerAdapter adapter = new MonthlyPagerAdapter
-                (getChildFragmentManager(), 3);
+                (getChildFragmentManager(), numberOfMonths);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(numberOfMonths - 1);
 
         return view;
     }
