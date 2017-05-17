@@ -8,10 +8,8 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.mikko.budgetapplication.LoadingCallback;
 import com.example.mikko.budgetapplication.R;
 
-import data.Income;
-import data.IncomeType;
-import data.Payment;
-import data.PaymentType;
+import data.Transaction;
+import data.TransactionType;
 
 /**
  * Created by Mikko on 13.7.2016.
@@ -20,23 +18,17 @@ import data.PaymentType;
  */
 public class BackendlessDataSaver {
 
-    public static void savePayment(Context context, Payment payment) {
-        Backendless.Persistence.save( payment, createSavingCallback(context) );
+    public static void saveTransaction(Context context, Transaction transaction) {
+        LoadingCallback<Object> callback = createSavingCallback(context);
+        callback.showLoading();
+        Backendless.Persistence.save( transaction, callback );
     }
 
-    public static void savePaymentType(Context context, PaymentType paymentType) {
-        Backendless.Persistence.save( paymentType, createSavingCallback(context) );
+    public static void saveTransactionType(Context context, TransactionType transactionType) {
+        LoadingCallback<Object> callback = createSavingCallback(context);
+        callback.showLoading();
+        Backendless.Persistence.save( transactionType, callback );
     }
-
-    public static void saveIncome(Context context, Income income) {
-        Backendless.Persistence.save( income, createSavingCallback(context) );
-    }
-
-    public static void saveIncomeType(Context context, IncomeType incomeType) {
-        Backendless.Persistence.save( incomeType, createSavingCallback(context));
-    }
-
-
 
     private static LoadingCallback<Object> createSavingCallback(final Context context) {
         return new LoadingCallback<Object>(context, context.getString(R.string.loading_empty)) {

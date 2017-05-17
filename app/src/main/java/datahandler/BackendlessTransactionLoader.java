@@ -1,7 +1,6 @@
 package datahandler;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
@@ -14,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import data.Income;
-import data.Payment;
 import data.Transaction;
 
 /**
@@ -24,53 +21,56 @@ import data.Transaction;
 public class BackendlessTransactionLoader {
 
     private Context context;
-    private ArrayList<Transaction> loadedTransactionList;
+    private ArrayList<Transaction> loadedTransactions;
+
 
     private int requiredTransactionAmount;
 
     public BackendlessTransactionLoader(Context context) {
         this.context = context;
-        loadedTransactionList = new ArrayList<>();
+
+        loadedTransactions = new ArrayList<>();
+
         requiredTransactionAmount = 0;
     }
 
-    /***************************************************************
-     *
-     *                     PAYMENTS
-     *
-     */
-
-    public  void loadPayments(long lastLoadDateInMillis) {
+    // load all the transactions that are newer than the parameters date in milliseconds
+    // the app loads all the transactions to the memory and only downloads newest transactions
+    // which makes for less transactions queried over internet
+    public  void loadTransactions(long lastLoadDateInMillis) {
 
         String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis;
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         dataQuery.setWhereClause(whereClause);
         // page size is 10 by default
-        Backendless.Data.of( Payment.class ).find(dataQuery, createPaymentLoadingCallback(context));
+
+        LoadingCallback<BackendlessCollection<Transaction>> callback = createTransactionLoadingCallback(context);
+        callback.showLoading();
+        Backendless.Data.of( Transaction.class ).find(dataQuery, callback);
     }
 
-    private LoadingCallback<BackendlessCollection<Payment>> createPaymentLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<Payment>>(context, context.getString(R.string.loading_empty)) {
+    private LoadingCallback<BackendlessCollection<Transaction>> createTransactionLoadingCallback(final Context context) {
+        return new LoadingCallback<BackendlessCollection<Transaction>>(context, "can you see me") {
             @Override
-            public void handleResponse( BackendlessCollection<Payment> paymentCollection) {
-                super.handleResponse(paymentCollection);
+            public void handleResponse( BackendlessCollection<Transaction> transactionCollection) {
+                super.handleResponse(transactionCollection);
 
                 // if no payments are loaded from backendless, just go back
-                if (paymentCollection.getTotalObjects() == 0) {
-                    ((BackendlessDataLoaderInterface) context).loadSuccessful(loadedTransactionList);
+                if (transactionCollection.getTotalObjects() == 0) {
+                    ((BackendlessDataLoaderInterface) context).loadSuccessful(loadedTransactions);
                 }
 
-                System.out.println("Loaded " + paymentCollection.getCurrentPage().size() + " payment objects");
-                System.out.println("Total payments in the Backendless storage - " + paymentCollection.getTotalObjects());
-                setRequiredTransactionAmount(paymentCollection.getTotalObjects());
+                System.out.println("Loaded " + transactionCollection.getCurrentPage().size() + " payment objects");
+                System.out.println("Total payments in the Backendless storage - " + transactionCollection.getTotalObjects());
+                setRequiredTransactionAmount(transactionCollection.getTotalObjects());
 
-                Iterator<Payment> iterator = paymentCollection.getCurrentPage().iterator();
+                Iterator<Transaction> iterator = transactionCollection.getCurrentPage().iterator();
                 while( iterator.hasNext() ) {
-                    Payment currentPayment = iterator.next();
+                    Transaction currentTransaction = iterator.next();
                     List<String> relations = new ArrayList<>();
-                    relations.add( "paymentType" );
-                    Backendless.Data.of( Payment.class ).loadRelations(
-                            currentPayment, relations, loadPaymentRelationsCallback(context));
+                    relations.add( "transactionType" );
+                    Backendless.Data.of( Transaction.class ).loadRelations(
+                            currentTransaction, relations, loadTransactionRelationsCallback(context));
                     System.out.println("just initiated the nested stiaht");
 
                 }
@@ -84,118 +84,38 @@ public class BackendlessTransactionLoader {
         };
     }
 
-    private LoadingCallback<Payment> loadPaymentRelationsCallback(final Context context) {
-        return new LoadingCallback<Payment>(context) {
+    private LoadingCallback<Transaction> loadTransactionRelationsCallback(final Context context) {
+        return new LoadingCallback<Transaction>(context) {
             @Override
-            public void handleResponse( Payment payment ) {
-                //System.out.println( "\nRestaurant name = " + restaurant.getName() );
-                System.out.println("loaded relations of payment: " + payment);
-                System.out.println("payments type: " + payment.getPaymentType());
-                addTransaction(payment);
+            public void handleResponse( Transaction transaction ) {
+                System.out.println("loaded relations of transaction: " + transaction);
+                System.out.println("transaction type: " + transaction.getTransactionType());
+                addTransaction(transaction);
             }
 
             @Override
             public void handleFault( BackendlessFault backendlessFault ) {
                 super.handleFault(backendlessFault);
-                System.out.println("epic payment fail XD");
+                System.out.println("epic transaction fail XD");
             }
         };
     }
 
+    public void addTransaction(Transaction transaction) {
+        //System.out.println("addTransaction method transaction: " + payment);
+        //System.out.println("loadedTransactionList: " + loadedTransactionList);
+        loadedTransactions.add(transaction);
 
-    /***************************************************************
-     *
-     *                     INCOMES
-     *
-     */
-
-    public  void loadIncomes(long lastLoadDateInMillis) {
-
-        String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis;
-        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-        dataQuery.setWhereClause(whereClause);
-        // page size is 10 by default
-        Backendless.Data.of( Income.class ).find(dataQuery, createIncomeLoadingCallback(context));
+        if (loadedTransactions.size() == requiredTransactionAmount) {
+            System.out.println("finally loaded enough transactions!!!!");
+            ((BackendlessDataLoaderInterface) context).loadSuccessful(loadedTransactions);
+        } else {
+            System.out.println("loaded " + loadedTransactions.size() + "/" + requiredTransactionAmount + " transactions so far");
+        }
     }
-
-    private LoadingCallback<BackendlessCollection<Income>> createIncomeLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<Income>>(context, context.getString(R.string.loading_empty)) {
-            @Override
-            public void handleResponse( BackendlessCollection<Income> incomeCollection) {
-                super.handleResponse(incomeCollection);
-
-                // if no incomes are loaded from backendless, just go back
-                if (incomeCollection.getTotalObjects() == 0) {
-                    ((BackendlessDataLoaderInterface) context).loadSuccessful(loadedTransactionList);
-                }
-
-                System.out.println("Loaded " + incomeCollection.getCurrentPage().size() + " income objects");
-                System.out.println("Total incomes in the Backendless storage - " + incomeCollection.getTotalObjects());
-                setRequiredTransactionAmount(incomeCollection.getTotalObjects());
-
-                Iterator<Income> iterator = incomeCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() ) {
-                    Income currentIncome = iterator.next();
-                    List<String> relations = new ArrayList<>();
-                    relations.add( "incomeType" );
-                    Backendless.Data.of( Income.class ).loadRelations(
-                            currentIncome, relations, loadIncomeRelationsCallback(context));
-                    System.out.println("just initiated the nested stiaht");
-
-                }
-            }
-
-            @Override
-            public void handleFault( BackendlessFault fault ) {
-                super.handleFault(fault);
-                ((BackendlessDataLoaderInterface) context).loadFailed();
-            }
-        };
-    }
-
-    private LoadingCallback<Income> loadIncomeRelationsCallback(final Context context) {
-        return new LoadingCallback<Income>(context) {
-            @Override
-            public void handleResponse( Income income ) {
-                //System.out.println( "\nRestaurant name = " + restaurant.getName() );
-                System.out.println("loaded relations of income: " + income);
-                System.out.println("income type: " + income.getIncomeType());
-                addTransaction(income);
-            }
-
-            @Override
-            public void handleFault( BackendlessFault backendlessFault ) {
-                super.handleFault(backendlessFault);
-                System.out.println("epic income fail XD");
-            }
-        };
-    }
-
-
-
-
-    /***************************************************************
-     *
-     *                     BOTH
-     *
-     */
-
 
 
     public void setRequiredTransactionAmount(int requiredTransactionAmount) {
         this.requiredTransactionAmount = requiredTransactionAmount;
-    }
-
-    public void addTransaction(Transaction transaction) {
-        System.out.println("addTransaction method transaction: " + transaction);
-        System.out.println("loadedTransactionList: " + loadedTransactionList);
-        loadedTransactionList.add(transaction);
-
-        if (loadedTransactionList.size() == requiredTransactionAmount) {
-            System.out.println("finally loaded enough payments!!!!");
-            ((BackendlessDataLoaderInterface) context).loadSuccessful(loadedTransactionList);
-        } else {
-            System.out.println("loaded " + loadedTransactionList.size() + "/" + requiredTransactionAmount + " payments so far");
-        }
     }
 }

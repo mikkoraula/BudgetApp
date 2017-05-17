@@ -20,20 +20,17 @@ public class NonSwipeableViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        // Never allow swiping to switch between pages
-        System.out.println("got to intercepttouchevent");
         return false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("got to parent's on touchevent!!!!!!!!!!!!!!!!!!!!!!");
         return false;
     }
 
     @Override
     public boolean canScrollHorizontally(int direction) {
-        System.out.println(" super.canScrollHorizontally(direction: " + super.canScrollHorizontally(direction));
+        //System.out.println(" super.canScrollHorizontally(direction: " + super.canScrollHorizontally(direction));
         return false;
     }
 }

@@ -7,6 +7,16 @@ import java.util.Calendar;
  */
 public class DateHandler {
 
+    private static final int MINS_PER_DAY = 60 * 24;
+    private static final long MS_PER_DAY = 1000 * 60 * MINS_PER_DAY;
+
+    private static final int SEC = 1000;
+    private static final int MIN = SEC * 60;
+    private static final int HOUR = MIN * 60;
+    private static final int DAY = HOUR * 24;
+    private static final long WEEK = DAY * 7;
+    private static final long YEAR = WEEK * 52;
+
     public static String[] months = {
             "January",
             "February",
@@ -22,7 +32,7 @@ public class DateHandler {
             "December"
     };
 
-    public static String getMonthFromCurrentMonth(int distanceFromCurrentMonth) {
+    public static int getMonthFromCurrentMonth(int distanceFromCurrentMonth) {
 
         int currentMonthIndex = Calendar.getInstance().get(Calendar.MONTH) - 1;
         int targetIndex = currentMonthIndex + distanceFromCurrentMonth;
@@ -34,13 +44,12 @@ public class DateHandler {
             targetIndex -= 12;
         }
 
-        return months[targetIndex];
+        return targetIndex;
     }
 
     public static int getYearFromCurrentMonth(int distanceFromCurrentMonth) {
         int currentMonthIndex = Calendar.getInstance().get(Calendar.MONTH) - 1;
         int currentYear = Calendar.getInstance().get(Calendar.YEAR) - 1;
-        System.out.println(Calendar.getInstance().get(Calendar.YEAR));
         int targetIndex = currentMonthIndex + distanceFromCurrentMonth;
 
         while (targetIndex < 0) {
@@ -53,5 +62,21 @@ public class DateHandler {
         }
 
         return currentYear;
+    }
+
+    public static int getYear(long milliseconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliseconds);
+        int year = calendar.get(Calendar.YEAR);
+        //System.out.println("got a year from milliseconds: " + year);
+        return year;
+    }
+
+    public static int getMonth(long milliseconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliseconds);
+        int month = calendar.get(Calendar.MONTH);
+        //System.out.println("got a month from milliseconds: " + month);
+        return month;
     }
 }

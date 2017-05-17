@@ -1,0 +1,6 @@
+In actual use, how quickly does the SharedPreferences become too small for all the transactions?
+
+
+
+TODO
+when clicking a transaction in showhistory, it should open a similar activity as the new Transaction type creator

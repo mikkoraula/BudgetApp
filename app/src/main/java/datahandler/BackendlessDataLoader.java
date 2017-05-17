@@ -12,43 +12,37 @@ import com.example.mikko.budgetapplication.R;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import data.IncomeType;
-import data.PaymentType;
+import data.TransactionType;
 
 /**
  * Created by Mikko on 29.7.2016.
  */
 public class BackendlessDataLoader {
 
-    public static void loadPaymentTypes(Context context) {
-        /*
-        int PAGESIZE = 20;
-        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-        dataQuery.setPageSize(PAGESIZE);
-        Backendless.Data.of( PaymentType.class ).find( dataQuery, createLoadingCallback(context) );
-        */
-
-        // page size is 10 by default
-        Backendless.Data.of( PaymentType.class ).find(createPaymentTypeLoadingCallback(context));
+    // let's try to load the transactionTypes in one run
+    public static void loadTransactionTypes(Context context) {
+        LoadingCallback<BackendlessCollection<TransactionType>> callback = createTransactionTypeLoadingCallback(context);
+        // show the loading window while loading transaction types
+        callback.showLoading();
+        Backendless.Data.of( TransactionType.class ).find(callback);
     }
-
-    private static LoadingCallback<BackendlessCollection<PaymentType>> createPaymentTypeLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<PaymentType>>(context, context.getString(R.string.loading_empty)) {
+    private static LoadingCallback<BackendlessCollection<TransactionType>> createTransactionTypeLoadingCallback(final Context context) {
+        return new LoadingCallback<BackendlessCollection<TransactionType>>(context, context.getString(R.string.loading_empty)) {
             @Override
-            public void handleResponse( BackendlessCollection<PaymentType> paymentTypeCollection) {
-                super.handleResponse(paymentTypeCollection);
-                Toast.makeText(context, "save successful!", Toast.LENGTH_SHORT).show();
+            public void handleResponse( BackendlessCollection<TransactionType> transactionTypeCollection) {
+                super.handleResponse(transactionTypeCollection);
+                Toast.makeText(context, "Transaction types loaded!", Toast.LENGTH_SHORT).show();
 
-                ArrayList<PaymentType> paymentTypes = new ArrayList<>();
-                Iterator<PaymentType> iterator = paymentTypeCollection.getCurrentPage().iterator();
+                ArrayList<TransactionType> transactionTypes = new ArrayList<>();
+                Iterator<TransactionType> iterator = transactionTypeCollection.getCurrentPage().iterator();
                 while( iterator.hasNext() )
                 {
-                    PaymentType paymentType = iterator.next();
-                    paymentTypes.add(paymentType);
+                    TransactionType transactionType = iterator.next();
+                    transactionTypes.add(transactionType);
                 }
 
                 // is this the best way to do this?
-                ((BackendlessDataLoaderInterface) context).loadSuccessful(paymentTypes);
+                ((BackendlessDataLoaderInterface) context).loadSuccessful(transactionTypes);
             }
 
             @Override
@@ -59,80 +53,4 @@ public class BackendlessDataLoader {
         };
     }
 
-    public static void loadIncomeTypes(Context context) {
-        /*
-        int PAGESIZE = 20;
-        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-        dataQuery.setPageSize(PAGESIZE);
-        Backendless.Data.of( PaymentType.class ).find( dataQuery, createLoadingCallback(context) );
-        */
-
-        // page size is 10 by default
-        Backendless.Data.of( IncomeType.class ).find(createIncomeTypeLoadingCallback(context));
-    }
-
-    private static LoadingCallback<BackendlessCollection<IncomeType>> createIncomeTypeLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<IncomeType>>(context, context.getString(R.string.loading_empty)) {
-            @Override
-            public void handleResponse( BackendlessCollection<IncomeType> incomeTypeCollection) {
-                super.handleResponse(incomeTypeCollection);
-                Toast.makeText(context, "save successful!", Toast.LENGTH_SHORT).show();
-
-                ArrayList<IncomeType> incomeTypes = new ArrayList<>();
-                Iterator<IncomeType> iterator = incomeTypeCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() )
-                {
-                    IncomeType incomeType = iterator.next();
-                    incomeTypes.add(incomeType);
-                }
-
-                // is this the best way to do this?
-                ((BackendlessDataLoaderInterface) context).loadSuccessful(incomeTypes);
-            }
-
-            @Override
-            public void handleFault( BackendlessFault fault ) {
-                super.handleFault(fault);
-                ((BackendlessDataLoaderInterface) context).loadFailed();
-            }
-        };
-    }
-
-
-
-
-    /*
-    public static <T> void loadPayments(Context context) {
-
-        // page size is 10 by default
-        Backendless.Data.of( Payment.class ).find(createPaymentLoadingCallback(context));
-    }
-
-    private static LoadingCallback<BackendlessCollection<Payment>> createPaymentLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<Payment>>(context, context.getString(R.string.loading_empty)) {
-            @Override
-            public void handleResponse( BackendlessCollection<Payment> paymentTypeCollection) {
-                super.handleResponse(paymentTypeCollection);
-                Toast.makeText(context, "save successful!", Toast.LENGTH_SHORT).show();
-
-                ArrayList<Payment> payments = new ArrayList<>();
-                Iterator<Payment> iterator = paymentTypeCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() ) {
-                    Payment currentPayment = iterator.next();
-                    payments.add(currentPayment);
-
-                }
-
-                // is this the best way to do this?
-                ((BackendlessDataLoaderInterface) context).loadSuccessful(payments);
-            }
-
-            @Override
-            public void handleFault( BackendlessFault fault ) {
-                super.handleFault(fault);
-                ((BackendlessDataSaverInterface) context).saveFailed();
-            }
-        };
-    }
-    */
 }

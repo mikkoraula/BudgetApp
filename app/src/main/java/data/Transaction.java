@@ -1,25 +1,27 @@
 package data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * the parent activity for both payment and income
+ * A transaction holds the following attributes:
+ * - amount             the transaction amount
+ * - owner              who created the transaction
+ * - isShared           if the transaction is isShared with everyone(true) or private(false)
+ * - payment          if the transaction is a payment or an income
+ * - dateInMillis       Date when created in milliseconds
+ * - transactionType    tells the transaction type (for example groceries)
  *
  * Created by Mikko on 8.8.2016.
  */
 public class Transaction implements Serializable {
-    protected double amount;
-    protected String payer;
-    protected boolean shared;
+    private double amount;
+    private String owner;
+    private boolean isShared;
+    private boolean payment;
+    private long dateInMilliseconds;
+    private TransactionType transactionType;
 
-    //protected Date date;
 
-    protected long dateInMilliseconds;
-
-    //protected TransactionType transactionType;
-
-    /*
     public TransactionType getTransactionType() {
         return transactionType;
     }
@@ -27,16 +29,6 @@ public class Transaction implements Serializable {
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
-    */
-    /*
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    */
 
     public double getAmount() {
         return amount;
@@ -46,20 +38,20 @@ public class Transaction implements Serializable {
         this.amount = amount;
     }
 
-    public String getPayer() {
-        return payer;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setPayer(String payer) {
-        this.payer = payer;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public boolean isShared() {
-        return shared;
+        return isShared;
     }
 
-    public void setShared(boolean shared) {
-        this.shared = shared;
+    public void setShared(boolean isShared) {
+        this.isShared = isShared;
     }
 
 
@@ -69,5 +61,13 @@ public class Transaction implements Serializable {
 
     public void setDateInMilliseconds(long dateInMilliseconds) {
         this.dateInMilliseconds = dateInMilliseconds;
+    }
+
+    public boolean isPayment() {
+        return payment;
+    }
+
+    public void setPayment(boolean payment) {
+        this.payment = payment;
     }
 }

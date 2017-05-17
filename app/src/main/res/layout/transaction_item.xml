@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp">
+
+    <payment.history.TransactionItemButton
+        android:orientation="vertical"
+        android:layout_width="@dimen/transaction_list_view_item_width"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:minWidth="@dimen/transaction_list_view_item_width"
+        android:id="@+id/payment_item_button"
+        android:layout_margin="0dp"
+        android:foreground="@drawable/transaction_type_picker_button">
+
+    </payment.history.TransactionItemButton>
+
+</RelativeLayout>
+
+<!--
+<addpayment.PaymentTypeToggleButton
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="@dimen/payment_type_picker_square_size"
+    android:minHeight="@dimen/payment_type_picker_square_size"
+    android:id="@+id/payment_type_button"
+    android:foreground="@drawable/payment_type_selector"
+    android:clickable="true"
+    android:longClickable="true" />
+-->

@@ -16,8 +16,7 @@ import com.backendless.Backendless;
 
 import java.util.Date;
 
-import addincome.AddIncomeActivity;
-import addpayment.AddPaymentActivity;
+import addtransaction.AddTransactionActivity;
 import payment.history.ShowHistoryActivity;
 
 public class MainActivity extends MyBaseActivity implements LoginHandlerInterface {
@@ -52,7 +51,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
             if (isLoginCredsSaved(loginPreferences)) {
                 // login with the saved credentials
                 LoginHandler loginHandler = new LoginHandler(this);
-                Toast.makeText(this, "login creds saved, logging in automatically", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "login creds saved, logging in automatically", Toast.LENGTH_SHORT).show();
                 loginHandler.loginToBackendless(loginPreferences.getString("email", ""), loginPreferences.getString("password", ""));
 
             }
@@ -139,14 +138,10 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         goToLoginActivity();
     }
 
-    public void addPayment(View view) {
-        Intent addPaymentIntent = new Intent(this, AddPaymentActivity.class);
-        System.out.println();
-        startActivity(addPaymentIntent);
-    }
 
-    public void addIncome(View view) {
-        Intent addIncomeIntent = new Intent(this, AddIncomeActivity.class);
+
+    public void addTransaction(View view) {
+        Intent addIncomeIntent = new Intent(this, AddTransactionActivity.class);
         startActivity(addIncomeIntent);
     }
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true"
+        android:drawable="@drawable/transaction_type_picker_button" >
+    </item>
+
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorPrimaryDark"/>
+        </shape>
+    </item>
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorBlack"/>
+        </shape>
+    </item>
+
+    <item>
+        <!-- This applies when the item is not checked. -->
+        <shape android:shape="rectangle"  >
+            <solid android:color="@color/colorTransparent" />
+        </shape>
+
+    </item>
+</selector>

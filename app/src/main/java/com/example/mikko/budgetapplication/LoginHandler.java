@@ -27,7 +27,7 @@ public class LoginHandler {
             // if remembermeBox is null, we are automatically logging in, no need to save credentials again
             if (rememberMeBox != null) {
                 if (rememberMeBox.isChecked()) {
-                    Toast.makeText(activity, "login credentials about to be saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "login credentials about to be saved", Toast.LENGTH_SHORT).show();
 
                     // if we get here, login credentials are valid and the user wants to remember login next time app opens
                     // => save email and password to app's sharedpreferences
@@ -87,7 +87,7 @@ public class LoginHandler {
             public void handleResponse( BackendlessUser loggedInUser )
             {
                 super.handleResponse(loggedInUser);
-                Toast.makeText( activity, String.format( activity.getString( R.string.info_logged_in ), loggedInUser.getObjectId() ), Toast.LENGTH_LONG ).show();
+                Toast.makeText( activity, String.format( activity.getString( R.string.info_logged_in ), loggedInUser.getUserId() ), Toast.LENGTH_SHORT ).show();
 
                 // is this the best way to do this?
                 ((LoginHandlerInterface) activity).loginSuccessful();
@@ -107,8 +107,8 @@ public class LoginHandler {
         loginPreferencesEditor.putString("password", "");
         loginPreferencesEditor.apply();
 
-        LoadingCallback<Void> logoutCalback = createLogoutCallback();
-        Backendless.UserService.logout(logoutCalback);
+        LoadingCallback<Void> logoutCallback = createLogoutCallback();
+        Backendless.UserService.logout(logoutCallback);
     }
 
     public LoadingCallback<Void> createLogoutCallback() {
@@ -117,7 +117,7 @@ public class LoginHandler {
             @Override
             public void handleResponse( Void response ) {
                 super.handleResponse(response);
-                Toast.makeText( activity, "Logout successful?", Toast.LENGTH_LONG ).show();
+                Toast.makeText( activity, "Logout successful?", Toast.LENGTH_SHORT ).show();
 
                 // is this the best way to do this?
                 ((LoginHandlerInterface) activity).logoutSuccessful();

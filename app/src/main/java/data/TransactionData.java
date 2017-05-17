@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  *
  * Created by Mikko on 13.8.2016.
  */
-public class TransactionData {
+public class TransactionData implements Serializable {
 
     private ArrayList<Transaction> transactionList;
 

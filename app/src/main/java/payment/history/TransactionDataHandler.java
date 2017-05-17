@@ -14,6 +14,8 @@ import data.TransactionData;
 
 /**
  * Created by Mikko on 12.8.2016.
+ *
+ * Contains static methods to load and save transaction data to phone's internal storage
  */
 public class TransactionDataHandler {
 
@@ -31,14 +33,14 @@ public class TransactionDataHandler {
 
             return loadedData.getTransactionList();
         } else {
+            System.out.println("didn't find any transactions in internal storage");
             return new ArrayList<>();
         }
-
     }
 
-    public static void saveTransactions(Context context, ArrayList<Transaction> transactionList, String key) {
+    public static void saveTransactions(Context context, ArrayList<Transaction> transactions, String key) {
         TransactionData transactionData = new TransactionData();
-        transactionData.setTransactionList(transactionList);
+        transactionData.setTransactionList(transactions);
 
         Gson gson = new Gson();
         System.out.println("saving next json string: " + gson.toJson(transactionData));

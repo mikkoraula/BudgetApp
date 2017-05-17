@@ -6,8 +6,9 @@ import java.io.Serializable;
  * Created by Mikko on 8.8.2016.
  */
 public class TransactionType implements Serializable {
-    protected String name;
-    protected int colorId;
+    private String name;
+    private int colorId;
+    private boolean payment;
 
     public int getColorId() {
         return colorId;
@@ -23,5 +24,13 @@ public class TransactionType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isPayment() {
+        return payment;
+    }
+
+    public void setPayment(boolean isPayment) {
+        this.payment = isPayment;
     }
 }

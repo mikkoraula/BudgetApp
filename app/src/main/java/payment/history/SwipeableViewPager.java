@@ -17,11 +17,64 @@ public class SwipeableViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    private float xDown, xUp, yDown, yUp;
+    private static final int MIN_DISTANCE = 150;
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         // Never allow swiping to switch between pages
-        System.out.println("got to CHILD's intercepttouchevent");
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                xDown = event.getX();
+                yDown = event.getY();
+                //System.out.println("ACTION_DOWN");
+                break;
+        }
+        if (isSwipeAllowed(event)) {
+            //System.out.println("returned false");
+            return super.onInterceptTouchEvent(event);
+        } else {
+            //System.out.println("returned true");
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                //System.out.println("ACTION_MOVE");
+                break;
+            case MotionEvent.ACTION_UP:
+                //System.out.println("ACTION_UP");
+                xUp = event.getX();
+                yUp = event.getY();
+
+                float dx = Math.abs(xUp - xDown);
+                float dy = Math.abs(yUp - yDown);
+
+                //System.out.println("over min distance:  dx = " + dx + ", MIN_DISTANCE = " + MIN_DISTANCE);
+                // if movement exceeds minimum distance for a swipe
+                if (dx > MIN_DISTANCE) {
+                    // if the movement is larger in x axis than in y axis
+
+                    if (dx > dy) {
+                        //System.out.println("SwipeableViewPager: detected horizontal swiping");
+                        //return super.onTouchEvent(event);
+                    }
+                }
+
+                //System.out.println("SwipeableViewPager: detected some other form of touch");
+
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
+    private boolean isSwipeAllowed(MotionEvent event) {
         return true;
     }
+
 
 }

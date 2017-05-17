@@ -68,6 +68,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void loadTransactionsToInternalStorage(View view) {
-
+        System.out.println("unimplemented feature :(");
     }
 }

@@ -27,7 +27,6 @@
     <string name="button_save_new_payment_type">Save Type</string>
 
 
-
     <!-- toolbar things -->
     <string name="toolbar_signout">Sign out</string>
     <string name="toolbar_help">Help</string>
@@ -78,6 +77,13 @@
     <string name="activity_add_payment_type">Add Payment Type</string>
     <string name="activity_add_income">Add Income</string>
     <string name="activity_add_income_type">Add Income Type</string>
+    <string name="activity_add_transaction">Add Transaction</string>
+    <string name="activity_add_transaction_type">Add Transaction Type</string>
+
     <string name="activity_show_history">Show Payment history</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_add_transaction">AddTransaction</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

@@ -40,4 +40,9 @@ public class SharedPreferencesHandler {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceKey, context.MODE_PRIVATE);
         return sharedPreferences.getLong(key, 0);
     }
+
+    public static int getInt(Context context, String preferenceKey, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceKey, context.MODE_PRIVATE);
+        return sharedPreferences.getInt(key, 0);
+    }
 }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- dummy view -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorTransparent"
+        android:id="@+id/monthly_tab_fragment_dummy_view"/>
+
+    <!-- payments background -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/monthly_tab_fragment_dummy_view"
+        android:background="@color/colorAccentTransparent">
+
+        <!-- payments header -->
+        <TextView
+            android:id="@+id/monthly_tab_fragment_payments_header_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/monthly_tab_fragment_header_margin"
+            android:layout_centerHorizontal="true"
+            android:text="Payments"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/monthly_tab_fragment_payments_list_view"
+            android:layout_below="@+id/monthly_tab_fragment_payments_header_text_view"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_centerHorizontal="true"></ListView>
+    </RelativeLayout>
+
+    <!-- incomes background -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/monthly_tab_fragment_dummy_view"
+        android:background="@color/colorPrimaryTransparent">
+
+        <!-- incomes header -->
+        <TextView
+            android:id="@+id/monthly_tab_fragment_incomes_header_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/monthly_tab_fragment_header_margin"
+            android:layout_centerHorizontal="true"
+            android:text="Incomes"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/monthly_tab_fragment_incomes_list_view"
+            android:layout_below="@+id/monthly_tab_fragment_incomes_header_text_view"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_centerHorizontal="true"></ListView>
+    </RelativeLayout>
+
+
+    <!-- header -->
+    <TextView
+        android:id="@+id/monthly_tab_fragment_header_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="January 2001"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <!--
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_payment_type_picker_grid_layout"
+        android:layout_below="@id/add_payment_toggle_personal"
+        android:layout_centerHorizontal="true"
+        android:columnWidth="@dimen/payment_type_picker_square_size"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="0dp"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="columnWidth"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:listSelector="#00000000"
+        android:isScrollContainer="false"/>
+        -->
+
+
+</RelativeLayout>
