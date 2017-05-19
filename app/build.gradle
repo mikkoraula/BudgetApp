@@ -27,4 +27,6 @@ dependencies {
 
     compile 'com.backendless:backendless:3.0.8.2'
     compile 'com.google.code.gson:gson:2.7'
+
+    compile 'com.android.support:recyclerview-v7:23.2.1'
 }

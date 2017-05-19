@@ -21,8 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         initSettingSwitches();
 
@@ -32,29 +30,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-
+    // override the Options menu creation to change to a version of the menu where there is no settings
+    // so the user can't move from settings to settings
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_base, menu);
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // automatically handle clicks on the Home/Up button, so long
-        // Handle action bar item clicks here. The action bar will
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_help) {
-            DialogHelper.createHelpDialog(this, getString(R.string.toolbar_help), getString(R.string.help_settings)).show();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     public void deleteInternalStorageTransactions(View view) {
         SharedPreferences.Editor editor =

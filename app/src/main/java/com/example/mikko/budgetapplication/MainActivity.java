@@ -31,8 +31,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setHelpString(R.string.help_main);
 
         // init Backendless
         Backendless.initApp(this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, BackendSettings.VERSION);
@@ -70,32 +69,13 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // first create base menu
+        // create menu from BaseActivity
         super.onCreateOptionsMenu(menu);
-        // then add main menu things
-        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // automatically handle clicks on the Home/Up button, so long
-        // Handle action bar item clicks here. The action bar will
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_sign_out) {
-            Log.d("asd", "signout pressed");
-            new LoginHandler(this).logoutFromBackendless();
-            return true;
-        } else if (id == R.id.action_help) {
-            DialogHelper.createHelpDialog(this, getString(R.string.toolbar_help), getString(R.string.help_main)).show();
-        } else if (id == R.id.action_settings) {
-            Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
-            startActivity(startSettingsActivity);
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

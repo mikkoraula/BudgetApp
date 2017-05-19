@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <!-- dummy view -->
     <View
         android:layout_width="0dp"
@@ -37,7 +38,7 @@
             android:layout_below="@+id/monthly_tab_fragment_payments_header_text_view"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:layout_centerHorizontal="true"></ListView>
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
     <!-- incomes background -->
@@ -64,7 +65,7 @@
             android:layout_below="@+id/monthly_tab_fragment_incomes_header_text_view"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:layout_centerHorizontal="true"></ListView>
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 

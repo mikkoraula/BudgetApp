@@ -18,32 +18,16 @@
         android:layout_margin="@dimen/activity_vertical_margin"
         android:id="@+id/mainRelativeLayout">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_add_payment"
-            android:id="@+id/button_add_payment"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_add_income"
-            android:id="@+id/button_add_income"
-            android:layout_below="@+id/button_add_payment"
-            android:layout_centerHorizontal="true"
-            />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_see_history"
             android:id="@+id/button_see_history"
-            android:layout_below="@+id/button_add_income"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:onClick="seeHistory"/>
+            android:onClick="seeHistory" />
 
 
     </RelativeLayout>

@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="fba79df83e9146032db346dc2b60fc61f29a9744">
+        sha1="bbba9e85bc20575dbd073516b87eaf7a552df7c8">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b34b2b509f92d79ceac7a84078f3ed0c1b614f92\classes.dex" />
     </item>
     <item
@@ -39,29 +39,11 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="673d77a5bbddd766037f088e775df525c46407f0">
-        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_eac7d2f68a65ecabb04155ac520b5db99b0d8a79\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
-        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_408de54ddcf343f122860d9e089053552a7cdfa0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="f9a5e3ae6e8184db3b92d2ba0e183b8b8ca965c1">
+        sha1="1a479f1a6cf39026d257d17b4cdc1bf1f97c6ad5">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_6a1cc6c62cea4bcc2bf5728b6e5d5dcacddb57fd\classes.dex" />
     </item>
     <item
@@ -81,6 +63,15 @@
         revision="23.0.3"
         sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.1_748f8ccd8155c0642c8ab8a8e2b1014913554824\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_eac7d2f68a65ecabb04155ac520b5db99b0d8a79\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -108,6 +99,15 @@
         revision="23.0.3"
         sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.1_dc74f023d4f7970d57e041bc8ec7a0a708981349\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_408de54ddcf343f122860d9e089053552a7cdfa0\classes.dex" />
     </item>
 
 </items>

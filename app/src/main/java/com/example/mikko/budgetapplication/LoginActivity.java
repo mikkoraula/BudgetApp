@@ -39,23 +39,13 @@ public class LoginActivity extends MyBaseActivity implements LoginHandlerInterfa
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setHelpString(R.string.help_login);
+
 
         Button loginButton = (Button) findViewById( R.id.loginButton );
         loginButton.setOnClickListener( createLoginButtonListener() );
 
         makeRegistrationLink();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_help) {
-            DialogHelper.createHelpDialog(this, getString(R.string.toolbar_help), getString(R.string.help_login)).show();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**

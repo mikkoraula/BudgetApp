@@ -87,7 +87,7 @@ public class LoginHandler {
             public void handleResponse( BackendlessUser loggedInUser )
             {
                 super.handleResponse(loggedInUser);
-                Toast.makeText( activity, String.format( activity.getString( R.string.info_logged_in ), loggedInUser.getUserId() ), Toast.LENGTH_SHORT ).show();
+                Toast.makeText( activity, String.format( activity.getString( R.string.info_logged_in ), loggedInUser.getProperties().get("name") ), Toast.LENGTH_SHORT ).show();
 
                 // is this the best way to do this?
                 ((LoginHandlerInterface) activity).loginSuccessful();

@@ -13,9 +13,18 @@ import android.view.MenuItem;
  */
 public class MyBaseActivity extends AppCompatActivity {
 
+    int helpStringCode = R.string.help_main;
+
+    public void setHelpString(int helpStringCode) {
+        this.helpStringCode = helpStringCode;
+    }
+
     @Override
-    protected void onCreate( Bundle savedInstanceState ) {
+    protected void onCreate( Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -38,7 +47,7 @@ public class MyBaseActivity extends AppCompatActivity {
             new LoginHandler(this).logoutFromBackendless();
             return true;
         } else if (id == R.id.action_help) {
-            DialogHelper.createHelpDialog(this, getString(R.string.toolbar_help), getString(R.string.help_main)).show();
+            DialogHelper.createHelpDialog(this, getString(R.string.toolbar_help), getString(helpStringCode)).show();
         } else if (id == R.id.action_settings) {
             Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
             startActivity(startSettingsActivity);

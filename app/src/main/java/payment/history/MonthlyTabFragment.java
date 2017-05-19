@@ -2,6 +2,8 @@ package payment.history;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +24,14 @@ public class MonthlyTabFragment extends Fragment {
     private String tabName = "";
     private TextView textView;
 
-    private boolean listViewsInitiated;
-
+    private boolean recyclerViewInitiated;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    /*
     private ListView paymentsListView;
     private ListView incomesListView;
     private TransactionItemAdapter paymentItemAdapter;
     private TransactionItemAdapter incomeItemAdapter;
+    */
 
     private ArrayList<Transaction> payments, incomes;
 
@@ -50,17 +54,17 @@ public class MonthlyTabFragment extends Fragment {
         payments = ((TransactionData) getArguments().getSerializable("monthPaymentData")).getTransactionList();
         incomes = ((TransactionData) getArguments().getSerializable("monthIncomeData")).getTransactionList();
 
-        listViewsInitiated = false;
+        recyclerViewInitiated = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_monthly_tab, container, false);
-        textView = (TextView) view.findViewById(R.id.monthly_tab_fragment_header_text_view);
-        textView.setText(tabName);
+        View view = inflater.inflate(R.layout.fragment_monthly_tab2, container, false);
+        //textView = (TextView) view.findViewById(R.id.monthly_tab_fragment_header_text_view);
+        //textView.setText(tabName);
 
-        if (!listViewsInitiated) {
-            initListViews(view);
+        if (!recyclerViewInitiated) {
+            initRecyclerView(view);
         }
 
         container.setTag(tabName);
@@ -80,7 +84,21 @@ public class MonthlyTabFragment extends Fragment {
     }
 
 
-    private void initListViews(View view) {
+    private void initRecyclerView(View view) {
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+
+        HistoryRecyclerViewAdapter rcAdapter = new HistoryRecyclerViewAdapter(
+                getActivity(), payments, incomes);
+        recyclerView.setAdapter(rcAdapter);
+
+        /*
         // payments
         paymentsListView = (ListView) view.findViewById(R.id.monthly_tab_fragment_payments_list_view);
         paymentItemAdapter = new TransactionItemAdapter(
@@ -95,6 +113,7 @@ public class MonthlyTabFragment extends Fragment {
         );
         incomesListView.setAdapter(incomeItemAdapter);
 
-        listViewsInitiated = true;
+        recyclerViewInitiated = true;
+        */
     }
 }

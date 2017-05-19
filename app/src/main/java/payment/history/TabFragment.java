@@ -29,7 +29,7 @@ public class TabFragment extends Fragment {
     private ArrayList<Transaction> payments;
     private ArrayList<Transaction> incomes;
 
-    private ViewPager viewPager;
+    private ViewPager monthlyViewPager;
     private MonthlyPagerAdapter monthlyPagerAdapter;
 
 
@@ -52,6 +52,12 @@ public class TabFragment extends Fragment {
         tabName = getArguments().getString("someTitle");
         numberOfMonths = getArguments().getInt("someInt");
         currentPosition = numberOfMonths - 1;
+
+        // delete the month pointer from last use and set it to the current month
+        SharedPreferences.Editor editor = SharedPreferencesHandler.getEditor(getContext(), SharedPreferencesSettings.MONTH_TAB_FRAGMENT_KEY);
+        editor.putInt(SharedPreferencesSettings.MONTH_TAB_FRAGMENT_CURRENT_MONTH_INT, numberOfMonths - 1);
+        editor.apply();
+
         payments = ((TransactionData)getArguments().getSerializable("paymentData")).getTransactionList();
         incomes = ((TransactionData)getArguments().getSerializable("incomeData")).getTransactionList();
     }
@@ -81,16 +87,26 @@ public class TabFragment extends Fragment {
         if (view == null) {
             view = getView();
         }
-        viewPager = (ViewPager) view.findViewById(R.id.monthly_view_pager);
+        monthlyViewPager = (ViewPager) view.findViewById(R.id.monthly_view_pager);
+        monthlyPagerAdapter = new MonthlyPagerAdapter
+                (getChildFragmentManager(), numberOfMonths, payments, incomes);
+        monthlyViewPager.setAdapter(monthlyPagerAdapter);
 
+        System.out.println(" ");
+        System.out.println(" ");
+
+        // get the month position from shared preferences
+        // this is to make sure that when the user changes from tabs (shared, personal both)
+        // the month stays the same and not resetting
         int currentMonthPosition = SharedPreferencesHandler.getInt(
                 getContext(), SharedPreferencesSettings.MONTH_TAB_FRAGMENT_KEY, SharedPreferencesSettings.MONTH_TAB_FRAGMENT_CURRENT_MONTH_INT);
-        System.out.println("set currentPosition for viewPager: "+  currentMonthPosition);
-        viewPager.setCurrentItem(currentMonthPosition);
-        System.out.println("currentItem after setting it: " + viewPager.getCurrentItem());
+        System.out.println("set currentPosition for monthlyViewPager: "+  currentMonthPosition);
+        monthlyViewPager.setCurrentItem(currentMonthPosition);
+        System.out.println("currentItem after setting it: " + monthlyViewPager.getCurrentItem());
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        monthlyViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
+            // every time the user changes the month, save the monthPosition in shared preferences
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position != currentPosition) {
                     currentPosition = position;
@@ -111,8 +127,6 @@ public class TabFragment extends Fragment {
             }
         });
 
-        monthlyPagerAdapter = new MonthlyPagerAdapter
-                (getChildFragmentManager(), numberOfMonths, payments, incomes);
-        viewPager.setAdapter(monthlyPagerAdapter);
+
     }
 }

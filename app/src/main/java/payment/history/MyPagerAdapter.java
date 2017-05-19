@@ -2,6 +2,9 @@ package payment.history;
 
 /**
  * Created by Mikko on 1.8.2016.
+ *
+ * This is the pagerAdapter for the three different tabs: Personal, shared and both
+ *
  */
 import android.content.Context;
 import android.support.v4.app.Fragment;

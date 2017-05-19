@@ -12,6 +12,8 @@ import android.widget.TextView;
 import data.TransactionType;
 import datahandler.BackendlessDataSaverInterface;
 import datahandler.BackendlessDataSaver;
+
+import com.example.mikko.budgetapplication.MyBaseActivity;
 import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class AddTransactionTypeActivity extends AppCompatActivity implements Bac
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_transaction_type_creator);
+
 
         isPayment = getIntent().getBooleanExtra(AddTransactionFragment.TRANSACTION_TYPE_CHECKER, true);
 

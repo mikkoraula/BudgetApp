@@ -49,8 +49,8 @@
 
     <!-- info messages -->
     <string name="info_registered_template">Registered. ObjectId: %s</string>
-    <string name="info_registered_success">Registered successfully</string>
-    <string name="info_logged_in">Logged in. ObjectId: %s</string>
+    <string name="info_registered_success">Registered %s successfully</string>
+    <string name="info_logged_in">Logged in as %s</string>
 
     <!-- loading messages -->
     <string name="loading_empty">Loading…</string>
@@ -62,8 +62,9 @@
     <string name="help_login">Something something log in.</string>
     <string name="help_registration">Register a new account to the app.</string>
     <string name="help_settings">Configure your app.</string>
-    <string name="help_add_payment">Add a new payment by filling out the form.</string>
-    <string name="help_add_income">Add a new income by filling out the form.</string>
+    <string name="help_add_transaction">Add a new transaction by filling out the form.
+        You can choose between an income and payment by switching the tabs.
+    </string>
     <string name="help_show_history">Check out old payments and budget????? what to write here</string>
 
     <!-- settings -->

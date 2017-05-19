@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:minWidth="@dimen/transaction_list_view_item_width"
-        android:id="@+id/payment_item_button"
+        android:id="@+id/transaction_item_button"
         android:layout_margin="0dp"
         android:foreground="@drawable/transaction_type_picker_button">
 

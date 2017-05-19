@@ -44,10 +44,9 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_history);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setHelpString(R.string.help_show_history);
 
-        // load transactions from backend
+        // load transactions from backend and internal storage
         loadTransactions();
 
         // set three tabs from which the user can view payments and incomes:
@@ -83,16 +82,6 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
             }
         });
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_help) {
-            DialogHelper.createHelpDialog(this, getString(R.string.toolbar_help), getString(R.string.help_show_history)).show();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /*********************************************************

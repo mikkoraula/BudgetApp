@@ -38,21 +38,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="addpayment.AddPaymentActivity"
-            android:label="@string/activity_add_payment"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="addpayment.AddPaymentTypeActivity"
-            android:label="@string/activity_add_payment_type"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name="addincome.AddIncomeActivity"
-            android:label="@string/activity_add_income"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name="addtransaction.AddTransactionTypeActivity"
             android:label="@string/activity_add_transaction_type"
             android:screenOrientation="portrait"

@@ -63,9 +63,7 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setHelpString(R.string.help_add_transaction);
 
 
 
@@ -125,10 +123,8 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
 
         for (TransactionType transactionType : loadedTransactionTypeList) {
             if (transactionType.isPayment()) {
-                System.out.println("lel found paymnettype this goooood!!!");
                 paymentTypes.add(transactionType);
             } else {
-                System.out.println("huh, found income type");
                 incomeTypes.add(transactionType);
             }
         }

@@ -41,7 +41,7 @@ public class TransactionItemAdapter extends ArrayAdapter<Transaction> {
         Transaction currentTransaction = transactions.get(position);
 
         if (currentTransaction != null) {
-            final TransactionItemButton button = (TransactionItemButton) convertView.findViewById(R.id.payment_item_button);
+            final TransactionItemButton button = (TransactionItemButton) convertView.findViewById(R.id.transaction_item_button);
             button.setText(currentTransaction.getAmount() + "");
             button.setTransaction(currentTransaction);
 
