@@ -24,6 +24,7 @@
     <string name="button_add_income">Add Income</string>
     <string name="button_see_history">See Payment History</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_close">Close</string>
     <string name="button_save_new_payment_type">Save Type</string>
 
 
@@ -62,10 +63,20 @@
     <string name="help_login">Something something log in.</string>
     <string name="help_registration">Register a new account to the app.</string>
     <string name="help_settings">Configure your app.</string>
-    <string name="help_add_transaction">Add a new transaction by filling out the form.
+    <string name="help_add_transaction">
+        Add a new transaction by filling out the form.
         You can choose between an income and payment by switching the tabs.
     </string>
-    <string name="help_show_history">Check out old payments and budget????? what to write here</string>
+    <string name="help_show_history">
+        Here you can check out all the transactions from the past.
+
+        You can filter the transactions so that it only shows
+        - personal
+        - shared
+        - or all transactions
+
+        You can move between months by swiping left and right. This app will show you payments from maximum of 13? months away.
+    </string>
 
     <!-- settings -->
     <string name="settings_prompt_exit">Prompt exit when closing app</string>
@@ -81,7 +92,8 @@
     <string name="activity_add_transaction">Add Transaction</string>
     <string name="activity_add_transaction_type">Add Transaction Type</string>
 
-    <string name="activity_show_history">Show Payment history</string>
+    <string name="activity_show_history">Show Transaction history</string>
+    <string name="title_activity_view_transaction">View Transaction</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_add_transaction">AddTransaction</string>
     <string name="action_settings">Settings</string>

@@ -61,8 +61,8 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
     // this is done in the method loadSuccessful()
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
+        super.onCreate(savedInstanceState);
         setHelpString(R.string.help_add_transaction);
 
 

@@ -1,12 +1,16 @@
 package payment.history;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +25,8 @@ import data.TransactionData;
  * Created by Mikko on 2.8.2016.
  */
 public class MonthlyTabFragment extends Fragment {
+    public static final String VIEW_TRANSACTION_CODE = "1";
+
     private String tabName = "";
     private TextView textView;
 
@@ -59,12 +65,21 @@ public class MonthlyTabFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_monthly_tab2, container, false);
-        //textView = (TextView) view.findViewById(R.id.monthly_tab_fragment_header_text_view);
-        //textView.setText(tabName);
+        View view = inflater.inflate(R.layout.fragment_monthly_tab3, container, false);
+
+        // update the header
+        textView = (TextView) view.findViewById(R.id.monthly_tab_fragment_header_text_view);
+        textView.setText(tabName);
 
         if (!recyclerViewInitiated) {
-            initRecyclerView(view);
+            //initRecyclerView(view);
+
+
+
+            initLinearLayout(view, payments, R.id.monthly_tab_fragment_payments_linear_layout);
+            initLinearLayout(view, incomes, R.id.monthly_tab_fragment_incomes_linear_layout);
+
+            recyclerViewInitiated = true;
         }
 
         container.setTag(tabName);
@@ -81,6 +96,62 @@ public class MonthlyTabFragment extends Fragment {
         this.incomes = incomes;
 
         //System.out.println("got " + payments.size() + " payments in MonthlyFragment: " + (getArguments().getString("someMonthTitle")));
+    }
+
+
+
+
+    /**
+     * inits a transaction linear layout
+     * takes in as parameter the transactionlist (payments or incomes) and the linearlayout's id
+     *
+     * Adds a TransactionItemButton for each transaction
+     */
+    private void initLinearLayout(View view, ArrayList<Transaction> transactions, int layoutId) {
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(layoutId);
+
+        for (int i = 0; i < transactions.size(); i++) {
+            linearLayout.addView(createTransactionItemButton(transactions.get(i)));
+        }
+    }
+
+    /**
+     * Creates a button based on the transaction given as a parameter
+     *
+     * Sets the text for it, changes its size based on the transaction amount
+     * changes the background color based on its transaction type
+     *
+     * @param transaction
+     * @return
+     */
+    private Button createTransactionItemButton(final Transaction transaction) {
+        // create button
+        Button transactionItemButton = new TransactionItemButton(getContext());
+
+        // set the text
+        transactionItemButton.setText(String.valueOf(transaction.getAmount()));
+
+        // set the background color to match the transactiontype's color
+        int colorId = transaction.getTransactionType().getColorId();
+        transactionItemButton.setBackgroundColor(ContextCompat.getColor(getContext(), colorId));
+
+        // set the size to match the transaction amount
+        transactionItemButton.setMinHeight(0);
+        transactionItemButton.setMinimumHeight(0);
+        transactionItemButton.setHeight((int) transaction.getAmount() * 3);
+
+
+        // finally add an on click listener to the button
+        transactionItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewTransaction = new Intent(getContext(), ViewTransactionActivity.class);
+                viewTransaction.putExtra(VIEW_TRANSACTION_CODE, transaction);
+                getActivity().startActivity(viewTransaction);
+            }
+        });
+
+        return transactionItemButton;
     }
 
 

@@ -17,7 +17,9 @@ import com.backendless.Backendless;
 import java.util.Date;
 
 import addtransaction.AddTransactionActivity;
+import addtransaction.AddTransactionTypeActivity;
 import payment.history.ShowHistoryActivity;
+import payment.history.ViewTransactionActivity;
 
 public class MainActivity extends MyBaseActivity implements LoginHandlerInterface {
 
@@ -29,8 +31,9 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+
         setHelpString(R.string.help_main);
 
         // init Backendless

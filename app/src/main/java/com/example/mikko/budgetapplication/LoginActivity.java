@@ -37,8 +37,8 @@ public class LoginActivity extends MyBaseActivity implements LoginHandlerInterfa
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        super.onCreate(savedInstanceState);
         setHelpString(R.string.help_login);
 
 

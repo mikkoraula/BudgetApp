@@ -21,8 +21,8 @@ import com.backendless.async.callback.AsyncCallback;
 public class RegistrationActivity extends MyBaseActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
         setContentView(R.layout.activity_registration);
+        super.onCreate(savedInstanceState);
         setHelpString(R.string.help_registration);
 
 

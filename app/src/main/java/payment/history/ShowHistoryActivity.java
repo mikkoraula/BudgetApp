@@ -42,8 +42,8 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_history);
+        super.onCreate(savedInstanceState);
         setHelpString(R.string.help_show_history);
 
         // load transactions from backend and internal storage

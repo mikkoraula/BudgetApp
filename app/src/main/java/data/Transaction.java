@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * A transaction holds the following attributes:
  * - amount             the transaction amount
- * - owner              who created the transaction
- * - isShared           if the transaction is isShared with everyone(true) or private(false)
+ * - ownerId              who created the transaction
+ * - shared           if the transaction is shared with everyone(true) or private(false)
  * - payment          if the transaction is a payment or an income
  * - dateInMillis       Date when created in milliseconds
  * - transactionType    tells the transaction type (for example groceries)
@@ -15,8 +15,8 @@ import java.io.Serializable;
  */
 public class Transaction implements Serializable {
     private double amount;
-    private String owner;
-    private boolean isShared;
+    private String ownerId;
+    private boolean shared;
     private boolean payment;
     private long dateInMilliseconds;
     private TransactionType transactionType;
@@ -38,20 +38,20 @@ public class Transaction implements Serializable {
         this.amount = amount;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public boolean isShared() {
-        return isShared;
+        return shared;
     }
 
-    public void setShared(boolean isShared) {
-        this.isShared = isShared;
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 
 

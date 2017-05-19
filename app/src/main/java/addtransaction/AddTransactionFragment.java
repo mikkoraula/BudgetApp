@@ -225,6 +225,9 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
             // set ispayment
             newTransaction.setPayment(isPayment);
 
+            // is shared
+            newTransaction.setShared(isShared);
+
             // set the transactionType
             newTransaction.setTransactionType(transactionTypePickAdapter.getCurrentType());
 
