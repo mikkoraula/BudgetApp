@@ -79,7 +79,6 @@ public class TabFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        System.out.println("RESUMED TABFRAGMENT");
         initMonths(null);
     }
 
@@ -92,17 +91,17 @@ public class TabFragment extends Fragment {
                 (getChildFragmentManager(), numberOfMonths, payments, incomes);
         monthlyViewPager.setAdapter(monthlyPagerAdapter);
 
-        System.out.println(" ");
-        System.out.println(" ");
+        //System.out.println(" ");
+        //System.out.println(" ");
 
         // get the month position from shared preferences
         // this is to make sure that when the user changes from tabs (shared, personal both)
         // the month stays the same and not resetting
         int currentMonthPosition = SharedPreferencesHandler.getInt(
                 getContext(), SharedPreferencesSettings.MONTH_TAB_FRAGMENT_KEY, SharedPreferencesSettings.MONTH_TAB_FRAGMENT_CURRENT_MONTH_INT);
-        System.out.println("set currentPosition for monthlyViewPager: "+  currentMonthPosition);
+        //System.out.println("set currentPosition for monthlyViewPager: "+  currentMonthPosition);
         monthlyViewPager.setCurrentItem(currentMonthPosition);
-        System.out.println("currentItem after setting it: " + monthlyViewPager.getCurrentItem());
+        //System.out.println("currentItem after setting it: " + monthlyViewPager.getCurrentItem());
 
         monthlyViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

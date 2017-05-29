@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.example.mikko.budgetapplication.R;
 
@@ -20,14 +19,14 @@ public class TransactionViewHolders extends RecyclerView.ViewHolder implements V
 
     private Transaction transaction;
 
-    public TransactionItemButton transactionAmount;
+    public Button transactionAmount;
     private Context context;
 
 
     public TransactionViewHolders(View itemView, Context context) {
         super(itemView);
         this.context = context;
-        transactionAmount = (TransactionItemButton) itemView.findViewById(R.id.transaction_item_button);
+        transactionAmount = (Button) itemView.findViewById(R.id.transaction_item_button);
         //authorName = (TextView) itemView.findViewById(R.id.AuthorName);
 
         transactionAmount.setOnClickListener(this);

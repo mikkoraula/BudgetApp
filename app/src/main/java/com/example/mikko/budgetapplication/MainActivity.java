@@ -13,14 +13,24 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import addtransaction.AddTransactionActivity;
 import addtransaction.AddTransactionTypeActivity;
+import datahandler.BackendlessDataLoader;
+import datahandler.BackendlessDataLoaderInterface;
 import payment.history.ShowHistoryActivity;
 import payment.history.ViewTransactionActivity;
 
+
+/**
+ * The Main menu of the app
+ *
+ */
 public class MainActivity extends MyBaseActivity implements LoginHandlerInterface {
 
     public static final String PREFERENCE_KEY_LOGIN_CREDENTIALS = "loginpreferences";
@@ -128,6 +138,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         startActivity(addIncomeIntent);
     }
 
+    // give ShowHistory the userList
     public void seeHistory(View view) {
         Intent showHistoryIntent = new Intent(this, ShowHistoryActivity.class);
         startActivity(showHistoryIntent);
@@ -157,5 +168,6 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         finish();
         System.exit(0);
     }
+
 }
 

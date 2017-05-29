@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/add_transaction_root_relative_layout"
     android:layout_margin="@dimen/activity_vertical_margin">
 
@@ -15,6 +19,7 @@
         android:layout_marginBottom="@dimen/view_vertical_margin"
         android:id="@+id/add_transaction_grid_layout">
 
+        <!-- The Expense amount -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +32,7 @@
             android:ems="10"
             android:id="@+id/add_transaction_expense_field" />
 
+        <!-- Location field -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +44,32 @@
             android:inputType="text"
             android:ems="10"
             android:id="@+id/add_transaction_location_field" />
+
     </GridLayout>
+
+    <!-- additional information field -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_transaction_grid_layout"
+        android:id="@+id/add_transaction_additional_information_text_view"
+        android:layout_centerHorizontal="true"
+        android:text="@string/label_additional_information"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:lines="2"
+        android:gravity="top|left"
+        android:ems="10"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/add_transaction_additional_information_text_view"
+        android:id="@+id/add_transaction_additional_information_field"
+        android:background="@drawable/rectangle_text_edit"
+        android:padding="@dimen/appbar_padding_top" />
+
+
 
     <!-- Empty layout (0x0 dp) centered horizontally -->
     <Space android:id="@+id/add_transaction_view_dummy"
@@ -47,33 +78,75 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"/>
 
-    <ToggleButton
+    <!-- shared/personal -->
+    <addtransaction.ChoicePickerButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOn="@string/label_payment_personal"
         android:textOff="@string/label_payment_personal"
+        android:layout_below="@+id/add_transaction_additional_information_field"
+        android:layout_toRightOf="@+id/add_transaction_view_dummy"
         android:id="@+id/add_transaction_toggle_personal"
-        android:layout_below="@+id/add_transaction_grid_layout"
-        android:layout_toLeftOf="@+id/add_transaction_view_dummy"
         android:background="@color/colorWhite"
-        android:foreground="@drawable/transaction_type_selector" />
-
-    <ToggleButton
+        android:foreground="@drawable/transaction_type_selector"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        />
+    <addtransaction.ChoicePickerButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOn="@string/label_payment_shared"
         android:textOff="@string/label_payment_shared"
         android:id="@+id/add_transaction_toggle_shared"
-        android:layout_toRightOf="@id/add_transaction_view_dummy"
-        android:layout_below="@+id/add_transaction_grid_layout"
+        android:layout_toLeftOf="@+id/add_transaction_view_dummy"
+        android:layout_below="@+id/add_transaction_additional_information_field"
         android:background="@color/colorWhite"
-        android:foreground="@drawable/transaction_type_selector"/>
+        android:foreground="@drawable/transaction_type_selector"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        />
 
+
+    <!-- None/monthly/yearly -->
+    <addtransaction.ChoicePickerButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/label_transaction_none"
+        android:textOff="@string/label_transaction_none"
+        android:layout_below="@+id/add_transaction_toggle_personal"
+        android:layout_toLeftOf="@+id/add_transaction_toggle_monthly"
+        android:id="@+id/add_transaction_toggle_none"
+        android:background="@color/colorWhite"
+        android:foreground="@drawable/transaction_type_selector" />
+    <addtransaction.ChoicePickerButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/label_transaction_monthly"
+        android:textOff="@string/label_transaction_monthly"
+        android:layout_below="@+id/add_transaction_toggle_personal"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/add_transaction_toggle_monthly"
+        android:background="@color/colorWhite"
+        android:foreground="@drawable/transaction_type_selector" />
+    <addtransaction.ChoicePickerButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/label_transaction_yearly"
+        android:textOff="@string/label_transaction_yearly"
+        android:layout_below="@+id/add_transaction_toggle_personal"
+        android:layout_toRightOf="@+id/add_transaction_toggle_monthly"
+        android:id="@+id/add_transaction_toggle_yearly"
+        android:background="@color/colorWhite"
+        android:foreground="@drawable/transaction_type_selector" />
+
+
+
+    <!-- transaction type -->
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/add_transaction_type_picker_grid_layout"
-        android:layout_below="@id/add_transaction_toggle_personal"
+        android:layout_below="@id/add_transaction_toggle_monthly"
         android:layout_centerHorizontal="true"
         android:columnWidth="@dimen/transaction_type_picker_square_size"
         android:numColumns="auto_fit"
@@ -84,6 +157,7 @@
         android:listSelector="#00000000"
         android:isScrollContainer="false"/>
 
+    <!-- save button -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,3 +168,4 @@
 
 
 </RelativeLayout>
+</ScrollView>

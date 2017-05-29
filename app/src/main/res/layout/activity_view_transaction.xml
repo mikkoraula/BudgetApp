@@ -57,18 +57,39 @@
                     android:layout_marginTop="10dip"
                     android:text="Owner" />
 
+                <!-- show additional information about the transaction -->
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/view_transaction_additional_information"
+                    android:layout_marginTop="10dip"
+                    android:text="Extra" />
+
             </LinearLayout>
 
+            <!-- buttons: left one just closes this activity
+                        right one removes this transaction -->
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_close"
                 android:id="@+id/button_popup_view_transaction_cancel"
-                android:onClick="closeActivity"
+                android:onClick="closeActivityClicked"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/activity_vertical_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove"
+                android:id="@+id/button_popup_view_transaction_remove"
+                android:onClick="removeTransactionClicked"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/activity_vertical_margin" />
 
 
 

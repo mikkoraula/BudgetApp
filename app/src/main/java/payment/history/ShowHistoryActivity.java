@@ -1,5 +1,6 @@
 package payment.history;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,12 +12,15 @@ import android.widget.Toast;
 import data.Transaction;
 import datahandler.BackendlessDataLoaderInterface;
 
+import com.backendless.BackendlessUser;
 import com.example.mikko.budgetapplication.DateHandler;
 import com.example.mikko.budgetapplication.DialogHelper;
+import com.example.mikko.budgetapplication.MainActivity;
 import com.example.mikko.budgetapplication.MyBaseActivity;
 import com.example.mikko.budgetapplication.R;
 import com.example.mikko.budgetapplication.SharedPreferencesHandler;
 import com.example.mikko.budgetapplication.SharedPreferencesSettings;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +39,6 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
     private ViewPager viewPager;
     private MyPagerAdapter myPagerAdapter;
 
-    private int loadCounter;
     private int oldMonthPosition;
 
     private Date currentLoadDate;
@@ -45,6 +48,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         setContentView(R.layout.activity_show_history);
         super.onCreate(savedInstanceState);
         setHelpString(R.string.help_show_history);
+
 
         // load transactions from backend and internal storage
         loadTransactions();
@@ -95,7 +99,6 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         System.out.println(" ");
         payments = new ArrayList<>();
         incomes = new ArrayList<>();
-        loadCounter = 0;
 
         currentLoadDate = new Date();
         long lastBackendlessLoadInMillis = SharedPreferencesHandler.getLong(
@@ -118,7 +121,6 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
 
     @Override
     public void loadSuccessful(ArrayList<Transaction> loadedTransactionList) {
-        loadCounter++;
         if (loadedTransactionList.size() == 0) {
             //System.out.println("didn't find any of that transaction in backendlessload");
         }
@@ -152,6 +154,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         System.out.println(" ");
 
         // initiate the pageradapter to get things rolling now that the transactions have been loaded
+
         myPagerAdapter = new MyPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount(), payments, incomes, this);
         viewPager.setAdapter(myPagerAdapter);
@@ -162,4 +165,26 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         System.out.println("loading of Transactions failed");
     }
 
+    // removes the parameter transaction from list and saves the new list in to the internal storage
+    private void removeTransaction(Transaction transactionToRemove) {
+        System.out.println("got to removeTransaction");
+        if (transactionToRemove.isPayment()) {
+            System.out.println("want to remove payment");
+            System.out.println(payments.remove(transactionToRemove));
+            System.out.println("over and out");
+            // immediately save the new payments to internal
+            TransactionDataHandler.saveTransactions(
+                    this, payments, SharedPreferencesSettings.PAYMENTS_KEY_STRING);
+        } else {
+            System.out.println("want to remove income");
+            System.out.println(incomes.remove(transactionToRemove));
+            System.out.println("over and out");
+            // immediately save the new incomes to internal
+            TransactionDataHandler.saveTransactions(
+                    this, incomes, SharedPreferencesSettings.INCOMES_KEY_STRING);
+        }
+        // then reload the activity so that the removed transaction doesn't show up anymore
+        finish();
+        startActivity(getIntent());
+    }
 }

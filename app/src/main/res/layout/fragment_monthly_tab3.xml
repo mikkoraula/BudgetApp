@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-     <!-- header -->
+     <!-- Date header -->
     <TextView
         android:id="@+id/monthly_tab_fragment_header_text_view"
         android:layout_width="wrap_content"
@@ -14,11 +14,34 @@
         android:text="January 2001"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
+    <!-- add Headers for payment and income -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_below="@id/monthly_tab_fragment_header_text_view"
+        android:id="@+id/monthly_tab_fragment_linear_layout_header">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:text="@string/label_payment"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:text="@string/label_income"/>
+    </LinearLayout>
+
+    <!-- the actual scroll view that has all the transactions inside it -->
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/monthly_tab_fragment_header_text_view" >
+        android:layout_below="@id/monthly_tab_fragment_linear_layout_header" >
 
 
     <LinearLayout

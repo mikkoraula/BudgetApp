@@ -3,4 +3,30 @@ In actual use, how quickly does the SharedPreferences become too small for all t
 
 
 TODO
-when clicking a transaction in showhistory, it should open a similar activity as the new Transaction type creator
+- further develop the viewTransaction
+	- show more information in general??
+
+*******
+
+important and bigger thing:
+- a repeatable transaction
+	- similar choice to the shared/personal
+		- weekly/monthly/none
+	- needs functionality where when the app is launched the app will check dates and check if repeatable transaction deadlines have been passed
+		- or maybe it adds transactions to future ? or something
+
+
+
+Additional features
+- add night mode/themes?
+- add language support?
+
+
+changelog
+
+You can now add additional information about a transaction (a string)
+Added base for the repetition transactions (UI side)
+View Transaction now shows proper date of the transaction and shows owner's name instead of id
+The transaction now keeps track of the owner's name as a string
+	- this simplifies viewing transaction information quite a bit
+

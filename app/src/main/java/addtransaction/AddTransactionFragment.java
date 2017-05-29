@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ToggleButton;
 
+import com.backendless.Backendless;
 import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
@@ -47,10 +48,17 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
     // (= which tab the user has open)
     private boolean isPayment;
 
-    private ToggleButton buttonPersonal;
-    private ToggleButton buttonShared;
+    // as a string none, monthly or yearly
+    // none default
+    private String repetition;
+
+    private ChoicePickerButton[] visibilityButtons;
+    private ChoicePickerButton[] repetitionButtons;
+    //private ChoicePickerButton buttonPersonal, buttonShared;
+    //private ChoicePickerButton buttonNone, buttonMonthly, buttonYearly;
     private EditText expenseAmountEditText;
     private EditText locationText;
+    private EditText additionalInformationText;
 
 
     private ArrayList<TransactionType> transactionTypes;
@@ -89,23 +97,51 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
 
 
 
-        // find the fields and buttons
+        // find the fields
         expenseAmountEditText = (EditText) view.findViewById(R.id.add_transaction_expense_field);
         locationText = (EditText) view.findViewById(R.id.add_transaction_location_field);
-        buttonPersonal = (ToggleButton) view.findViewById(R.id.add_transaction_toggle_personal);
-        buttonShared = (ToggleButton) view.findViewById(R.id.add_transaction_toggle_shared);
+        additionalInformationText = (EditText) view.findViewById(R.id.add_transaction_additional_information_field);
+
+        // init all the toggle buttons
+        // they are added to their own lists and each button has a label included in them
+        // this label is what is used to distinguish them from each other when they are clicked
+
+        // visibility
+        visibilityButtons = new ChoicePickerButton[2];
+        visibilityButtons[0] = (ChoicePickerButton) view.findViewById(R.id.add_transaction_toggle_personal);
+        visibilityButtons[0].setButtonLabel("personal");
+        visibilityButtons[1] = (ChoicePickerButton) view.findViewById(R.id.add_transaction_toggle_shared);
+        visibilityButtons[1].setButtonLabel("shared");
+        for (ChoicePickerButton visibilityButton : visibilityButtons) {
+            visibilityButton.setOnClickListener(this);
+        }
+        // set the transaction visibility to shared as default
+        setVisibility("shared");
+
+        // repetition
+        repetitionButtons = new ChoicePickerButton[3];
+        repetitionButtons[0] = (ChoicePickerButton) view.findViewById(R.id.add_transaction_toggle_none);
+        repetitionButtons[0].setButtonLabel("none");
+        repetitionButtons[1] = (ChoicePickerButton) view.findViewById(R.id.add_transaction_toggle_monthly);
+        repetitionButtons[1].setButtonLabel("monthly");
+        repetitionButtons[2] = (ChoicePickerButton) view.findViewById(R.id.add_transaction_toggle_yearly);
+        repetitionButtons[2].setButtonLabel("yearly");
+        for (ChoicePickerButton repetitionButton : repetitionButtons) {
+            repetitionButton.setOnClickListener(this);
+        }
+        // set the repetition to none as default
+        setRepetition("none");
+
+
 
         transactionTypeGridView = (GridView) view.findViewById(R.id.add_transaction_type_picker_grid_layout);
         transactionTypeGridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
         refreshTransactionTypes();
         registerForContextMenu(transactionTypeGridView);
 
-        // set the transaction visibility to shared as default
-        setVisibility("shared");
 
-        // set onClicklistener to the buttons
-        buttonPersonal.setOnClickListener(this);
-        buttonShared.setOnClickListener(this);
+
+
 
         view.findViewById(R.id.button_save_transaction).setOnClickListener(this);
 
@@ -126,29 +162,35 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
      */
 
     public void setVisibility(String visibility) {
-        if (visibility.equals("shared")) {
-            buttonPersonal.setChecked(false);
-            buttonPersonal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-            buttonPersonal.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBlack));
-            buttonShared.setChecked(true);
-            buttonShared.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            buttonShared.setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-            isShared = true;
+        changeToggleButtons(visibilityButtons, visibility);
 
-        } else if (visibility.equals("personal")){
-            buttonPersonal.setChecked(true);
-            buttonPersonal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            buttonPersonal.setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-            buttonShared.setChecked(false);
-            buttonShared.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-            buttonShared.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBlack));
-            isShared = false;
+        isShared = visibility.equals("shared");
 
-        } else {
-            Log.d("debug", "bug in set visibility method in AddPaymentActivity");
-        }
     }
 
+    /*****************************************************************************
+     *
+     * none/monthly/yearly
+     */
+
+    public void setRepetition(String repetition) {
+        changeToggleButtons(repetitionButtons, repetition);
+        this.repetition = repetition;
+    }
+
+    private void changeToggleButtons(ChoicePickerButton[] buttons, String checkedButton) {
+        for (ChoicePickerButton button : buttons) {
+            if (button.getButtonLabel().equals(checkedButton)) {
+                button.setChecked(true);
+                button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                button.setTextColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+            } else {
+                button.setChecked(false);
+                button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+                button.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBlack));
+            }
+        }
+    }
 
     /***********************************************
      *  On Click
@@ -162,6 +204,15 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.add_transaction_toggle_shared:
                 setVisibility("shared");
+                break;
+            case R.id.add_transaction_toggle_none:
+                setRepetition("none");
+                break;
+            case R.id.add_transaction_toggle_monthly:
+                setRepetition("monthly");
+                break;
+            case R.id.add_transaction_toggle_yearly:
+                setRepetition("yearly");
                 break;
             case R.id.add_transaction_type_button:
                 addTransactionType();
@@ -221,6 +272,12 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
 
             // set the transaction amount
             newTransaction.setAmount(Double.parseDouble(expenseAmountEditText.getText().toString()));
+
+            // set additional information
+            newTransaction.setAdditionalInfo(additionalInformationText.getText().toString());
+
+            // set the owner Name from ownerid
+            newTransaction.setOwnerName(Backendless.UserService.CurrentUser().getProperties().get("name").toString());
 
             // set ispayment
             newTransaction.setPayment(isPayment);

@@ -1,6 +1,7 @@
 package payment.history;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mikko.budgetapplication.R;
 
@@ -21,11 +22,14 @@ import java.util.ArrayList;
 import data.Transaction;
 import data.TransactionData;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Mikko on 2.8.2016.
  */
 public class MonthlyTabFragment extends Fragment {
     public static final String VIEW_TRANSACTION_CODE = "1";
+    public static final int TRANSACTION_REMOVED_CODE = 2;
 
     private String tabName = "";
     private TextView textView;
@@ -126,14 +130,21 @@ public class MonthlyTabFragment extends Fragment {
      */
     private Button createTransactionItemButton(final Transaction transaction) {
         // create button
-        Button transactionItemButton = new TransactionItemButton(getContext());
+        Button transactionItemButton = new Button(getContext());
 
         // set the text
         transactionItemButton.setText(String.valueOf(transaction.getAmount()));
 
-        // set the background color to match the transactiontype's color
+        // set the background resource from drawable xml file
+        // this sets some style to the buttons (border)
+        transactionItemButton.setBackgroundResource(R.drawable.transaction_item_button);
+        // now we need to change the background color of this resource to match the transaction type
         int colorId = transaction.getTransactionType().getColorId();
-        transactionItemButton.setBackgroundColor(ContextCompat.getColor(getContext(), colorId));
+        GradientDrawable backgroundShape = (GradientDrawable) transactionItemButton.getBackground().getCurrent();
+        // this mutate() is required to differentiate all the different transactions to have separate shapes as resources.
+        backgroundShape.mutate();
+        backgroundShape.setColor(ContextCompat.getColor(getContext(), colorId));
+        //transactionItemButton.setBackgroundColor(ContextCompat.getColor(getContext(), colorId));
 
         // set the size to match the transaction amount
         transactionItemButton.setMinHeight(0);
@@ -147,7 +158,10 @@ public class MonthlyTabFragment extends Fragment {
             public void onClick(View v) {
                 Intent viewTransaction = new Intent(getContext(), ViewTransactionActivity.class);
                 viewTransaction.putExtra(VIEW_TRANSACTION_CODE, transaction);
-                getActivity().startActivity(viewTransaction);
+                // we expect the viewTransaction to respond when finished
+                // we catch this response in the ShowHistory class (the context of this Activity)
+                // so the Showhistory class's method onActivityResult catches this
+                getActivity().startActivityForResult(viewTransaction, TRANSACTION_REMOVED_CODE);
             }
         });
 
@@ -155,36 +169,4 @@ public class MonthlyTabFragment extends Fragment {
     }
 
 
-    private void initRecyclerView(View view) {
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
-                StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-
-
-        HistoryRecyclerViewAdapter rcAdapter = new HistoryRecyclerViewAdapter(
-                getActivity(), payments, incomes);
-        recyclerView.setAdapter(rcAdapter);
-
-        /*
-        // payments
-        paymentsListView = (ListView) view.findViewById(R.id.monthly_tab_fragment_payments_list_view);
-        paymentItemAdapter = new TransactionItemAdapter(
-                getActivity(), R.layout.transaction_item, payments, payments.size() - 1
-        );
-        paymentsListView.setAdapter(paymentItemAdapter);
-
-        // incomes
-        incomesListView = (ListView) view.findViewById(R.id.monthly_tab_fragment_incomes_list_view);
-        incomeItemAdapter = new TransactionItemAdapter(
-                getActivity(), R.layout.transaction_item, incomes, incomes.size() - 1
-        );
-        incomesListView.setAdapter(incomeItemAdapter);
-
-        recyclerViewInitiated = true;
-        */
-    }
 }

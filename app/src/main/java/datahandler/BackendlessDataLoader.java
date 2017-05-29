@@ -5,7 +5,9 @@ import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
+import com.backendless.BackendlessUser;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.BackendlessDataQuery;
 import com.example.mikko.budgetapplication.LoadingCallback;
 import com.example.mikko.budgetapplication.R;
 
@@ -43,6 +45,51 @@ public class BackendlessDataLoader {
 
                 // is this the best way to do this?
                 ((BackendlessDataLoaderInterface) context).loadSuccessful(transactionTypes);
+            }
+
+            @Override
+            public void handleFault( BackendlessFault fault ) {
+                super.handleFault(fault);
+                ((BackendlessDataSaverInterface) context).saveFailed();
+            }
+        };
+    }
+
+
+    public static void getUser(Context context, String userId) {
+        /*
+        String whereClause = "objectId == " + userId;
+        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        dataQuery.setWhereClause(whereClause);
+        // page size is 10 by default
+
+        LoadingCallback<BackendlessUser> callback = createTransactionLoadingCallback(context);
+        callback.showLoading();
+        Backendless.Data.of( BackendlessUser.class ).find(dataQuery, callback);
+        */
+    }
+
+    public static void loadUsers(Context context) {
+        LoadingCallback<BackendlessCollection<BackendlessUser>> callback = createUserLoadingCallback(context);
+        callback.showLoading();
+        Backendless.Data.of( BackendlessUser.class ).find(callback);
+    }
+
+    private static LoadingCallback<BackendlessCollection<BackendlessUser>> createUserLoadingCallback(final Context context) {
+        return new LoadingCallback<BackendlessCollection<BackendlessUser>>(context, context.getString(R.string.loading_empty)) {
+            @Override
+            public void handleResponse( BackendlessCollection<BackendlessUser> userCollection) {
+                super.handleResponse(userCollection);
+
+                ArrayList<BackendlessUser> users = new ArrayList<>();
+                Iterator<BackendlessUser> iterator = userCollection.getCurrentPage().iterator();
+                while( iterator.hasNext() )
+                {
+                    BackendlessUser user = iterator.next();
+                    users.add(user);
+                }
+
+                ((BackendlessDataLoaderInterface) context).loadSuccessful(users);
             }
 
             @Override

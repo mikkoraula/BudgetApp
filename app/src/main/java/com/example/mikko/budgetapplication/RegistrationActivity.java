@@ -131,6 +131,7 @@ public class RegistrationActivity extends MyBaseActivity {
             {
                 super.handleResponse( registeredUser );
                 Toast.makeText( RegistrationActivity.this, String.format( getString( R.string.info_registered_success ), registeredUser.getObjectId() ), Toast.LENGTH_LONG ).show();
+                finish();
             }
         };
     }

@@ -5,7 +5,10 @@ import java.io.Serializable;
 /**
  * A transaction holds the following attributes:
  * - amount             the transaction amount
+ * - objectId
  * - ownerId              who created the transaction
+ * - ownerName          used to simplify transaction information showing
+ * - additionalInfo             additional information about the transaction
  * - shared           if the transaction is shared with everyone(true) or private(false)
  * - payment          if the transaction is a payment or an income
  * - dateInMillis       Date when created in milliseconds
@@ -15,12 +18,30 @@ import java.io.Serializable;
  */
 public class Transaction implements Serializable {
     private double amount;
+    // this has to be in so that you can remove transactions from backendless
+    private String objectId;
     private String ownerId;
+    private String ownerName;
+    // additional information
+    private String additionalInfo;
     private boolean shared;
     private boolean payment;
     private long dateInMilliseconds;
     private TransactionType transactionType;
 
+
+    // override the equals method so we can remove transactions from an arraylsit more easily
+    // basically just check if the transactions have same objectId
+    // the objectId is automatically uniquely determined by Backendless
+    @Override
+    public boolean equals(Object o) {
+        if (o != null)
+            if (o instanceof Transaction)
+                if (objectId != null)
+                    if (((Transaction) o).getObjectId().equals(objectId))
+                        return true;
+        return false;
+    }
 
     public TransactionType getTransactionType() {
         return transactionType;
@@ -69,5 +90,29 @@ public class Transaction implements Serializable {
 
     public void setPayment(boolean payment) {
         this.payment = payment;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 }
