@@ -8,12 +8,13 @@
     <color name="colorAccentTransparent">#88FF4081</color>
 
     <color name="colorGrey">#AEAEAE</color>
-    <color name="colorPink">#f6546a</color>
-    <color name="colorYellow">#F6CC2E</color>
-    <color name="colorCyan">#11b6ab</color>
-    <color name="colorLime">#14DB2B</color>
+    <color name="colorPink">#F2AEBA</color>
+    <color name="colorYellow">#FFEE88</color>
+    <color name="colorBlue">#8DBECE</color>
+    <color name="colorGreen">#BCE6B2</color>
     <color name="colorOrange">#FC6900</color>
-    <color name="colorPurple">#B900FC</color>
+    <color name="colorPurple">#BDA8E5</color>
+    <color name="colorBrown">#C6ABAE</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorAlphaBlack">#44000000</color>

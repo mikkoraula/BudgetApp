@@ -3,8 +3,8 @@ package payment.history;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.SharedPreferencesHandler;
-import com.example.mikko.budgetapplication.SharedPreferencesSettings;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class TransactionDataHandler {
 
     public static ArrayList<Transaction> loadTransactions(Context context, String key) {
         String jsonString = SharedPreferencesHandler.getString(
-                context, SharedPreferencesSettings.TRANSACTIONS_KEY, key);
+                context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY, key);
 
         Gson gson = new Gson();
         TransactionData loadedData = gson.fromJson(jsonString, TransactionData.class);
@@ -47,7 +47,7 @@ public class TransactionDataHandler {
         String jsonString = gson.toJson(transactionData);
 
         SharedPreferences.Editor editor = SharedPreferencesHandler.getEditor(
-                context, SharedPreferencesSettings.TRANSACTIONS_KEY);
+                context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY);
         editor.putString(key, jsonString);
         editor.apply();
     }

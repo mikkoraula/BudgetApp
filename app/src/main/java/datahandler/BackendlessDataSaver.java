@@ -31,7 +31,7 @@ public class BackendlessDataSaver {
     }
 
     private static LoadingCallback<Object> createSavingCallback(final Context context) {
-        return new LoadingCallback<Object>(context, context.getString(R.string.loading_empty)) {
+        return new LoadingCallback<Object>(context, "Saving the new Transaction...") {
             @Override
             public void handleResponse( Object response ) {
                 super.handleResponse(response);

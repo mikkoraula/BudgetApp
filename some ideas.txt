@@ -3,8 +3,12 @@ In actual use, how quickly does the SharedPreferences become too small for all t
 
 
 TODO
-- further develop the viewTransaction
-	- show more information in general??
+- show statistics
+	- most important is showing who owes who each month
+	- monthly tab
+
+	- positive or negative income (monthly)
+	- 
 
 *******
 
@@ -22,11 +26,19 @@ Additional features
 - add language support?
 
 
+*********************
+UI planning
+
+Menu buttons:
+- add transaciton?
+- settings?
+- show history
+- show stats
+
+***************************
 changelog
 
-You can now add additional information about a transaction (a string)
-Added base for the repetition transactions (UI side)
-View Transaction now shows proper date of the transaction and shows owner's name instead of id
-The transaction now keeps track of the owner's name as a string
-	- this simplifies viewing transaction information quite a bit
+- changed the look of the main menu
+
+
 

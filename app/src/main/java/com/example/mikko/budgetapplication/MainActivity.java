@@ -25,6 +25,7 @@ import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
 import payment.history.ShowHistoryActivity;
 import payment.history.ViewTransactionActivity;
+import statistics.ShowStatisticsActivity;
 
 
 /**
@@ -132,16 +133,33 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
     }
 
 
+    /******
+     * button presses:
+     *
+     * Add Transaction
+     * Show Settings
+     * Show History
+     * Show Statistics
+     */
 
     public void addTransaction(View view) {
         Intent addIncomeIntent = new Intent(this, AddTransactionActivity.class);
         startActivity(addIncomeIntent);
     }
 
-    // give ShowHistory the userList
-    public void seeHistory(View view) {
+    public void startSettings(View view) {
+        Intent startSettings = new Intent(this, SettingsActivity.class);
+        startActivity(startSettings);
+    }
+
+    public void showHistory(View view) {
         Intent showHistoryIntent = new Intent(this, ShowHistoryActivity.class);
         startActivity(showHistoryIntent);
+    }
+
+    public void showStatistics(View view) {
+        Intent showStatisticsIntent = new Intent(this, ShowStatisticsActivity.class);
+        startActivity(showStatisticsIntent);
     }
 
     /***************************************

@@ -69,12 +69,12 @@ public class AddTransactionTypeActivity extends AppCompatActivity implements Bac
 
     private void initColors() {
         colorList = new ArrayList<>();
-        addColorToList(R.color.colorCyan);
+        addColorToList(R.color.colorBlue);
         addColorToList(R.color.colorPink);
         addColorToList(R.color.colorYellow);
-        addColorToList(R.color.colorLime);
+        addColorToList(R.color.colorGreen);
         addColorToList(R.color.colorPurple);
-        addColorToList(R.color.colorOrange);
+        addColorToList(R.color.colorBrown);
     }
 
     // masks the color into a transaction type

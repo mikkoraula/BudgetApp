@@ -6,6 +6,7 @@
     <dimen name="header_margin">64dp</dimen>
     <dimen name="view_horizontal_margin">8dp</dimen>
     <dimen name="view_vertical_margin">8dp</dimen>
+    <dimen name="main_menu_button_margin">4dp</dimen>
 
     <dimen name="transaction_type_picker_square_size">55dp</dimen>
     <dimen name="transaction_list_view_item_width">128dp</dimen>

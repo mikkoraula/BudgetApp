@@ -25,7 +25,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="25b23de70f3671ae1c54cb9891fc38b13b33c973">
+        sha1="6258a78969fbd15d75133ce4fa8e3aaded7c5e68">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b34b2b509f92d79ceac7a84078f3ed0c1b614f92\classes.dex" />
     </item>
     <item
@@ -61,7 +61,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="a6ebd40dd33393ad76122cd8b11c1f24ba838e34">
+        sha1="32bd84efa64772cf87786473c3cdb54b7fa33742">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_6a1cc6c62cea4bcc2bf5728b6e5d5dcacddb57fd\classes.dex" />
     </item>
     <item

@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.mikko.budgetapplication.ConstantVariableSettings;
+
 import java.util.ArrayList;
 
 import data.Transaction;
@@ -18,6 +20,7 @@ import data.TransactionData;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
+    private int startingMonth;
 
     private ArrayList<Transaction> payments;
     private ArrayList<Transaction> incomes;
@@ -25,10 +28,11 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
 
 
-    public MyPagerAdapter(FragmentManager fm, int NumOfTabs, ArrayList<Transaction> payments, ArrayList<Transaction> incomes, Context context) {
+    public MyPagerAdapter(FragmentManager fm, int NumOfTabs, ArrayList<Transaction> payments, ArrayList<Transaction> incomes, Context context, int startingMonth) {
         super(fm);
         this.context = context;
         this.mNumOfTabs = NumOfTabs;
+        this.startingMonth = startingMonth;
         this.payments = new ArrayList<>();
         for (Transaction payment : payments) {
             this.payments.add(payment);
@@ -44,7 +48,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         // for now just a hard number of months
-        int numberOfMonths = 14;
+        int numberOfMonths = ConstantVariableSettings.NUMBER_OF_MONTHS;
         boolean isShared;
 
         TransactionData paymentData = new TransactionData();
@@ -54,19 +58,19 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 paymentData.setTransactionList(payments);
                 incomeData.setTransactionList(incomes);
-                return TabFragment.newInstance("first tab", numberOfMonths, paymentData, incomeData);
+                return TabFragment.newInstance("first tab", numberOfMonths, paymentData, incomeData, startingMonth);
             case 1:
                 isShared = false;
                 paymentData.setTransactionList(sortTransactions(payments, isShared));
                 incomeData.setTransactionList(sortTransactions(incomes, isShared));
-                return TabFragment.newInstance("second tab", numberOfMonths, paymentData, incomeData);
+                return TabFragment.newInstance("second tab", numberOfMonths, paymentData, incomeData, startingMonth);
             case 2:
                 isShared = true;
                 paymentData.setTransactionList(sortTransactions(payments, isShared));
                 incomeData.setTransactionList(sortTransactions(incomes, isShared));
-                return TabFragment.newInstance("third tab", numberOfMonths, paymentData, incomeData);
+                return TabFragment.newInstance("third tab", numberOfMonths, paymentData, incomeData, startingMonth);
             default:
-                return TabFragment.newInstance("manyth tab", numberOfMonths, paymentData, incomeData);
+                return TabFragment.newInstance("manyth tab", numberOfMonths, paymentData, incomeData, startingMonth);
         }
     }
 

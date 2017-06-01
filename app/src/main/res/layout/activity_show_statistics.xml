@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,27 +6,20 @@
     <include layout="@layout/app_toolbar"
         android:id="@+id/include" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/include">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/show_history_tab_layout"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/show_statistics_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:elevation="6dp"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-        <payment.history.NonSwipeableViewPager
-            android:id="@+id/show_history_pager"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@id/show_history_tab_layout" />
+            android:layout_height="fill_parent" />
 
     </RelativeLayout>
+
+
 
 
     <android.support.design.widget.FloatingActionButton
@@ -38,8 +30,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
-        android:onClick="showStatistics"
-        app:srcCompat="@drawable/fab_show_statistics" />
-
+        android:onClick="showHistory"
+        app:srcCompat="@drawable/fab_show_history" />
 
 </RelativeLayout>

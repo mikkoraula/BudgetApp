@@ -3,14 +3,8 @@ package com.example.mikko.budgetapplication;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-
-import com.backendless.Backendless;
 
 /**
  * Created by Mikko on 8.6.2016.
@@ -41,10 +35,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void deleteInternalStorageTransactions(View view) {
         SharedPreferences.Editor editor =
-                SharedPreferencesHandler.getEditor(this, SharedPreferencesSettings.TRANSACTIONS_KEY);
-        editor.putString(SharedPreferencesSettings.PAYMENTS_KEY_STRING, "");
-        editor.putString(SharedPreferencesSettings.INCOMES_KEY_STRING, "");
-        editor.putLong(SharedPreferencesSettings.LAST_BACKENDLESS_LOAD_LONG, 0);
+                SharedPreferencesHandler.getEditor(this, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY);
+        //editor.putString(ConstantVariableSettings.PAYMENTS_KEY_STRING, "");
+        //editor.putString(ConstantVariableSettings.INCOMES_KEY_STRING, "");
+        editor.putString(ConstantVariableSettings.TRANSACTIONS_KEY_STRING, "");
+        editor.putLong(ConstantVariableSettings.LAST_BACKENDLESS_LOAD_LONG, 0);
         editor.apply();
         System.out.println("Deleted payments and incomes from internal storage and resetted last load time");
 

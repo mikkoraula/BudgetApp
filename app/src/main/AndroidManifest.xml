@@ -55,6 +55,10 @@
             android:name="payment.history.ViewTransactionActivity"
             android:label="@string/title_activity_view_transaction"
             android:theme="@style/Theme.Transparent"/>
+        <activity
+            android:name="statistics.ShowStatisticsActivity"
+            android:label="@string/title_show_statistics"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

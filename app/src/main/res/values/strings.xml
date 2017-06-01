@@ -107,6 +107,7 @@
     <string name="title_activity_add_transaction">AddTransaction</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_show_statistics">Show Statistics</string>
 
 
 </resources>
