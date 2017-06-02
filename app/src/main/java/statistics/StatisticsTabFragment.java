@@ -2,15 +2,21 @@ package statistics;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mikko.budgetapplication.R;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import data.Transaction;
@@ -18,6 +24,8 @@ import data.TransactionData;
 
 /**
  * Created by Mikko on 1.6.2017.
+ *
+ * Shows stats about a single month
  */
 
 public class StatisticsTabFragment extends Fragment {
@@ -27,14 +35,7 @@ public class StatisticsTabFragment extends Fragment {
     private String tabName = "";
     private TextView textView;
 
-    private boolean recyclerViewInitiated;
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
-    /*
-    private ListView paymentsListView;
-    private ListView incomesListView;
-    private TransactionItemAdapter paymentItemAdapter;
-    private TransactionItemAdapter incomeItemAdapter;
-    */
+    private boolean statsInitiated;
 
     private ArrayList<Transaction> payments, incomes;
 
@@ -57,26 +58,21 @@ public class StatisticsTabFragment extends Fragment {
         payments = ((TransactionData) getArguments().getSerializable("monthPaymentData")).getTransactionList();
         incomes = ((TransactionData) getArguments().getSerializable("monthIncomeData")).getTransactionList();
 
-        recyclerViewInitiated = false;
+        statsInitiated = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistics_tab, container, false);
 
-        // update the header
+        // update the header to correspond the month and year
         textView = (TextView) view.findViewById(R.id.statistics_tab_fragment_header_text_view);
         textView.setText(tabName);
 
-        if (!recyclerViewInitiated) {
-            //initRecyclerView(view);
-            ((TextView) view.findViewById(R.id.statistics_tab_fragment_text_view)).setText("lelelel");
+        if (!statsInitiated) {
+            initStatistics(view, payments, incomes);
 
-
-            //initLinearLayout(view, payments, R.id.monthly_tab_fragment_payments_linear_layout);
-            //initLinearLayout(view, incomes, R.id.monthly_tab_fragment_incomes_linear_layout);
-
-            recyclerViewInitiated = true;
+            statsInitiated = true;
         }
 
         container.setTag(tabName);
@@ -84,32 +80,109 @@ public class StatisticsTabFragment extends Fragment {
         return view;
     }
 
-    public String getTabName() {
-        return tabName;
-    }
-
-    public void setTransactions(ArrayList<Transaction> payments, ArrayList<Transaction> incomes) {
-        this.payments = payments;
-        this.incomes = incomes;
-
-        //System.out.println("got " + payments.size() + " payments in MonthlyFragment: " + (getArguments().getString("someMonthTitle")));
-    }
-
-
-
 
     /**
-     * inits a transaction linear layout
-     * takes in as parameter the transactionlist (payments or incomes) and the linearlayout's id
+     *  Sets text to all the information text views:
      *
-     * Adds a TransactionItemButton for each transaction
+     *  info1: incomes total this month
+     *  info2: payments total this month
+     *
+     *  info3: total incomes - total payments       (= did you lose or gain money this month)
+     *
+     *  info4: who owes who and how much
+     *
      */
-    private void initLinearLayout(View view, ArrayList<Transaction> transactions, int layoutId) {
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(layoutId);
+    private void initStatistics(View view, ArrayList<Transaction> payments, ArrayList<Transaction> incomes) {
+        // get the information texts
+        TextView info1 = (TextView) view.findViewById(R.id.statistics_tab_fragment_info1);
+        TextView info2 = (TextView) view.findViewById(R.id.statistics_tab_fragment_info2);
+        TextView info3 = (TextView) view.findViewById(R.id.statistics_tab_fragment_info3);
+        TextView info4 = (TextView) view.findViewById(R.id.statistics_tab_fragment_info4);
 
-        for (int i = 0; i < transactions.size(); i++) {
-            //linearLayout.addView(createTransactionItemButton(transactions.get(i)));
+        /**
+         * infos 1-2
+         */
+        // calculate some helper values
+        double totalIncome = sumTransactions(incomes, "", false);
+        double totalPayments = sumTransactions(payments, "", false);
+        // set the values to the strings
+        // bold the values by using the method
+        info1.append(getStringBuilderWithBold(" " + String.valueOf(totalIncome)));
+        info2.append(getStringBuilderWithBold(" " + String.valueOf(totalPayments)));
+
+        /**
+         * info 3
+         */
+        info3.append(getStringBuilderWithBold(" " + String.valueOf(totalIncome - totalPayments)));
+
+        /**
+         * info 4
+         */
+        // fetch all the transactions that are marked "shared"
+        //ArrayList<Transaction> sharedPayments = getTransactionsWithVisibility(payments, true);
+        //ArrayList<Transaction> sharedIncomes = getTransactionsWithVisibility(incomes, true);
+        //double allShared
+
+    }
+
+    /**
+     * creates a SpannableStringBuilder from the string it gets as a parameter.
+     * This builder has a bolded style
+     *
+     * @param stringToAppend
+     * @return A string that has a bold style
+     */
+    private SpannableStringBuilder getStringBuilderWithBold(String stringToAppend) {
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder(stringToAppend);
+        StyleSpan boldStyle = new StyleSpan(android.graphics.Typeface.BOLD);
+
+        stringBuilder.setSpan(boldStyle, 0, stringToAppend.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return stringBuilder;
+    }
+
+    /**
+     * Simple method that calculates the total value of all transactions in the list it is given.
+     *
+     * @param transactions a list of transactions
+     * @param ownerName    if wants to calculate only transactions of this ownername
+     *                     if left empty, calculates every transaction
+     * @param onlyShared    if wants to calculate only the transactions that are shared
+     * @return sum of the transactions' values
+     */
+    private double sumTransactions(ArrayList<Transaction> transactions, String ownerName, boolean onlyShared) {
+        double sum = 0;
+        for (Transaction transaction : transactions) {
+            // check if the ownerName is right
+            if (ownerName.equals("") || ownerName.equals(transaction.getOwnerName())) {
+                // check if wants only shared transactions
+                if (onlyShared) {
+                    if (transaction.isShared()) {
+                        sum += transaction.getAmount();
+                    }
+                }
+                else {
+                    sum += transaction.getAmount();
+                }
+            }
         }
+        return sum;
+    }
+
+    /**
+     * returns a list of transactions that have the same visibility as given in parameter
+     *
+     * @param transactions
+     * @param shared
+     * @return
+     */
+    private ArrayList<Transaction> getTransactionsWithVisibility(ArrayList<Transaction> transactions, boolean shared) {
+        ArrayList<Transaction> newList = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.isShared() == shared) {
+                newList.add(transaction);
+            }
+        }
+        return newList;
     }
 
 }

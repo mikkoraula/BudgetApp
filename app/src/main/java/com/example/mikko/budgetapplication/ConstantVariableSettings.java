@@ -18,4 +18,7 @@ public class ConstantVariableSettings {
     // sending transaction lists across activities
     public static final String TRANSACTION_LIST_PAYMENTS = "transaction_list_payments";
     public static final String TRANSACTION_LIST_INCOMES = "transaction_list_incomes";
+
+    // send user group across activities
+    public static final String SEND_USER_GROUP_NAMES = "send_user_group";
 }

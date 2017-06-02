@@ -3,12 +3,18 @@ In actual use, how quickly does the SharedPreferences become too small for all t
 
 
 TODO
+*******
 - show statistics
 	- most important is showing who owes who each month
 	- monthly tab
 
 	- positive or negative income (monthly)
 	- 
+
+*******
+- user profiles
+	- each user can join one group
+		- can't be in multiple groups (complicated relations and who shares transactions with who etc.)
 
 *******
 
@@ -31,14 +37,17 @@ UI planning
 
 Menu buttons:
 - add transaciton?
-- settings?
+- manage repetitive transactions (is now settings) || lacks implementation and graphics etc.
 - show history
 - show stats
 
+
 ***************************
 changelog
+- Show statistics now shows some basic information about each month's transactions and their relations
+- Started on User profiles
 
-- changed the look of the main menu
+
 
 
 

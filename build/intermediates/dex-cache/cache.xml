@@ -21,21 +21,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="6258a78969fbd15d75133ce4fa8e3aaded7c5e68">
-        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b34b2b509f92d79ceac7a84078f3ed0c1b614f92\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
         sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_81dace189936ed2a2c0034bc8dadf04b3310de89\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="5ae9a3e208f8b5367ebb5f650c112d41a0137f63">
+        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b34b2b509f92d79ceac7a84078f3ed0c1b614f92\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -61,7 +61,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="32bd84efa64772cf87786473c3cdb54b7fa33742">
+        sha1="67bcb601f4e49565e39a68b9b989ed7b098940e9">
         <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_6a1cc6c62cea4bcc2bf5728b6e5d5dcacddb57fd\classes.dex" />
     </item>
     <item

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import data.TransactionType;
+import data.UserGroup;
 
 /**
  * Created by Mikko on 29.7.2016.
@@ -56,19 +57,42 @@ public class BackendlessDataLoader {
     }
 
 
-    public static void getUser(Context context, String userId) {
-        /*
-        String whereClause = "objectId == " + userId;
-        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-        dataQuery.setWhereClause(whereClause);
-        // page size is 10 by default
-
-        LoadingCallback<BackendlessUser> callback = createTransactionLoadingCallback(context);
+    public static void loadUserGroups(Context context) {
+        LoadingCallback<BackendlessCollection<UserGroup>> callback = createUserGroupLoadingCallback(context);
         callback.showLoading();
-        Backendless.Data.of( BackendlessUser.class ).find(dataQuery, callback);
-        */
+        Backendless.Data.of( UserGroup.class ).find(callback);
     }
 
+    private static LoadingCallback<BackendlessCollection<UserGroup>> createUserGroupLoadingCallback(final Context context) {
+        return new LoadingCallback<BackendlessCollection<UserGroup>>(context, context.getString(R.string.loading_user_groups)) {
+            @Override
+            public void handleResponse( BackendlessCollection<UserGroup> userCollection) {
+                super.handleResponse(userCollection);
+
+                ArrayList<UserGroup> userGroups = new ArrayList<>();
+                Iterator<UserGroup> iterator = userCollection.getCurrentPage().iterator();
+                while( iterator.hasNext() )
+                {
+                    UserGroup userGroup = iterator.next();
+                    userGroups.add(userGroup);
+                }
+
+                ((BackendlessDataLoaderInterface) context).loadSuccessful(userGroups);
+            }
+
+            @Override
+            public void handleFault( BackendlessFault fault ) {
+                super.handleFault(fault);
+                ((BackendlessDataSaverInterface) context).saveFailed();
+            }
+        };
+    }
+
+
+    /*********
+     * legacy
+     *
+     */
     public static void loadUsers(Context context) {
         LoadingCallback<BackendlessCollection<BackendlessUser>> callback = createUserLoadingCallback(context);
         callback.showLoading();

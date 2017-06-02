@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.mikko.budgetapplication.MainActivity">
+
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_help_icon"
+        android:title="@string/toolbar_help"
+        app:showAsAction="ifRoom" />
+
+     <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="99"
+        android:title="@string/toolbar_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:orderInCategory="100"
+        android:title="@string/toolbar_signout"
+        app:showAsAction="never" />
+
+
+</menu>

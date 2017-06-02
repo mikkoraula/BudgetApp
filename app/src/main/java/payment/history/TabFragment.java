@@ -93,9 +93,6 @@ public class TabFragment extends Fragment {
                 (getChildFragmentManager(), numberOfMonths, payments, incomes);
         monthlyViewPager.setAdapter(monthlyPagerAdapter);
 
-        //System.out.println(" ");
-        //System.out.println(" ");
-
         // get the month position from shared preferences
         // this is to make sure that when the user changes from tabs (shared, personal both)
         // the month stays the same and not resetting

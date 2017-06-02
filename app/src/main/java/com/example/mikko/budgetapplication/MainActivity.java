@@ -21,6 +21,7 @@ import java.util.Date;
 
 import addtransaction.AddTransactionActivity;
 import addtransaction.AddTransactionTypeActivity;
+import data.UserGroup;
 import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
 import payment.history.ShowHistoryActivity;
@@ -32,13 +33,16 @@ import statistics.ShowStatisticsActivity;
  * The Main menu of the app
  *
  */
-public class MainActivity extends MyBaseActivity implements LoginHandlerInterface {
+public class MainActivity extends MyBaseActivity implements LoginHandlerInterface, BackendlessDataLoaderInterface<UserGroup> {
 
     public static final String PREFERENCE_KEY_LOGIN_CREDENTIALS = "loginpreferences";
     public static final String PREFERENCE_KEY_LAST_LOGIN = "lastlogin";
     public static final String PREFERENCE_KEY_CURRENT_LOGIN = "currentlogin";
 
     private String userId;
+
+    // user groups are loaded at the start of the application
+    private ArrayList<UserGroup> userGroups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,9 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
         // init Backendless
         Backendless.initApp(this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, BackendSettings.VERSION);
+
+        // load the usergroups
+        BackendlessDataLoader.loadUserGroups(this);
 
         // for difficult loop reasons, we need to check if user is already logged in at this point
         if (Backendless.UserService.isValidLogin()) {
@@ -75,7 +82,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         }
     }
 
-    public boolean isLoginCredsSaved(SharedPreferences loginPreferences) {
+    private boolean isLoginCredsSaved(SharedPreferences loginPreferences) {
         // if this kind of preference is not found (=first using app)
         // then return false
         return loginPreferences.getBoolean("login_remembered", false);
@@ -124,7 +131,6 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         System.out.println("Your last login was on : " + new Date(lastLoginPreferences.getLong(userId, 0)));
         System.out.println("Your current login is on : " + new Date(currentLoginPreferences.getLong(userId, 0)));
         System.out.println(" ");
-
     }
 
     @Override
@@ -137,7 +143,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
      * button presses:
      *
      * Add Transaction
-     * Show Settings
+     * Manage repetitive transactions
      * Show History
      * Show Statistics
      */
@@ -147,9 +153,10 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         startActivity(addIncomeIntent);
     }
 
-    public void startSettings(View view) {
-        Intent startSettings = new Intent(this, SettingsActivity.class);
-        startActivity(startSettings);
+    public void manageRepetitiveTransactions(View view) {
+        //Intent startSettings = new Intent(this, ManageRepetitiveTransactionsActivity?.class);
+        //startActivity(startSettings);
+        System.out.println("unimplemented");
     }
 
     public void showHistory(View view) {
@@ -187,5 +194,14 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         System.exit(0);
     }
 
+    @Override
+    public void loadSuccessful(ArrayList<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    @Override
+    public void loadFailed() {
+        System.out.println("failed to load usergroups");
+    }
 }
 

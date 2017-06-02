@@ -5,7 +5,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mikko.budgetapplication.R;
 
@@ -21,8 +19,6 @@ import java.util.ArrayList;
 
 import data.Transaction;
 import data.TransactionData;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Mikko on 2.8.2016.
@@ -34,7 +30,7 @@ public class MonthlyTabFragment extends Fragment {
     private String tabName = "";
     private TextView textView;
 
-    private boolean recyclerViewInitiated;
+    private boolean linearLayoutsInitiated;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     /*
     private ListView paymentsListView;
@@ -64,7 +60,7 @@ public class MonthlyTabFragment extends Fragment {
         payments = ((TransactionData) getArguments().getSerializable("monthPaymentData")).getTransactionList();
         incomes = ((TransactionData) getArguments().getSerializable("monthIncomeData")).getTransactionList();
 
-        recyclerViewInitiated = false;
+        linearLayoutsInitiated = false;
     }
 
     @Override
@@ -75,7 +71,7 @@ public class MonthlyTabFragment extends Fragment {
         textView = (TextView) view.findViewById(R.id.monthly_tab_fragment_header_text_view);
         textView.setText(tabName);
 
-        if (!recyclerViewInitiated) {
+        if (!linearLayoutsInitiated) {
             //initRecyclerView(view);
 
 
@@ -83,7 +79,7 @@ public class MonthlyTabFragment extends Fragment {
             initLinearLayout(view, payments, R.id.monthly_tab_fragment_payments_linear_layout);
             initLinearLayout(view, incomes, R.id.monthly_tab_fragment_incomes_linear_layout);
 
-            recyclerViewInitiated = true;
+            linearLayoutsInitiated = true;
         }
 
         container.setTag(tabName);

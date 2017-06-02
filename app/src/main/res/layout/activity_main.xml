@@ -45,9 +45,9 @@
                 android:background="@color/colorTransparent"
                 android:onClick="addTransaction" />
 
-            <!-- settings button -->
+            <!-- manage repetitive transactions button -->
             <ImageButton
-                android:src="@drawable/button_settings"
+                android:src="@drawable/button_no_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxHeight="100dp"
@@ -59,7 +59,7 @@
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 android:background="@color/colorTransparent"
-                android:onClick="startSettings" />
+                android:onClick="manageRepetitiveTransactions" />
 
             <!-- show statistics button -->
             <ImageButton

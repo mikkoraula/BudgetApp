@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorTransparent">
+
+    <!-- put a new layout inside to do paddings -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/header_margin"
+        android:layout_marginBottom="@dimen/header_margin"
+        android:background="@color/colorWhite">
+
+        <!-- another layout to do paddings around the actual popupwindow -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/view_horizontal_margin">
+
+            <!-- the header -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/view_user_group_title"
+                android:layout_marginTop="10dip"
+                android:text="View user group"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                />
+
+            <!-- the added members will be added to this linearlayout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_profile_text_view_groups_header"
+                android:id="@+id/view_user_group_linear_layout_members"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+
+
+
+            <!-- the cancel and create buttons -->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_close"
+                android:id="@+id/view_user_group_button_close"
+                android:onClick="closeActivityClicked"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/activity_vertical_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_leave_group"
+                android:id="@+id/view_user_group_button_leave"
+                android:onClick="leaveGroupClicked"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/activity_vertical_margin" />
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -59,6 +59,18 @@
             android:name="statistics.ShowStatisticsActivity"
             android:label="@string/title_show_statistics"
             android:theme="@style/AppTheme"/>
+        <activity
+            android:name="userprofile.ViewProfileActivity"
+            android:label="@string/title_view_profile"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name="userprofile.CreateUserGroupActivity"
+            android:label="@string/title_create_group"
+            android:theme="@style/Theme.Transparent"/>
+        <activity
+            android:name="userprofile.ViewUserGroupActivity"
+            android:label="@string/title_view_group"
+            android:theme="@style/Theme.Transparent"/>
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
      <!-- Date header -->
     <TextView
@@ -14,11 +14,48 @@
         android:text="January 2001"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-   <TextView
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:id="@+id/statistics_tab_fragment_text_view"
-       android:layout_below="@id/statistics_tab_fragment_header_text_view"
-       android:layout_centerHorizontal="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/statistics_tab_fragment_header_text_view"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statistics_tab_fragment_info1"
+            android:text="@string/stats_info_incomes"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statistics_tab_fragment_info2"
+            android:text="@string/stats_info_payments"
+            android:layout_below="@id/statistics_tab_fragment_info1"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <!-- Leave a margin between these textviews -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statistics_tab_fragment_info3"
+            android:text="@string/stats_info_net_income"
+            android:layout_below="@id/statistics_tab_fragment_info2"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <!-- Leave a margin between these textviews -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statistics_tab_fragment_info4"
+            android:text=""
+            android:layout_below="@id/statistics_tab_fragment_info3" />
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

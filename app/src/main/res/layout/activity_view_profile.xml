@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/app_toolbar"
+        android:id="@+id/include"/>
+
+    <!-- add a scrollview ?? -->
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/include">
+
+        <!-- Header with user's name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:id="@+id/view_profile_text_view_header"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <!-- email -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_profile_text_view_header"
+            android:id="@+id/view_profile_text_view_email" />
+
+        <!-- When the user has registered -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_profile_text_view_email"
+            android:id="@+id/view_profile_text_view_created"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <!-- add a separator line between the user and his groups -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="@color/colorGrey"
+            android:id="@+id/view_profile_view_separator"
+            android:layout_below="@id/view_profile_text_view_created"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <!-- Header for the user's group -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_profile_text_view_groups_header"
+            android:text=""
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/view_profile_view_separator"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+        <!-- user's possible group will be shown with this button
+            if the user does belong in some group
+            if the user doesn't belong in a group, this button works as a new group creator -->
+       <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_profile_text_view_groups_header"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/view_profile_button_view_or_create_group"
+            android:text="@string/button_create_group"
+            android:onClick="createOrViewGroup"/>
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
