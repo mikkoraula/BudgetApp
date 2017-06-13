@@ -117,6 +117,8 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         // if the user belongs to a group, this button works as a way to show the group's information
         else {
             Intent groupViewerIntent = new Intent(this, ViewUserGroupActivity.class);
+            // send the user group's name
+            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP_NAME, userGroup.getGroupName());
             // we want to send the activity information about the group
             // since Backendlessuser doesn't implement serializable, just send a string array of the names in the group
             ArrayList<String> usernames = new ArrayList<>();
@@ -124,7 +126,19 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
                 usernames.add(String.valueOf(backendlessUser.getProperties().get("name")));
             }
             groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP_NAMES, usernames);
-            startActivity(groupViewerIntent);
+            startActivityForResult(groupViewerIntent, ConstantVariableSettings.VIEW_USER_GROUP_RESULT);
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == ConstantVariableSettings.VIEW_USER_GROUP_RESULT) {
+            // If the result is ok, it means that the user wants to leave the group
+            if (resultCode == RESULT_OK) {
+                System.out.println("User wants to leave group.");
+            }
         }
     }
 

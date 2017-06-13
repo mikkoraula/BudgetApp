@@ -21,4 +21,7 @@ public class ConstantVariableSettings {
 
     // send user group across activities
     public static final String SEND_USER_GROUP_NAMES = "send_user_group";
+    public static final String SEND_USER_GROUP_NAME = "send_user_group_name";
+
+    public static final int VIEW_USER_GROUP_RESULT = 1;
 }

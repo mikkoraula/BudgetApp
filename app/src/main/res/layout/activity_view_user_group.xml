@@ -23,19 +23,37 @@
 
             <!-- the header -->
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/view_user_group_title"
                 android:layout_marginTop="10dip"
                 android:text="View user group"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                />
+                android:layout_centerHorizontal="true" />
+
+            <!-- Group name text view -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/view_user_group_group_name"
+                android:layout_below="@id/view_user_group_title"/>
+
+            <!-- Member names header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/view_user_group_members_title"
+                android:layout_below="@id/view_user_group_group_name"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="Members in the group"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_centerHorizontal="true" />
 
             <!-- the added members will be added to this linearlayout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/view_profile_text_view_groups_header"
+                android:layout_below="@id/view_user_group_members_title"
                 android:id="@+id/view_user_group_linear_layout_members"
                 android:orientation="vertical">
 
