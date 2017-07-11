@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/view_profile_text_view_groups_header"
-            android:text=""
+            android:text="@string/view_profile_not_in_group"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/view_profile_view_separator"
             android:textAppearance="?android:attr/textAppearanceLarge"

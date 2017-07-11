@@ -20,8 +20,10 @@ public class ConstantVariableSettings {
     public static final String TRANSACTION_LIST_INCOMES = "transaction_list_incomes";
 
     // send user group across activities
-    public static final String SEND_USER_GROUP_NAMES = "send_user_group";
-    public static final String SEND_USER_GROUP_NAME = "send_user_group_name";
+    //public static final String SEND_USER_GROUP_NAMES = "send_user_group";
+    //public static final String SEND_USER_GROUP_NAME = "send_user_group_name";
+    public static final String SEND_USER_GROUPS = "send_user_groups";
+    public static final String SEND_USER_GROUP = "send_user_group";
 
     public static final int VIEW_USER_GROUP_RESULT = 1;
 }

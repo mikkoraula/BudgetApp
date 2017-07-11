@@ -3,7 +3,6 @@ package userprofile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,19 +18,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import data.UserGroup;
-import datahandler.BackendlessDataLoader;
-import datahandler.BackendlessDataLoaderInterface;
+import data.ProcessedUserGroup;
+import data.User;
 
 /**
  * Created by Mikko on 1.6.2017.
+ *
+ * Shows information about the user's profile:
+ * - general information, such as username, email etc
+ * - user's group info, if he is in a group
  */
 
-public class ViewProfileActivity extends MyBaseActivity implements BackendlessDataLoaderInterface<UserGroup> {
+public class ViewProfileActivity extends MyBaseActivity {
 
     private BackendlessUser currentUser;
 
-    private UserGroup userGroup;
+    private ArrayList<ProcessedUserGroup> processedUserGroups;
+    // the user's current group
+    private ProcessedUserGroup userGroup;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -42,23 +46,26 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BackendlessDataLoader.loadUserGroups(this);
+        // get the usergroups from the mainactivity's intent
+        processedUserGroups = (ArrayList<ProcessedUserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
+        System.out.println("processed usergroups: " + processedUserGroups);
 
         currentUser = Backendless.UserService.CurrentUser();
 
+        // check if the user belongs to a group
+        for (ProcessedUserGroup userGroup : processedUserGroups) {
+            System.out.println("number of users: " + userGroup.getUsers().size());
+            for (User user : userGroup.getUsers()) {
+                System.out.println("comparison: " + user.getObjectId() + " vs. current user id " + currentUser.getObjectId());
+                if (user.getObjectId().equals(currentUser.getObjectId())) {
+                    this.userGroup = userGroup;
+                }
+            }
+        }
+
         initProfile();
 
-
-        // do rest when the usergroups have finished loading
-    }
-
-    // override the Options menu creation to change to a version of the menu where there is no view profile
-    // so the user can't move from view profile to view profile
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_profile, menu);
-        return true;
+        initGroup();
     }
 
     /**
@@ -86,46 +93,50 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
     /**
      * init the user's groups in the linearlayout and the header
      */
-    public void initGroup(ArrayList<UserGroup> userGroups) {
-        // set the header to correspond the current user's name
-        ((TextView) findViewById(R.id.view_profile_text_view_groups_header)).setText(
-                String.format(getString(R.string.view_profile_groups_header), currentUser.getProperties().get("name"))
-        );
+    public void initGroup() {
+        if (userGroup != null) {
+            // set the header to correspond the current user's name
+            ((TextView) findViewById(R.id.view_profile_text_view_groups_header)).setText(
+                    String.format(getString(R.string.view_profile_groups_header), currentUser.getProperties().get("name"))
+            );
+        }
 
         // go through all the user groups
-        for (UserGroup userGroup : userGroups) {
+        for (ProcessedUserGroup processedUserGroup : processedUserGroups) {
             // and their members
-            for (BackendlessUser user : userGroup.getUsers()) {
+            for (User user : processedUserGroup.getUsers()) {
                 // check if the current user is found in any of the existing groups
 
                 System.out.println("just about to check if users the same");
                 if (user.getObjectId().equals(currentUser.getObjectId())) {
-                    this.userGroup = userGroup;
+                    this.userGroup = processedUserGroup;
                     // if he is found, change the create group's button's text into the group's name
-                    ((Button) findViewById(R.id.view_profile_button_view_or_create_group)).setText(userGroup.getGroupName());
+                    ((Button) findViewById(R.id.view_profile_button_view_or_create_group)).setText(processedUserGroup.getGroupName());
                 }
             }
         }
     }
 
+    /**
+     * depending on if the user already belongs to a group or not, this button does different things
+     *
+     * if the user is not in a group, this method opens a group creator activity
+     *
+     * if the user is in a group, this method opens an overview activity for the current group
+     * @param view
+     */
     public void createOrViewGroup(View view) {
-        // if the user doesn't belong to any group, this button works as a new group creator
+        // if the user doesn't belong to any group
         if (userGroup == null) {
             Intent groupCreatorIntent = new Intent(this, CreateUserGroupActivity.class);
             startActivity(groupCreatorIntent);
         }
-        // if the user belongs to a group, this button works as a way to show the group's information
+        // if the user belongs to a group
         else {
             Intent groupViewerIntent = new Intent(this, ViewUserGroupActivity.class);
-            // send the user group's name
-            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP_NAME, userGroup.getGroupName());
             // we want to send the activity information about the group
-            // since Backendlessuser doesn't implement serializable, just send a string array of the names in the group
-            ArrayList<String> usernames = new ArrayList<>();
-            for (BackendlessUser backendlessUser : userGroup.getUsers()) {
-                usernames.add(String.valueOf(backendlessUser.getProperties().get("name")));
-            }
-            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP_NAMES, usernames);
+            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
+            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, processedUserGroups);
             startActivityForResult(groupViewerIntent, ConstantVariableSettings.VIEW_USER_GROUP_RESULT);
         }
     }
@@ -142,18 +153,4 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         }
     }
 
-    @Override
-    public void loadSuccessful(ArrayList<UserGroup> userGroups) {
-        System.out.println("wohoo");
-        System.out.println("number of usergroups: " + userGroups);
-        System.out.println("usergroup's number of users: " + userGroups.get(0).getUsers().size());
-
-        // now that usergroups are loaded, init the group part of the profile
-        initGroup(userGroups);
-    }
-
-    @Override
-    public void loadFailed() {
-        System.out.println("Loading user groups failed.");
-    }
 }

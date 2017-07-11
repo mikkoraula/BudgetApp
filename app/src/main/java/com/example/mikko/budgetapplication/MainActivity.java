@@ -5,35 +5,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import addtransaction.AddTransactionActivity;
-import addtransaction.AddTransactionTypeActivity;
-import data.UserGroup;
+import data.ProcessedUserGroup;
 import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
 import payment.history.ShowHistoryActivity;
-import payment.history.ViewTransactionActivity;
 import statistics.ShowStatisticsActivity;
+import userprofile.ViewProfileActivity;
 
 
 /**
  * The Main menu of the app
  *
  */
-public class MainActivity extends MyBaseActivity implements LoginHandlerInterface, BackendlessDataLoaderInterface<UserGroup> {
+public class MainActivity extends MyBaseActivity implements LoginHandlerInterface, BackendlessDataLoaderInterface<ProcessedUserGroup> {
 
     public static final String PREFERENCE_KEY_LOGIN_CREDENTIALS = "loginpreferences";
     public static final String PREFERENCE_KEY_LAST_LOGIN = "lastlogin";
@@ -42,7 +37,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
     private String userId;
 
     // user groups are loaded at the start of the application
-    private ArrayList<UserGroup> userGroups;
+    private ArrayList<ProcessedUserGroup> processedUserGroups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +83,33 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         return loginPreferences.getBoolean("login_remembered", false);
     }
 
+    // override the Options menu creation to change to a version of the menu where there is no view profile
+    // so the user can't move from view profile to view profile
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // create menu from BaseActivity
-        super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    // the user can move to his profile only from the main menu, so override that from mybaseactivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_view_profile) {
+            Intent viewProfileIntent = new Intent(this, ViewProfileActivity.class);
+            System.out.println("putting this usergroup to next activity_: " + processedUserGroups);
+            viewProfileIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, processedUserGroups);
+            startActivity(viewProfileIntent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
 
     public void goToLoginActivity() {
         Intent loginIntent = new Intent( this, LoginActivity.class );
@@ -195,8 +206,8 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
     }
 
     @Override
-    public void loadSuccessful(ArrayList<UserGroup> userGroups) {
-        this.userGroups = userGroups;
+    public void loadSuccessful(ArrayList<ProcessedUserGroup> processedUserGroups) {
+        this.processedUserGroups = processedUserGroups;
     }
 
     @Override

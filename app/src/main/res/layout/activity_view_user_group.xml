@@ -36,7 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/view_user_group_group_name"
-                android:layout_below="@id/view_user_group_title"/>
+                android:layout_below="@id/view_user_group_title"
+                android:layout_centerHorizontal="true"/>
 
             <!-- Member names header -->
             <TextView
@@ -51,15 +52,92 @@
 
             <!-- the added members will be added to this linearlayout -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_user_group_members_title"
                 android:id="@+id/view_user_group_linear_layout_members"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true">
 
             </LinearLayout>
 
+            <!-- adding members to the group -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_user_group_add_members"
+                android:id="@+id/view_user_group_text_view_add_members"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/view_user_group_linear_layout_members"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
+            <!-- search bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/view_user_group_linear_layout_search_bar"
+                android:layout_below="@id/view_user_group_text_view_add_members"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:padding="0dp"
+                android:background="@drawable/rectangle_text_edit">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:id="@+id/view_user_group_edit_text_search_bar"
+                    android:maxLines="1"
+                    android:inputType="textEmailAddress"
+                    android:hint="email"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Search"
+                    android:onClick="searchMembersClicked"
+                    android:layout_margin="0dp"
+                    android:background="@color/colorPrimaryTransparent"/>
+            </LinearLayout>
+
+            <!--
+                display search result in this linear layout
+                this is hidden by default and only shown once the user searches for some user
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/view_user_group_linear_layout_search_result"
+                android:layout_below="@id/view_user_group_linear_layout_search_bar"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:visibility="invisible">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/view_user_group_text_view_search_result"
+                    android:maxLines="1"
+                    android:gravity="center"
+                    android:text="hihi"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add to Group"
+                    android:onClick="addMemberClicked"
+                    android:layout_margin="0dp" />
+            </LinearLayout>
 
 
             <!-- the cancel and create buttons -->

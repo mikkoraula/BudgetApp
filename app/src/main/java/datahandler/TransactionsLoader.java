@@ -47,7 +47,7 @@ public class TransactionsLoader {
         requiredTransactionAmount = 0;
     }
 
-    public void loadTransactionsFromBackendless() {
+    public void loadTransactions() {
         System.out.println(" ");
         System.out.println(" ");
         transactions = new ArrayList<>();
@@ -62,9 +62,9 @@ public class TransactionsLoader {
 
         /*
         // load the old payments from internal storage
-        transactions = TransactionDataHandler.loadTransactionsFromBackendless(context, ConstantVariableSettings.PAYMENTS_KEY_STRING);
+        transactions = TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.PAYMENTS_KEY_STRING);
         // load the old incomes from internal storage
-        transactions.addAll(TransactionDataHandler.loadTransactionsFromBackendless(context, ConstantVariableSettings.INCOMES_KEY_STRING));
+        transactions.addAll(TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.INCOMES_KEY_STRING));
         */
         transactions = TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
         System.out.println("transactions!!!!!!!!!!!! " + transactions.size());

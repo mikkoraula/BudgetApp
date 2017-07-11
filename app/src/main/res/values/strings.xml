@@ -129,6 +129,9 @@
     <string name="title_view_profile">View Profile</string>
     <string name="title_create_group">Create Group</string>
     <string name="title_view_group">View Group</string>
+    <string name="view_profile_not_in_group">User not in a group. Click below to create a new group</string>
+    <string name="view_user_group_add_members">Add more members</string>
+    <string name="searching">Searching</string>
 
 
 </resources>

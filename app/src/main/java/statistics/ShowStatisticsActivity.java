@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.MyBaseActivity;
@@ -60,7 +59,7 @@ public class ShowStatisticsActivity extends MyBaseActivity implements Backendles
             // this will communicate back via the BackendlessDataLoaderInterface (Load successful)
             payments = new ArrayList<>();
             incomes = new ArrayList<>();
-            new TransactionsLoader(this).loadTransactionsFromBackendless();
+            new TransactionsLoader(this).loadTransactions();
         }
     }
 

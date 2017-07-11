@@ -53,9 +53,6 @@ public class MyBaseActivity extends AppCompatActivity {
         } else if (id == R.id.action_settings) {
             Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
             startActivity(startSettingsActivity);
-        } else if (id == R.id.action_view_profile) {
-            Intent startViewProfileActivity = new Intent(this, ViewProfileActivity.class);
-            startActivity(startViewProfileActivity);
         }
 
         return super.onOptionsItemSelected(item);

@@ -11,12 +11,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_view_profile"
-        android:orderInCategory="98"
-        android:title="@string/toolbar_view_profile"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="99"
         android:title="@string/toolbar_settings"

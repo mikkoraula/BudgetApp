@@ -12,10 +12,14 @@ import com.example.mikko.budgetapplication.LoadingCallback;
 import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import data.TransactionType;
+import data.User;
+import data.ProcessedUserGroup;
 import data.UserGroup;
+import userprofile.ViewUserGroupActivity;
 
 /**
  * Created by Mikko on 29.7.2016.
@@ -59,7 +63,7 @@ public class BackendlessDataLoader {
 
     public static void loadUserGroups(Context context) {
         LoadingCallback<BackendlessCollection<UserGroup>> callback = createUserGroupLoadingCallback(context);
-        callback.showLoading();
+        //callback.showLoading();
         Backendless.Data.of( UserGroup.class ).find(callback);
     }
 
@@ -69,48 +73,70 @@ public class BackendlessDataLoader {
             public void handleResponse( BackendlessCollection<UserGroup> userCollection) {
                 super.handleResponse(userCollection);
 
-                ArrayList<UserGroup> userGroups = new ArrayList<>();
+                ArrayList<ProcessedUserGroup> serializableGroups = new ArrayList<>();
                 Iterator<UserGroup> iterator = userCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() )
-                {
-                    UserGroup userGroup = iterator.next();
-                    userGroups.add(userGroup);
+                while( iterator.hasNext() ) {
+
+                    // when all the usergroups have been loaded, manually create them into serializable versions
+                    // by recreating the user objects
+                    UserGroup rawUserGroup = iterator.next();
+                    ProcessedUserGroup serializableGroup = new ProcessedUserGroup();
+                    ArrayList<User> serializableUsers = new ArrayList<>();
+                    for (BackendlessUser backendlessUser : rawUserGroup.getUsers()) {
+                        User serializableUser = new User();
+                        serializableUser.setEmail(backendlessUser.getEmail());
+                        serializableUser.setName(backendlessUser.getProperties().get("name").toString());
+                        serializableUser.setObjectId(backendlessUser.getObjectId());
+                        serializableUser.setCreated((Date) backendlessUser.getProperties().get("created"));
+                        serializableUsers.add(serializableUser);
+                    }
+                    serializableGroup.setGroupName(rawUserGroup.getGroupName());
+                    serializableGroup.setObjectId(rawUserGroup.getObjectId());
+                    serializableGroup.setUsers(serializableUsers);
+                    serializableGroups.add(serializableGroup);
                 }
 
-                ((BackendlessDataLoaderInterface) context).loadSuccessful(userGroups);
+                ((BackendlessDataLoaderInterface) context).loadSuccessful(serializableGroups);
             }
 
             @Override
             public void handleFault( BackendlessFault fault ) {
                 super.handleFault(fault);
-                ((BackendlessDataSaverInterface) context).saveFailed();
+                ((BackendlessDataLoaderInterface) context).loadFailed();
             }
         };
     }
 
-
-    /*********
-     * legacy
-     *
+    /**
+     * Queries for a user that has the same email as the keyword given in as parameter
+     * @param context
+     * @param keyword
      */
-    public static void loadUsers(Context context) {
-        LoadingCallback<BackendlessCollection<BackendlessUser>> callback = createUserLoadingCallback(context);
-        callback.showLoading();
-        Backendless.Data.of( BackendlessUser.class ).find(callback);
+    public static void searchUser(Context context, String keyword) {
+        LoadingCallback<BackendlessCollection<BackendlessUser>> searchingCallback = createUserSearchingCallback(context);
+        searchingCallback.showLoading();
+
+        //keyword = "%" + keyword + "%";
+        String whereClause = "email = '" + keyword + "'";
+        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        System.out.println("searching with the keyword: " + whereClause);
+        dataQuery.setWhereClause(whereClause);
+
+        Backendless.Persistence.of( BackendlessUser.class ).find( dataQuery, searchingCallback );
     }
 
-    private static LoadingCallback<BackendlessCollection<BackendlessUser>> createUserLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<BackendlessUser>>(context, context.getString(R.string.loading_empty)) {
+    private static LoadingCallback<BackendlessCollection<BackendlessUser>> createUserSearchingCallback(final Context context) {
+        return new LoadingCallback<BackendlessCollection<BackendlessUser>>(context, context.getString(R.string.searching)) {
             @Override
             public void handleResponse( BackendlessCollection<BackendlessUser> userCollection) {
                 super.handleResponse(userCollection);
 
                 ArrayList<BackendlessUser> users = new ArrayList<>();
                 Iterator<BackendlessUser> iterator = userCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() )
-                {
-                    BackendlessUser user = iterator.next();
-                    users.add(user);
+                while( iterator.hasNext() ) {
+                    BackendlessUser backendlessUser = iterator.next();
+
+                    users.add(backendlessUser);
                 }
 
                 ((BackendlessDataLoaderInterface) context).loadSuccessful(users);
@@ -119,9 +145,8 @@ public class BackendlessDataLoader {
             @Override
             public void handleFault( BackendlessFault fault ) {
                 super.handleFault(fault);
-                ((BackendlessDataSaverInterface) context).saveFailed();
+                ((BackendlessDataLoaderInterface) context).loadFailed();
             }
         };
     }
-
 }

@@ -94,7 +94,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
             // this will communicate back via the BackendlessDataLoaderInterface (Load successful)
             payments = new ArrayList<>();
             incomes = new ArrayList<>();
-            new TransactionsLoader(this).loadTransactionsFromBackendless();
+            new TransactionsLoader(this).loadTransactions();
         }
 
 
