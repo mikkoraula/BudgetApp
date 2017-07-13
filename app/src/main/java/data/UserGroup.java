@@ -3,6 +3,7 @@ package data;
 import com.backendless.BackendlessUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Mikko on 4.7.2017.
@@ -16,6 +17,15 @@ public class UserGroup {
     private String groupName;
     private String objectId;
     private ArrayList<BackendlessUser> users;
+
+    // test
+    private double serialVersionUID;
+    private String ownerId;
+
+    public UserGroup() {
+        this.serialVersionUID = 0;
+        this.ownerId = "73B9521F-430B-F31C-FFC6-28936C7AE800";
+    }
 
     public String getGroupName() {
         return groupName;
@@ -39,5 +49,32 @@ public class UserGroup {
 
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public double getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public void setSerialVersionUID(double serialVersionUID) {
+        this.serialVersionUID = serialVersionUID;
+    }
+
+    @Override
+    public String toString() {
+        return "UserGroup{" +
+                "groupName='" + groupName + '\'' +
+                ", objectId='" + objectId + '\'' +
+                ", users=" + users +
+                ", serialVersionUID=" + serialVersionUID +
+                ", ownerId='" + ownerId + '\'' +
+                '}';
     }
 }

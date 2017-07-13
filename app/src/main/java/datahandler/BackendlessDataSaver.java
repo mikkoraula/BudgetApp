@@ -46,6 +46,7 @@ public class BackendlessDataSaver {
         userGroup.setObjectId(processedUserGroup.getObjectId());
         userGroup.setGroupName(processedUserGroup.getGroupName());
         ArrayList<BackendlessUser> backendlessUsers = new ArrayList<>();
+        System.out.println("emails that stay");
         for (User user : processedUserGroup.getUsers()) {
             BackendlessUser backendlessUser = new BackendlessUser();
             backendlessUser.setEmail(user.getEmail());
@@ -53,15 +54,23 @@ public class BackendlessDataSaver {
             backendlessUser.setProperty("created", user.getCreated());
             backendlessUser.setProperty("objectId", user.getObjectId());
             backendlessUsers.add(backendlessUser);
+            System.out.println(backendlessUser.getEmail());
         }
         userGroup.setUsers(backendlessUsers);
 
         Backendless.Persistence.save( userGroup, callback );
     }
 
+    public static void saveTestGroup(Context context, UserGroup userGroup) {
+        LoadingCallback<Object> callback = createSavingCallback(context);
+        callback.showLoading();
+
+        Backendless.Persistence.save( userGroup, callback );
+    }
+
 
     private static LoadingCallback<Object> createSavingCallback(final Context context) {
-        return new LoadingCallback<Object>(context, "Saving the new User Group...") {
+        return new LoadingCallback<Object>(context, "Saving...") {
             @Override
             public void handleResponse( Object response ) {
                 super.handleResponse(response);

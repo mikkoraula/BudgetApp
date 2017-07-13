@@ -8,13 +8,13 @@ TODO
 	- most important is showing who owes who each month
 	- monthly tab
 
-	- positive or negative income (monthly)
-	- 
+	- how the incomes and payments are distributed between different transaction types
 
 *******
 - user profiles
-	- each user can join one group
-		- can't be in multiple groups (complicated relations and who shares transactions with who etc.)
+	- user can leave the group by pressing button
+
+=> ONLY SHOW TRANSACTIONS FROM THE USERS GROUP THROUGHOUT !!!!!!!!!!!!!!
 
 *******
 

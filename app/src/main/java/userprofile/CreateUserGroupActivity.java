@@ -1,5 +1,6 @@
 package userprofile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import datahandler.BackendlessDataSaverInterface;
 public class CreateUserGroupActivity extends AppCompatActivity implements BackendlessDataSaverInterface {
 
     private EditText groupNameEditText;
+    private ProcessedUserGroup newGroup;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -45,20 +48,23 @@ public class CreateUserGroupActivity extends AppCompatActivity implements Backen
             groupNameEditText.setError("The Group must have a name!");
             System.out.println("rip");
         } else {
-            ProcessedUserGroup processedUserGroup = new ProcessedUserGroup();
-            processedUserGroup.setGroupName(groupNameEditText.getText().toString());
+            newGroup = new ProcessedUserGroup();
+            newGroup.setGroupName(groupNameEditText.getText().toString());
 
             ArrayList<User> users = new ArrayList<>();
             // add the current user to the group
             users.add(new User(Backendless.UserService.CurrentUser()));
-            processedUserGroup.setUsers(users);
-            BackendlessDataSaver.saveUserGroup(this, processedUserGroup);
+            newGroup.setUsers(users);
+            BackendlessDataSaver.saveUserGroup(this, newGroup);
         }
     }
 
     @Override
     public void saveSuccessful() {
         System.out.println("save successful");
+        Intent intent = new Intent();
+        intent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, newGroup);
+        setResult(RESULT_OK, intent);
         finish();
     }
 

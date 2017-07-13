@@ -26,4 +26,5 @@ public class ConstantVariableSettings {
     public static final String SEND_USER_GROUP = "send_user_group";
 
     public static final int VIEW_USER_GROUP_RESULT = 1;
+    public static final int CREATE_USER_GROUP_RESULT = 1902;
 }

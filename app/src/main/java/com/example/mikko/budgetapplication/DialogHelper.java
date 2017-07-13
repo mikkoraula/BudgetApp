@@ -24,6 +24,13 @@ public class DialogHelper {
                 .create();
     }
 
+    /**
+     * Creates a dialog box that displays help message
+     * @param context
+     * @param title
+     * @param message
+     * @return
+     */
     public static AlertDialog createHelpDialog( Context context, String title, String message )
     {
         return new AlertDialog.Builder( context )

@@ -20,6 +20,8 @@ import java.util.Date;
 
 import data.ProcessedUserGroup;
 import data.User;
+import datahandler.BackendlessDataSaver;
+import datahandler.BackendlessDataSaverInterface;
 
 /**
  * Created by Mikko on 1.6.2017.
@@ -29,7 +31,7 @@ import data.User;
  * - user's group info, if he is in a group
  */
 
-public class ViewProfileActivity extends MyBaseActivity {
+public class ViewProfileActivity extends MyBaseActivity implements BackendlessDataSaverInterface {
 
     private BackendlessUser currentUser;
 
@@ -129,7 +131,7 @@ public class ViewProfileActivity extends MyBaseActivity {
         // if the user doesn't belong to any group
         if (userGroup == null) {
             Intent groupCreatorIntent = new Intent(this, CreateUserGroupActivity.class);
-            startActivity(groupCreatorIntent);
+            startActivityForResult(groupCreatorIntent, ConstantVariableSettings.CREATE_USER_GROUP_RESULT);
         }
         // if the user belongs to a group
         else {
@@ -141,16 +143,79 @@ public class ViewProfileActivity extends MyBaseActivity {
         }
     }
 
-
+    /**
+     * this method is used to catch requests from the two child activities:
+     *
+     * - to change UI when a new group has been created
+     * - to leave the group when a user comes back from the ViewUserGroupActivity
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == ConstantVariableSettings.VIEW_USER_GROUP_RESULT) {
+        if (requestCode == ConstantVariableSettings.CREATE_USER_GROUP_RESULT) {
+            // if result is OK from user creation activity, it means the user created a new group
+            // we need to catch that group from intent and update the UI
+            if (resultCode == RESULT_OK) {
+                userGroup = (ProcessedUserGroup) data.getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
+                initGroup();
+            }
+        }
+        else if (requestCode == ConstantVariableSettings.VIEW_USER_GROUP_RESULT) {
             // If the result is ok, it means that the user wants to leave the group
             if (resultCode == RESULT_OK) {
-                System.out.println("User wants to leave group.");
+                leaveGroup();
             }
         }
     }
 
+    public void leaveGroup() {
+        /*
+        ArrayList<User> updatedList = userGroup.getUsers();
+        int currentUserIndex = -1;
+
+        // get the index of the current user in the group
+        for (int i = 0; i < updatedList.size(); i++) {
+            if (updatedList.get(i).getEmail().equals(currentUser.getEmail())) {
+                currentUserIndex = i;
+            }
+        }
+
+*/
+        ArrayList<User> updatedList = new ArrayList<>();
+        // if for some reason the user is not found in the group
+        //if (currentUserIndex != -1) {
+            //updatedList.remove(currentUserIndex);
+            userGroup.setUsers(updatedList);
+            /*
+            System.out.println("following members still in the group");
+            for (User user : userGroup.getUsers()) {
+                System.out.println(user.getEmail());
+            }
+            */
+            // save the altered usergroup to backendless and then wait for response
+            //BackendlessDataSaver.saveTestGroup(this, userGroup);
+        //}
+    }
+
+    @Override
+    public void saveSuccessful() {
+        System.out.println("leaving successful");
+
+        //userGroup = null;
+        //initGroup();
+    }
+
+    @Override
+    public void saveFailed() {
+        System.out.println("leaving the group failed");
+    }
+
+    public void startTestActivity(View view) {
+        Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
+    }
 }

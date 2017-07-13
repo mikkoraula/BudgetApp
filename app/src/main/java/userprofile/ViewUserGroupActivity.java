@@ -133,6 +133,10 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
         finish();
     }
 
+    /**
+     * prompt the user if he is sure he wants to leave the group
+     * @param view
+     */
     public void leaveGroupClicked(View view) {
         new AlertDialog.Builder(this)
                 .setTitle("Remove")
@@ -146,6 +150,14 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
                 }).create().show();
     }
 
+    /**
+     * this method is called when the user has confirmed that he wants to leave the group
+     *
+     * - the actual removing happens in ViewProfileActivity
+     * - here we just set the flag (RESULT_OK) for the parent activity so that it understands
+     *   that the user wants to leave the group
+     * - and then finish this activity and return to the parent
+     */
     private void leaveGroup() {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
@@ -160,15 +172,19 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
      */
     @Override
     public void loadSuccessful(ArrayList<BackendlessUser> foundUsers) {
-        // we can assume the right user is the first item of the list and ignore rest if there ever would be more
-        searchedUser = foundUsers.get(0);
+        if (foundUsers.size() == 0) {
+            DialogHelper.createErrorDialog(this, "no user found", "No user found with that email. Try again.");
+        } else {
+            // we can assume the right user is the first item of the list and ignore rest if there ever would be more
+            searchedUser = foundUsers.get(0);
 
-        // get the textview inside this layout and set its text to the found user's name
-        TextView foundUserTextView = (TextView) findViewById(R.id.view_user_group_text_view_search_result);
-        foundUserTextView.setText(searchedUser.getProperties().get("name").toString());
+            // get the textview inside this layout and set its text to the found user's name
+            TextView foundUserTextView = (TextView) findViewById(R.id.view_user_group_text_view_search_result);
+            foundUserTextView.setText(searchedUser.getProperties().get("name").toString());
 
-        // make the search result visible
-        foundUserLayout.setVisibility(View.VISIBLE);
+            // make the search result visible
+            foundUserLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

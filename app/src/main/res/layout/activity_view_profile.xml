@@ -74,6 +74,16 @@
             android:text="@string/button_create_group"
             android:onClick="createOrViewGroup"/>
 
+        <Button
+            android:text="Launch test Activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="134dp"
+            android:id="@+id/button"
+            android:onClick="startTestActivity"/>
+
 
     </RelativeLayout>
 
