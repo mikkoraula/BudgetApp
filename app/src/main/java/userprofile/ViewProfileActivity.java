@@ -18,8 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import data.ProcessedUserGroup;
-import data.User;
+import data.Transaction;
+import data.UserGroup;
 import datahandler.BackendlessDataSaver;
 import datahandler.BackendlessDataSaverInterface;
 
@@ -35,9 +35,9 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
 
     private BackendlessUser currentUser;
 
-    private ArrayList<ProcessedUserGroup> processedUserGroups;
+    private ArrayList<UserGroup> userGroups;
     // the user's current group
-    private ProcessedUserGroup userGroup;
+    private UserGroup userGroup;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -49,15 +49,15 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         setSupportActionBar(toolbar);
 
         // get the usergroups from the mainactivity's intent
-        processedUserGroups = (ArrayList<ProcessedUserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
-        System.out.println("processed usergroups: " + processedUserGroups);
+        userGroups = (ArrayList<UserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
+        System.out.println("usergroups: " + userGroups);
 
         currentUser = Backendless.UserService.CurrentUser();
 
         // check if the user belongs to a group
-        for (ProcessedUserGroup userGroup : processedUserGroups) {
+        for (UserGroup userGroup : userGroups) {
             System.out.println("number of users: " + userGroup.getUsers().size());
-            for (User user : userGroup.getUsers()) {
+            for (BackendlessUser user : userGroup.getUsers()) {
                 System.out.println("comparison: " + user.getObjectId() + " vs. current user id " + currentUser.getObjectId());
                 if (user.getObjectId().equals(currentUser.getObjectId())) {
                     this.userGroup = userGroup;
@@ -101,22 +101,27 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
             ((TextView) findViewById(R.id.view_profile_text_view_groups_header)).setText(
                     String.format(getString(R.string.view_profile_groups_header), currentUser.getProperties().get("name"))
             );
+            ((Button) findViewById(R.id.view_profile_button_view_or_create_group)).setText(userGroup.getGroupName());
+        } else {
+            ((Button) findViewById(R.id.view_profile_button_view_or_create_group)).setText("Create Group");
         }
 
+        /*
         // go through all the user groups
-        for (ProcessedUserGroup processedUserGroup : processedUserGroups) {
+        for (UserGroup userGroup : userGroups) {
             // and their members
-            for (User user : processedUserGroup.getUsers()) {
+            for (BackendlessUser user : userGroup.getUsers()) {
                 // check if the current user is found in any of the existing groups
 
                 System.out.println("just about to check if users the same");
                 if (user.getObjectId().equals(currentUser.getObjectId())) {
-                    this.userGroup = processedUserGroup;
+                    this.userGroup = userGroup;
                     // if he is found, change the create group's button's text into the group's name
-                    ((Button) findViewById(R.id.view_profile_button_view_or_create_group)).setText(processedUserGroup.getGroupName());
+                    ((Button) findViewById(R.id.view_profile_button_view_or_create_group)).setText(userGroup.getGroupName());
                 }
             }
         }
+        */
     }
 
     /**
@@ -131,6 +136,7 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         // if the user doesn't belong to any group
         if (userGroup == null) {
             Intent groupCreatorIntent = new Intent(this, CreateUserGroupActivity.class);
+            groupCreatorIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, currentUser);
             startActivityForResult(groupCreatorIntent, ConstantVariableSettings.CREATE_USER_GROUP_RESULT);
         }
         // if the user belongs to a group
@@ -138,7 +144,7 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
             Intent groupViewerIntent = new Intent(this, ViewUserGroupActivity.class);
             // we want to send the activity information about the group
             groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
-            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, processedUserGroups);
+            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, userGroups);
             startActivityForResult(groupViewerIntent, ConstantVariableSettings.VIEW_USER_GROUP_RESULT);
         }
     }
@@ -160,7 +166,10 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
             // if result is OK from user creation activity, it means the user created a new group
             // we need to catch that group from intent and update the UI
             if (resultCode == RESULT_OK) {
-                userGroup = (ProcessedUserGroup) data.getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
+                UserGroup newGroup = (UserGroup) data.getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
+                System.out.println("caught new group: " + newGroup);
+                userGroup = newGroup;
+                System.out.println("ples");
                 initGroup();
             }
         }
@@ -173,8 +182,8 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
     }
 
     public void leaveGroup() {
-        /*
-        ArrayList<User> updatedList = userGroup.getUsers();
+
+        ArrayList<BackendlessUser> updatedList = userGroup.getUsers();
         int currentUserIndex = -1;
 
         // get the index of the current user in the group
@@ -184,29 +193,30 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
             }
         }
 
-*/
-        ArrayList<User> updatedList = new ArrayList<>();
+
+        //ArrayList<User> updatedList = new ArrayList<>();
         // if for some reason the user is not found in the group
-        //if (currentUserIndex != -1) {
-            //updatedList.remove(currentUserIndex);
+        if (currentUserIndex != -1) {
+            updatedList.remove(currentUserIndex);
             userGroup.setUsers(updatedList);
-            /*
+
             System.out.println("following members still in the group");
-            for (User user : userGroup.getUsers()) {
+            for (BackendlessUser user : userGroup.getUsers()) {
                 System.out.println(user.getEmail());
             }
-            */
-            // save the altered usergroup to backendless and then wait for response
-            //BackendlessDataSaver.saveTestGroup(this, userGroup);
-        //}
+
+
+            // remove the relation from the backendless and then wait for response
+            new BackendlessDataSaver(this, userGroup, Backendless.UserService.CurrentUser(), "users", UserGroup.class).removeRelation();
+        }
     }
 
     @Override
     public void saveSuccessful() {
         System.out.println("leaving successful");
 
-        //userGroup = null;
-        //initGroup();
+        userGroup = null;
+        initGroup();
     }
 
     @Override
@@ -214,8 +224,4 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         System.out.println("leaving the group failed");
     }
 
-    public void startTestActivity(View view) {
-        Intent intent = new Intent(this, TestActivity.class);
-        startActivity(intent);
-    }
 }

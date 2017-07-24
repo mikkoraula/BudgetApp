@@ -4,13 +4,14 @@ import com.backendless.BackendlessUser;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by Mikko on 4.7.2017.
  *
  * This is a data class that tries to replicate the BackendlessUser dataclass and make it serializable
  */
-
+/*
 public class User implements Serializable {
     private String email;
     private String name;
@@ -23,6 +24,7 @@ public class User implements Serializable {
         this.objectId = user.getObjectId();
         this.created = (Date) user.getProperties().get("created");
     }
+
 
     public User() {
     }
@@ -59,3 +61,4 @@ public class User implements Serializable {
         this.created = created;
     }
 }
+*/

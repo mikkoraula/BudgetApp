@@ -27,4 +27,5 @@ public class ConstantVariableSettings {
 
     public static final int VIEW_USER_GROUP_RESULT = 1;
     public static final int CREATE_USER_GROUP_RESULT = 1902;
+    public static final int VIEW_PROFILE_RESULT = 2;
 }

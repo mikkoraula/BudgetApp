@@ -163,7 +163,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         }
         // combine the lists and save the transactions in internal storage
         payments.addAll(incomes);
-        TransactionDataHandler.saveTransactions(this, payments, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
+        TransactionsLoader.saveTransactions(this, payments, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
 
         // then reload the activity so that the removed transaction doesn't show up anymore
         finish();

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.DialogHelper;
@@ -20,8 +21,7 @@ import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
 
-import data.ProcessedUserGroup;
-import data.User;
+import data.UserGroup;
 import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
 import datahandler.BackendlessDataSaver;
@@ -34,8 +34,8 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
 
     //private ArrayList<String> memberNames;
     //private String userGroupName;
-    private ProcessedUserGroup processedUserGroup;
-    private ArrayList<ProcessedUserGroup> processedUserGroups;
+    private UserGroup userGroup;
+    private ArrayList<UserGroup> userGroups;
 
     // when the user searches for a new user to add to his group
     private BackendlessUser searchedUser;
@@ -46,15 +46,24 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_group);
 
-        processedUserGroups = (ArrayList<ProcessedUserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
-        processedUserGroup = (ProcessedUserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
+        userGroups = (ArrayList<UserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
+        userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
+
+        // for weird Serializable reasons, when a new group was created and the user wants to add new members,
+        // we can't pass this new group between activities
+        // instead we pass a placeholder group that has no members
+        // so here we check if we caught one of these groups (= a group with no members)
+        // and if so, add the current user to the group
+        if (userGroup.getUsers().size() == 0) {
+            userGroup.setUsers(Backendless.UserService.CurrentUser());
+        }
 
         // the layout in which searched users are shown
         foundUserLayout = (LinearLayout) findViewById(R.id.view_user_group_linear_layout_search_result);
 
         // set the group name
         TextView groupNameTextView = (TextView) findViewById(R.id.view_user_group_group_name);
-        groupNameTextView.setText("Group name: " + processedUserGroup.getGroupName());
+        groupNameTextView.setText("Group name: " + userGroup.getGroupName());
 
         initMembersList();
     }
@@ -68,10 +77,10 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
         // first clear the layout of former members
         linearLayout.removeAllViews();
 
-        for (User user : processedUserGroup.getUsers()) {
+        for (BackendlessUser user : userGroup.getUsers()) {
             TextView textView = new TextView(this);
             textView.setLayoutParams(new ActionBar.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setText("- " + user.getName());
+            textView.setText("- " + user.getProperty("name"));
 
             linearLayout.addView(textView);
         }
@@ -101,26 +110,25 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
      */
     public void addMemberClicked(View view) {
         // first check if the user is already in a group
-        if (isUserInGroup(searchedUser, processedUserGroups)) {
+        if (isUserInGroup(searchedUser, userGroups)) {
             DialogHelper.createErrorDialog(this, "User already in group", "This user is already in a group. Ask him/her to leave the current group and then try again").show();
             System.out.println("rip");
         } else {
             // getting here means the searched user is eligible to join this group
 
             // so add the user in the current group
-            ArrayList<User> currentUsers = processedUserGroup.getUsers();
-            User user = new User(searchedUser);
-            currentUsers.add(user);
-            processedUserGroup.setUsers(currentUsers);
+            ArrayList<BackendlessUser> currentUsers = userGroup.getUsers();
+            currentUsers.add(searchedUser);
+            userGroup.setUsers(currentUsers);
 
             // and save the changes to backendless and wait for the response
-            BackendlessDataSaver.saveUserGroup(this, processedUserGroup);
+            new BackendlessDataSaver(this, userGroup, searchedUser, "users", UserGroup.class).saveObject();
         }
     }
 
-    public boolean isUserInGroup(BackendlessUser user, ArrayList<ProcessedUserGroup> userGroups) {
-        for (ProcessedUserGroup userGroup : userGroups) {
-            for (User iterUser : userGroup.getUsers()) {
+    public boolean isUserInGroup(BackendlessUser user, ArrayList<UserGroup> userGroups) {
+        for (UserGroup userGroup : userGroups) {
+            for (BackendlessUser iterUser : userGroup.getUsers()) {
                 if (iterUser.getEmail().equals(user.getEmail())) {
                     return true;
                 }

@@ -15,40 +15,9 @@ import data.TransactionData;
 /**
  * Created by Mikko on 12.8.2016.
  *
- * Contains static methods to load and save transaction data to phone's internal storage
+ * Legacy class to be removed?
  */
 public class TransactionDataHandler {
 
-    public static ArrayList<Transaction> loadTransactions(Context context, String key) {
-        String jsonString = SharedPreferencesHandler.getString(
-                context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY, key);
 
-        Gson gson = new Gson();
-        TransactionData loadedData = gson.fromJson(jsonString, TransactionData.class);
-
-        System.out.println("loaded following data from preferences: " + loadedData);
-
-        if (loadedData != null) {
-            System.out.println("loaded transactions in list: " + loadedData.getTransactionList().size());
-
-            return loadedData.getTransactionList();
-        } else {
-            System.out.println("didn't find any transactions in internal storage");
-            return new ArrayList<>();
-        }
-    }
-
-    public static void saveTransactions(Context context, ArrayList<Transaction> transactions, String key) {
-        TransactionData transactionData = new TransactionData();
-        transactionData.setTransactionList(transactions);
-
-        Gson gson = new Gson();
-        System.out.println("saving next json string: " + gson.toJson(transactionData));
-        String jsonString = gson.toJson(transactionData);
-
-        SharedPreferences.Editor editor = SharedPreferencesHandler.getEditor(
-                context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY);
-        editor.putString(key, jsonString);
-        editor.apply();
-    }
 }

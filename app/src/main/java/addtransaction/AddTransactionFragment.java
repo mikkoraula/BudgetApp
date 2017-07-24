@@ -292,7 +292,9 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
             newTransaction.setDateInMilliseconds(new Date().getTime());
 
             // save the new transaction in to the backendless
-            BackendlessDataSaver.saveTransaction(getContext(), newTransaction);
+            ArrayList<TransactionType> children = new ArrayList<>();
+            children.add(newTransaction.getTransactionType());
+            new BackendlessDataSaver(getContext(), newTransaction, children, "TransactionType", Transaction.class).saveObject();
             System.out.println("checked item positions: " + transactionTypeGridView.getCheckedItemPosition());
             System.out.println("focused child: " + transactionTypeGridView.getFocusedChild());
             System.out.println("selector states: " + transactionTypeGridView.getSelector().getState());

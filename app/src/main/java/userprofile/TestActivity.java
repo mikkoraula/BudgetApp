@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.backendless.Backendless;
-import com.backendless.BackendlessCollection;
 import com.backendless.BackendlessUser;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.mikko.budgetapplication.ConstantVariableSettings;
@@ -17,9 +16,8 @@ import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import data.ProcessedUserGroup;
-import data.User;
 import data.UserGroup;
 import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
@@ -30,7 +28,7 @@ import datahandler.BackendlessDataSaverInterface;
  * Created by Mikko on 12.7.2017.
  */
 
-//public class TestActivity extends MyBaseActivity implements BackendlessDataLoaderInterface<ProcessedUserGroup>, BackendlessDataSaverInterface {
+/*
 public class TestActivity extends MyBaseActivity implements BackendlessDataLoaderInterface<UserGroup>, BackendlessDataSaverInterface {
 
     private UserGroup userGroup;
@@ -40,6 +38,9 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
         super.onCreate( savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        BackendlessUser test = (BackendlessUser) getIntent().getSerializableExtra("lol");
+        System.out.println("caught " + test);
+
         setHelpString(R.string.help_view_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,18 +49,29 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
         ArrayList<BackendlessUser> users = new ArrayList<>();
         users.add(Backendless.UserService.CurrentUser());
         userGroup.setUsers(users);
+        userGroup.setGroupName("testi ryhmi");
 
-        BackendlessDataSaver.saveTestGroup(this, userGroup);
+        this.userGroup = userGroup;
+        System.out.println("the user service user; " + Backendless.UserService.CurrentUser());
+        System.out.println("current users in group before any magic: " + userGroup.getUsers().size());
+
+        new BackendlessDataSaver(this, userGroup, users, "users", UserGroup.class).saveObject();
 
     }
 
     public void buttonClicked(View view) {
         ArrayList<BackendlessUser> users = userGroup.getUsers();
-        users.remove(0);
-        userGroup.setUsers(users);
 
         System.out.println("before saving, this many users " + userGroup.getUsers().size());
-        BackendlessDataSaver.saveTestGroup(this, userGroup);
+        //BackendlessDataSaver.removeTestFromGroup(this, userGroup, users.get(0));
+    }
+
+    public void button2Clicked(View view) {
+        ArrayList<BackendlessUser> users = new ArrayList<>();
+        users.add(Backendless.UserService.CurrentUser());
+        userGroup.setUsers(users);
+
+        //BackendlessDataSaver.addMembersToGroup(this, userGroup, users);
     }
 
     @Override
@@ -67,9 +79,8 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
 
 
         for (UserGroup group : objectList) {
-            for (BackendlessUser user : group.getUsers()) {
-                if (user.getObjectId().equals(Backendless.UserService.CurrentUser().getObjectId())) {
-
+                if (group.getOwnerId().equals(Backendless.UserService.CurrentUser().getObjectId())) {
+                    /*
                     System.out.println("unaltered user: ");
                     System.out.println(group.toString());
                     System.out.println(" ");
@@ -82,9 +93,9 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
 
                     System.out.println("altered user: ");
                     System.out.println(userGroup.toString());
-                    //userGroup = group;
+
+                    userGroup = group;
                 }
-            }
         }
 
         if (userGroup != null) {
@@ -123,7 +134,7 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
         }
 
     }
-    */
+
 
     @Override
     public void loadFailed() {
@@ -144,23 +155,18 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
     }
 
     public static void loadUserGroups(Context context) {
-        LoadingCallback<BackendlessCollection<UserGroup>> callback = createUserGroupLoadingCallback(context);
+        LoadingCallback<List<UserGroup>> callback = createUserGroupLoadingCallback(context);
         callback.showLoading();
         Backendless.Data.of( UserGroup.class ).find(callback);
     }
 
-    private static LoadingCallback<BackendlessCollection<UserGroup>> createUserGroupLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<UserGroup>>(context, context.getString(R.string.loading_user_groups)) {
+    private static LoadingCallback<List<UserGroup>> createUserGroupLoadingCallback(final Context context) {
+        return new LoadingCallback<List<UserGroup>>(context, context.getString(R.string.loading_user_groups)) {
             @Override
-            public void handleResponse( BackendlessCollection<UserGroup> userCollection) {
+            public void handleResponse( List<UserGroup> userCollection) {
                 super.handleResponse(userCollection);
 
-                ArrayList<UserGroup> userGroups = new ArrayList<>();
-                Iterator<UserGroup> iterator = userCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() ) {
-                    UserGroup userGroup = iterator.next();
-                    userGroups.add(userGroup);
-                }
+                ArrayList<UserGroup> userGroups = new ArrayList<>(userCollection);
 
                 ((BackendlessDataLoaderInterface) context).loadSuccessful(userGroups);
             }
@@ -173,3 +179,4 @@ public class TestActivity extends MyBaseActivity implements BackendlessDataLoade
         };
     }
 }
+*/

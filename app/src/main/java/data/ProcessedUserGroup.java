@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by Mikko on 1.6.2017.
  */
-
+/*
 public class ProcessedUserGroup implements Serializable {
 
     private String groupName;
@@ -16,6 +16,15 @@ public class ProcessedUserGroup implements Serializable {
     private ArrayList<User> users;
 
     public ProcessedUserGroup() {}
+
+    public ProcessedUserGroup(UserGroup userGroup) {
+        this.groupName = userGroup.getGroupName();
+        this.objectId = userGroup.getObjectId();
+        users = new ArrayList<>();
+        for (BackendlessUser backendlessUser : userGroup.getUsers()) {
+            users.add(new User(backendlessUser));
+        }
+    }
 
     public String getGroupName() {
         return groupName;
@@ -41,3 +50,4 @@ public class ProcessedUserGroup implements Serializable {
         this.objectId = objectId;
     }
 }
+*/

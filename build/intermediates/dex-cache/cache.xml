@@ -84,12 +84,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Mikko\.gradle\caches\modules-2\files-2.1\com.backendless\backendless\3.0.8.2\d8b8f135eeb02287297349fa144f615f54d7bb1b\backendless-3.0.8.2.jar"
+        jar="C:\Users\Mikko\.gradle\caches\modules-2\files-2.1\com.backendless\backendless\4.0.0-beta4\e61c63e184ae1230706f40c8857dd105f91e0588\backendless-4.0.0-beta4.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="d8b8f135eeb02287297349fa144f615f54d7bb1b">
-        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\backendless-3.0.8.2_5383a08169860be004e7c25d5b9b0ce29d5e12f4\classes.dex" />
+        sha1="e61c63e184ae1230706f40c8857dd105f91e0588">
+        <dex dex="C:\Users\Mikko\Documents\Coding\projects\BudgetApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\backendless-4.0.0-beta4_ff184c0fda30ae500120418e2cd099106cf7aa08\classes.dex" />
     </item>
     <item
         is-multidex="true"

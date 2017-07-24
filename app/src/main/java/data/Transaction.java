@@ -1,6 +1,7 @@
 package data;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * A transaction holds the following attributes:
@@ -29,6 +30,21 @@ public class Transaction implements Serializable {
     private long dateInMilliseconds;
     private TransactionType transactionType;
 
+    public Transaction() {
+
+    }
+
+    public Transaction(Map map) {
+        setAmount((double) map.get("amount"));
+        setObjectId(map.get("objectId").toString());
+        setOwnerId(map.get("ownerId").toString());
+        setOwnerName(map.get("ownerName").toString());
+        setAdditionalInfo(map.get("additionalInfo").toString());
+        setShared((Boolean) map.get("shared"));
+        setPayment((Boolean) map.get("payment"));
+        setDateInMilliseconds((long) map.get("dateInMilliseconds"));
+        setTransactionType(new TransactionType((Map) map.get("transactionType")));
+    }
 
     // override the equals method so we can remove transactions from an arraylsit more easily
     // basically just check if the transactions have same objectId
@@ -115,4 +131,6 @@ public class Transaction implements Serializable {
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
     }
+
+
 }

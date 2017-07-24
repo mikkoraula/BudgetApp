@@ -2,6 +2,7 @@ package data;
 
 import com.backendless.BackendlessUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  * from this version a usable ProcessedUserGroup is made that is serializable
  */
 
-public class UserGroup {
+public class UserGroup implements Serializable {
     private String groupName;
     private String objectId;
     private ArrayList<BackendlessUser> users;
@@ -23,9 +24,24 @@ public class UserGroup {
     private String ownerId;
 
     public UserGroup() {
-        this.serialVersionUID = 0;
-        this.ownerId = "73B9521F-430B-F31C-FFC6-28936C7AE800";
+        //this.serialVersionUID = 0;
+        //this.ownerId = "73B9521F-430B-F31C-FFC6-28936C7AE800";
     }
+    /*
+    public UserGroup(ProcessedUserGroup processedUserGroup) {
+        this.groupName = processedUserGroup.getGroupName();
+        this.objectId = processedUserGroup.getObjectId();
+        users = new ArrayList<>();
+        for (User user : processedUserGroup.getUsers()) {
+            BackendlessUser backendlessUser = new BackendlessUser();
+            backendlessUser.setEmail(user.getEmail());
+            backendlessUser.setProperty("name", user.getName());
+            backendlessUser.setProperty("created", user.getCreated());
+            backendlessUser.setProperty("objectId", user.getObjectId());
+            users.add(backendlessUser);
+        }
+    }
+    */
 
     public String getGroupName() {
         return groupName;
@@ -37,6 +53,11 @@ public class UserGroup {
 
     public ArrayList<BackendlessUser> getUsers() {
         return users;
+    }
+
+    public void setUsers(BackendlessUser user) {
+        users = new ArrayList<>();
+        users.add(user);
     }
 
     public void setUsers(ArrayList<BackendlessUser> users) {

@@ -4,21 +4,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.backendless.Backendless;
-import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.persistence.DataQueryBuilder;
 import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.DateHandler;
 import com.example.mikko.budgetapplication.LoadingCallback;
 import com.example.mikko.budgetapplication.SharedPreferencesHandler;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import data.Transaction;
-import payment.history.TransactionDataHandler;
+import data.TransactionData;
 
 /**
  * Created by Mikko on 31.5.2017.
@@ -35,16 +35,12 @@ public class TransactionsLoader {
 
     private Context context;
     //private ArrayList<Transaction> payments, incomes;
-    private ArrayList<Transaction> transactions, loadedTransactions;
-    private int requiredTransactionAmount;
+    private ArrayList<Transaction> transactions;
 
     private Date currentLoadDate;
 
     public TransactionsLoader(Context context) {
         this.context = context;
-        loadedTransactions = new ArrayList<>();
-
-        requiredTransactionAmount = 0;
     }
 
     public void loadTransactions() {
@@ -66,13 +62,96 @@ public class TransactionsLoader {
         // load the old incomes from internal storage
         transactions.addAll(TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.INCOMES_KEY_STRING));
         */
-        transactions = TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
+        transactions = loadTransactions(context, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
         System.out.println("transactions!!!!!!!!!!!! " + transactions.size());
         // load the newest transactions from Backendless
         loadTransactionsFromBackendless(lastBackendlessLoadInMillis);
     }
 
+    /*****
+     * LOADING FROM INTERNAL STORAGE
+     *
+     */
 
+    public static ArrayList<Transaction> loadTransactions(Context context, String key) {
+        String jsonString = SharedPreferencesHandler.getString(
+                context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY, key);
+
+        Gson gson = new Gson();
+        TransactionData loadedData = gson.fromJson(jsonString, TransactionData.class);
+
+        System.out.println("loaded following data from preferences: " + loadedData);
+
+        if (loadedData != null) {
+            System.out.println("loaded transactions in list: " + loadedData.getTransactionList().size());
+
+            return loadedData.getTransactionList();
+        } else {
+            System.out.println("didn't find any transactions in internal storage");
+            return new ArrayList<>();
+        }
+    }
+
+    public static void saveTransactions(Context context, ArrayList<Transaction> transactions, String key) {
+        TransactionData transactionData = new TransactionData();
+        transactionData.setTransactionList(transactions);
+
+        Gson gson = new Gson();
+        System.out.println("saving next json string: " + gson.toJson(transactionData));
+        String jsonString = gson.toJson(transactionData);
+
+        SharedPreferences.Editor editor = SharedPreferencesHandler.getEditor(
+                context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY);
+        editor.putString(key, jsonString);
+        editor.apply();
+    }
+
+
+
+
+
+
+    /************************
+     * Backendless loading
+     *
+     *
+     */
+
+    // load all the transactions that are newer than the parameters date in milliseconds
+    // the app loads all the transactions to the memory and only downloads newest transactions
+    // which makes for less transactions queried over internet
+    public  void loadTransactionsFromBackendless(long lastLoadDateInMillis) {
+
+        String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis;
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+
+        LoadingCallback<List<Transaction>> callback = createTransactionLoadingCallback(context);
+        callback.showLoading();
+        Backendless.Data.of( Transaction.class ).find(queryBuilder, callback);
+    }
+
+    private LoadingCallback<List<Transaction>> createTransactionLoadingCallback(final Context context) {
+        return new LoadingCallback<List<Transaction>>(context, "Loading Transactions") {
+            @Override
+            public void handleResponse( List<Transaction> transactionCollection) {
+                super.handleResponse(transactionCollection);
+                ArrayList<Transaction> loadedTransactions = new ArrayList<>(transactionCollection);
+                loadSuccessful(loadedTransactions);
+            }
+
+            @Override
+            public void handleFault( BackendlessFault fault ) {
+                super.handleFault(fault);
+                loadFailed();
+            }
+        };
+    }
+
+    /****************
+     * rest of the things
+     * @param loadedTransactionList
+     */
     public void loadSuccessful(ArrayList<Transaction> loadedTransactionList) {
         if (loadedTransactionList.size() == 0) {
             //System.out.println("didn't find any of that transaction in backendlessload");
@@ -81,7 +160,7 @@ public class TransactionsLoader {
             // add the backendless transactions to the list
             transactions.addAll(loadedTransactionList);
 
-            TransactionDataHandler.saveTransactions(context, transactions, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
+            saveTransactions(context, transactions, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
 
             // update the latest backend transactions load time
             SharedPreferences.Editor editor = SharedPreferencesHandler.getEditor(
@@ -99,96 +178,5 @@ public class TransactionsLoader {
 
     public void loadFailed() {
         ((BackendlessDataLoaderInterface) context).loadFailed();
-    }
-
-    /************************
-     * Backendless loading
-     *
-     *
-     */
-
-    // load all the transactions that are newer than the parameters date in milliseconds
-    // the app loads all the transactions to the memory and only downloads newest transactions
-    // which makes for less transactions queried over internet
-    public  void loadTransactionsFromBackendless(long lastLoadDateInMillis) {
-
-        String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis;
-        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-        dataQuery.setWhereClause(whereClause);
-        // page size is 10 by default
-
-        LoadingCallback<BackendlessCollection<Transaction>> callback = createTransactionLoadingCallback(context);
-        callback.showLoading();
-        Backendless.Data.of( Transaction.class ).find(dataQuery, callback);
-    }
-
-    private LoadingCallback<BackendlessCollection<Transaction>> createTransactionLoadingCallback(final Context context) {
-        return new LoadingCallback<BackendlessCollection<Transaction>>(context, "Loading Transactions") {
-            @Override
-            public void handleResponse( BackendlessCollection<Transaction> transactionCollection) {
-                super.handleResponse(transactionCollection);
-
-                // if no transactions are loaded from backendless, just go back
-                if (transactionCollection.getTotalObjects() == 0) {
-                    loadSuccessful(loadedTransactions);
-                }
-
-                System.out.println("Loaded " + transactionCollection.getCurrentPage().size() + " transaction objects");
-                System.out.println("Total payments in the Backendless storage - " + transactionCollection.getTotalObjects());
-                setRequiredTransactionAmount(transactionCollection.getTotalObjects());
-
-                Iterator<Transaction> iterator = transactionCollection.getCurrentPage().iterator();
-                while( iterator.hasNext() ) {
-                    Transaction currentTransaction = iterator.next();
-                    List<String> relations = new ArrayList<>();
-                    relations.add( "transactionType" );
-                    Backendless.Data.of( Transaction.class ).loadRelations(
-                            currentTransaction, relations, loadTransactionRelationsCallback(context));
-                    System.out.println("just initiated the nested stiaht");
-
-                }
-            }
-
-            @Override
-            public void handleFault( BackendlessFault fault ) {
-                super.handleFault(fault);
-                loadFailed();
-            }
-        };
-    }
-
-    private LoadingCallback<Transaction> loadTransactionRelationsCallback(final Context context) {
-        return new LoadingCallback<Transaction>(context) {
-            @Override
-            public void handleResponse( Transaction transaction ) {
-                System.out.println("loaded relations of transaction: " + transaction);
-                System.out.println("transaction type: " + transaction.getTransactionType());
-                addTransaction(transaction);
-            }
-
-            @Override
-            public void handleFault( BackendlessFault backendlessFault ) {
-                super.handleFault(backendlessFault);
-                System.out.println("epic transaction fail XD");
-            }
-        };
-    }
-
-    public void addTransaction(Transaction transaction) {
-        System.out.println("addTransaction method transaction: " + transaction);
-        System.out.println("loadedTransactionList: " + loadedTransactions);
-        loadedTransactions.add(transaction);
-
-        if (loadedTransactions.size() == requiredTransactionAmount) {
-            System.out.println("finally loaded enough transactions!!!!");
-            loadSuccessful(loadedTransactions);
-        } else {
-            System.out.println("loaded " + loadedTransactions.size() + "/" + requiredTransactionAmount + " transactions so far");
-        }
-    }
-
-
-    public void setRequiredTransactionAmount(int requiredTransactionAmount) {
-        this.requiredTransactionAmount = requiredTransactionAmount;
     }
 }

@@ -126,7 +126,7 @@ public class AddTransactionTypeActivity extends AppCompatActivity implements Bac
             System.out.println("colorID= " + colorId);
 
             // save the new incomeType
-            BackendlessDataSaver.saveTransactionType(this, newTransactionType);
+            new BackendlessDataSaver(this, newTransactionType, new ArrayList<>(), "", TransactionType.class).saveObject();
 
             System.out.println("got here");
             // then wait for the response of that

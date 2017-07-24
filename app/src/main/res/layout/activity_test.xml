@@ -11,6 +11,15 @@
         android:id="@+id/test_activity_button"
         android:onClick="buttonClicked" />
 
+    <Button
+        android:text="add myself from group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/test_activity_button"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/test_activity_button2"
+        android:onClick="button2Clicked" />
+
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"

@@ -26,7 +26,7 @@ public class RegistrationActivity extends MyBaseActivity {
         setHelpString(R.string.help_registration);
 
 
-        Backendless.initApp( this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, BackendSettings.VERSION );
+        Backendless.initApp( this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY );
 
         Button registerButton = (Button) findViewById( R.id.registerButton );
 

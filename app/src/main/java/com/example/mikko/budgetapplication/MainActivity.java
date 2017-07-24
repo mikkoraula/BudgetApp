@@ -11,12 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import addtransaction.AddTransactionActivity;
-import data.ProcessedUserGroup;
+import data.UserGroup;
 import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
 import payment.history.ShowHistoryActivity;
@@ -28,7 +31,7 @@ import userprofile.ViewProfileActivity;
  * The Main menu of the app
  *
  */
-public class MainActivity extends MyBaseActivity implements LoginHandlerInterface, BackendlessDataLoaderInterface<ProcessedUserGroup> {
+public class MainActivity extends MyBaseActivity implements LoginHandlerInterface, BackendlessDataLoaderInterface<UserGroup> {
 
     public static final String PREFERENCE_KEY_LOGIN_CREDENTIALS = "loginpreferences";
     public static final String PREFERENCE_KEY_LAST_LOGIN = "lastlogin";
@@ -37,7 +40,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
     private String userId;
 
     // user groups are loaded at the start of the application
-    private ArrayList<ProcessedUserGroup> processedUserGroups;
+    private ArrayList<UserGroup> userGroups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         setHelpString(R.string.help_main);
 
         // init Backendless
-        Backendless.initApp(this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, BackendSettings.VERSION);
+        Backendless.initApp(this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY);
 
         // load the usergroups
         BackendlessDataLoader.loadUserGroups(this);
@@ -101,9 +104,9 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_view_profile) {
             Intent viewProfileIntent = new Intent(this, ViewProfileActivity.class);
-            System.out.println("putting this usergroup to next activity_: " + processedUserGroups);
-            viewProfileIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, processedUserGroups);
-            startActivity(viewProfileIntent);
+            System.out.println("putting this usergroup to next activity_: " + userGroups);
+            viewProfileIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, userGroups);
+            startActivityForResult(viewProfileIntent, ConstantVariableSettings.VIEW_PROFILE_RESULT);
             return true;
         }
 
@@ -206,13 +209,25 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
     }
 
     @Override
-    public void loadSuccessful(ArrayList<ProcessedUserGroup> processedUserGroups) {
-        this.processedUserGroups = processedUserGroups;
+    public void loadSuccessful(ArrayList<UserGroup> userGroups) {
+        this.userGroups = userGroups;
     }
 
     @Override
     public void loadFailed() {
         System.out.println("failed to load usergroups");
+    }
+
+
+    // check if the user comes back from viewing his profile
+    // the user might have made some changes to the user groups, so we need to reload them
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("results from coming back");
+        if (requestCode == ConstantVariableSettings.VIEW_PROFILE_RESULT) {
+            System.out.println("found view profile");
+            BackendlessDataLoader.loadUserGroups(this);
+        }
     }
 }
 

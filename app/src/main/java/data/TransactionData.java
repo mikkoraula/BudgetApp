@@ -2,6 +2,8 @@ package data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * used when loading and saving transactions from internal storage
