@@ -35,7 +35,6 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
     //private ArrayList<String> memberNames;
     //private String userGroupName;
     private UserGroup userGroup;
-    private ArrayList<UserGroup> userGroups;
 
     // when the user searches for a new user to add to his group
     private BackendlessUser searchedUser;
@@ -46,7 +45,6 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_user_group);
 
-        userGroups = (ArrayList<UserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
         userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
 
         // for weird Serializable reasons, when a new group was created and the user wants to add new members,
@@ -110,7 +108,7 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
      */
     public void addMemberClicked(View view) {
         // first check if the user is already in a group
-        if (isUserInGroup(searchedUser, userGroups)) {
+        if (userGroup.isInGroup(searchedUser)) {
             DialogHelper.createErrorDialog(this, "User already in group", "This user is already in a group. Ask him/her to leave the current group and then try again").show();
             System.out.println("rip");
         } else {
@@ -124,17 +122,6 @@ public class ViewUserGroupActivity extends AppCompatActivity implements Backendl
             // and save the changes to backendless and wait for the response
             new BackendlessDataSaver(this, userGroup, searchedUser, "users", UserGroup.class).saveObject();
         }
-    }
-
-    public boolean isUserInGroup(BackendlessUser user, ArrayList<UserGroup> userGroups) {
-        for (UserGroup userGroup : userGroups) {
-            for (BackendlessUser iterUser : userGroup.getUsers()) {
-                if (iterUser.getEmail().equals(user.getEmail())) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public void closeActivityClicked(View view) {

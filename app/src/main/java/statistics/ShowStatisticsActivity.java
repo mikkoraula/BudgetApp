@@ -14,8 +14,9 @@ import com.example.mikko.budgetapplication.SharedPreferencesHandler;
 import java.util.ArrayList;
 
 import data.Transaction;
+import data.UserGroup;
 import datahandler.BackendlessDataLoaderInterface;
-import datahandler.TransactionsLoader;
+import datahandler.TransactionsHandler;
 import payment.history.ShowHistoryActivity;
 
 /**
@@ -28,12 +29,15 @@ public class ShowStatisticsActivity extends MyBaseActivity implements Backendles
     private ShowStatisticsPagerAdapter pagerAdapter;
     private int currentPosition;
 
+    private UserGroup userGroup;
     private ArrayList<Transaction> payments, incomes;
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         setContentView(R.layout.activity_show_statistics);
         super.onCreate(savedInstanceState);
         setHelpString(R.string.help_show_history);
+
+        userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
 
         viewPager = (ViewPager) findViewById(R.id.show_statistics_view_pager);
         viewPager.setOffscreenPageLimit(0);
@@ -59,7 +63,7 @@ public class ShowStatisticsActivity extends MyBaseActivity implements Backendles
             // this will communicate back via the BackendlessDataLoaderInterface (Load successful)
             payments = new ArrayList<>();
             incomes = new ArrayList<>();
-            new TransactionsLoader(this).loadTransactions();
+            new TransactionsHandler(this, userGroup).loadTransactions();
         }
     }
 

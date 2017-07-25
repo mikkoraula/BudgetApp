@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.MyBaseActivity;
 import com.example.mikko.budgetapplication.R;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 import data.TransactionType;
 import data.TransactionTypeData;
+import data.UserGroup;
 import datahandler.BackendlessDataLoader;
 import datahandler.BackendlessDataLoaderInterface;
 import datahandler.BackendlessDataRemoverInterface;
@@ -36,6 +38,7 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
 
     private ArrayList<TransactionType> paymentTypes;
     private ArrayList<TransactionType> incomeTypes;
+    private UserGroup userGroup;
     private int loadCounter;
 
 
@@ -65,7 +68,7 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
         super.onCreate(savedInstanceState);
         setHelpString(R.string.help_add_transaction);
 
-
+        userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
 
         loadTransactionTypes();
 
@@ -96,7 +99,7 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
         loadCounter = 0;
 
         // load the pre-made transaction types from backendless
-        BackendlessDataLoader.loadTransactionTypes(this);
+        BackendlessDataLoader.loadTransactionTypes(this, userGroup);
     }
 
     @Override
@@ -170,6 +173,7 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
         System.out.println("got back to the activity with successful save");
         // move to history activity
         Intent showHistoryActivityIntent = new Intent(this, ShowHistoryActivity.class);
+        showHistoryActivityIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
         startActivity(showHistoryActivityIntent);
         // finish this activity, so that user can skip straight back to main menu
         finish();
@@ -205,14 +209,14 @@ public class AddTransactionActivity extends MyBaseActivity implements Backendles
                     paymentTypeData.setTransactionTypeList(paymentTypes);
                     // create a new fragment(= a new tab)
                     // first parameter tells if the tab is for creating a new Payment (=true)
-                    return AddTransactionFragment.newInstance(true, paymentTypeData);
+                    return AddTransactionFragment.newInstance(true, paymentTypeData, userGroup);
                 case 1:
                     incomeTypeData.setTransactionTypeList(incomeTypes);
                     System.out.println("asdfasdfasdf");
                     // isPayment = false
-                    return AddTransactionFragment.newInstance(false, incomeTypeData);
+                    return AddTransactionFragment.newInstance(false, incomeTypeData, userGroup);
                 default:
-                    return AddTransactionFragment.newInstance(true, paymentTypeData);
+                    return AddTransactionFragment.newInstance(true, paymentTypeData, userGroup);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.example.mikko.budgetapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,8 +45,12 @@ public class SettingsActivity extends MyBaseActivity {
     }
 
     public void deleteInternalStorageTransactions(View view) {
+        deleteTransactionsFromInternalStorage(getBaseContext());
+    }
+
+    public static void deleteTransactionsFromInternalStorage(Context context) {
         SharedPreferences.Editor editor =
-                SharedPreferencesHandler.getEditor(this, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY);
+                SharedPreferencesHandler.getEditor(context, ConstantVariableSettings.TRANSACTIONS_LAST_LOAD_KEY);
         //editor.putString(ConstantVariableSettings.PAYMENTS_KEY_STRING, "");
         //editor.putString(ConstantVariableSettings.INCOMES_KEY_STRING, "");
         editor.putString(ConstantVariableSettings.TRANSACTIONS_KEY_STRING, "");

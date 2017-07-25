@@ -17,11 +17,12 @@ import java.util.Map;
  *
  * Created by Mikko on 8.8.2016.
  */
-public class Transaction implements Serializable {
+public class Transaction implements Serializable, Comparable<Transaction> {
     private double amount;
     // this has to be in so that you can remove transactions from backendless
     private String objectId;
     private String ownerId;
+    private String userGroupId;
     private String ownerName;
     // additional information
     private String additionalInfo;
@@ -54,8 +55,9 @@ public class Transaction implements Serializable {
         if (o != null)
             if (o instanceof Transaction)
                 if (objectId != null)
-                    if (((Transaction) o).getObjectId().equals(objectId))
-                        return true;
+                    if (((Transaction) o).getObjectId() != null)
+                        if (((Transaction) o).getObjectId().equals(objectId))
+                            return true;
         return false;
     }
 
@@ -133,4 +135,21 @@ public class Transaction implements Serializable {
     }
 
 
+    public String getUserGroupId() {
+        return userGroupId;
+    }
+
+    public void setUserGroupId(String userGroupId) {
+        this.userGroupId = userGroupId;
+    }
+
+    @Override
+    public int compareTo(Transaction another) {
+        if (amount > another.getAmount())
+            return 1;
+        else if (amount == another.getAmount())
+            return 0;
+        else
+            return -1;
+    }
 }

@@ -65,6 +65,8 @@ public class TransactionTypePickAdapter extends ArrayAdapter<TransactionType> {
 
             final TransactionTypeToggleButton toggleButton = (TransactionTypeToggleButton) convertView.findViewById(R.id.transaction_type_button);
 
+            System.out.println("transactionType: " + transactionType);
+            System.out.println("toggleButton: " + toggleButton);
             toggleButton.setText(transactionType.getName());
             toggleButton.setTextOn(transactionType.getName());
             toggleButton.setTextOff(transactionType.getName());

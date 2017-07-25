@@ -19,6 +19,7 @@ import java.util.Map;
 
 import data.Transaction;
 import data.TransactionData;
+import data.UserGroup;
 
 /**
  * Created by Mikko on 31.5.2017.
@@ -31,16 +32,17 @@ import data.TransactionData;
  * Uses BackendlessTransactionLoader class to load new transactions from Backendless
  */
 
-public class TransactionsLoader {
+public class TransactionsHandler {
 
     private Context context;
-    //private ArrayList<Transaction> payments, incomes;
+    private UserGroup userGroup;
     private ArrayList<Transaction> transactions;
 
     private Date currentLoadDate;
 
-    public TransactionsLoader(Context context) {
+    public TransactionsHandler(Context context, UserGroup userGroup) {
         this.context = context;
+        this.userGroup = userGroup;
     }
 
     public void loadTransactions() {
@@ -56,12 +58,7 @@ public class TransactionsLoader {
         DateHandler.getMonth(lastBackendlessLoadInMillis);
 
 
-        /*
-        // load the old payments from internal storage
-        transactions = TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.PAYMENTS_KEY_STRING);
-        // load the old incomes from internal storage
-        transactions.addAll(TransactionDataHandler.loadTransactions(context, ConstantVariableSettings.INCOMES_KEY_STRING));
-        */
+
         transactions = loadTransactions(context, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
         System.out.println("transactions!!!!!!!!!!!! " + transactions.size());
         // load the newest transactions from Backendless
@@ -120,9 +117,10 @@ public class TransactionsLoader {
     // load all the transactions that are newer than the parameters date in milliseconds
     // the app loads all the transactions to the memory and only downloads newest transactions
     // which makes for less transactions queried over internet
+    // only the transactions that have the userGroup's id are fetched
     public  void loadTransactionsFromBackendless(long lastLoadDateInMillis) {
 
-        String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis;
+        String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis + " and userGroupId = '" + userGroup.getObjectId() + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
 

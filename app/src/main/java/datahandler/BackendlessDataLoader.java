@@ -25,11 +25,18 @@ import data.UserGroup;
 public class BackendlessDataLoader {
 
     // let's try to load the transactionTypes in one run
-    public static void loadTransactionTypes(Context context) {
+    public static void loadTransactionTypes(Context context, UserGroup userGroup) {
         LoadingCallback<List<TransactionType>> callback = createTransactionTypeLoadingCallback(context);
         // show the loading window while loading transaction types
         callback.showLoading();
-        Backendless.Persistence.of( TransactionType.class ).find(callback);
+
+        String whereClause = "userGroupId = '" + userGroup.getObjectId() + "'";
+        System.out.println("searching with the keyword: " + whereClause);
+
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+
+        Backendless.Data.of( TransactionType.class ).find( queryBuilder, callback );
     }
     private static LoadingCallback<List<TransactionType>> createTransactionTypeLoadingCallback(final Context context) {
         return new LoadingCallback<List<TransactionType>>(context, context.getString(R.string.loading_empty)) {
@@ -52,9 +59,10 @@ public class BackendlessDataLoader {
     }
 
 
-    public static void loadUserGroups(Context context) {
+    public static void loadUserGroups(Context context, boolean showLoading) {
         LoadingCallback<List<UserGroup>> callback = createUserGroupLoadingCallback(context);
-        callback.showLoading();
+        if (showLoading)
+            callback.showLoading();
         Backendless.Persistence.of( UserGroup.class ).find(callback);
     }
 

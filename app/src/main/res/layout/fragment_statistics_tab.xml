@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-     <!-- Date header -->
+    <!-- Date header -->
     <TextView
         android:id="@+id/statistics_tab_fragment_header_text_view"
         android:layout_width="wrap_content"
@@ -14,47 +14,94 @@
         android:text="January 2001"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/statistics_tab_fragment_header_text_view"
         android:layout_margin="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/statistics_tab_fragment_info1"
-            android:text="@string/stats_info_incomes"
-            android:layout_alignParentTop="true" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/statistics_tab_fragment_info2"
-            android:text="@string/stats_info_payments"
-            android:layout_below="@id/statistics_tab_fragment_info1"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statistics_tab_fragment_info1"
+                android:text="@string/stats_info_incomes"
+                android:layout_alignParentTop="true" />
 
-        <!-- Leave a margin between these textviews -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statistics_tab_fragment_info2"
+                android:text="@string/stats_info_payments"
+                android:layout_below="@id/statistics_tab_fragment_info1"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/statistics_tab_fragment_info3"
-            android:text="@string/stats_info_net_income"
-            android:layout_below="@id/statistics_tab_fragment_info2"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+            <!-- Leave a margin between these textviews -->
 
-        <!-- Leave a margin between these textviews -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statistics_tab_fragment_info3"
+                android:text="@string/stats_info_net_income"
+                android:layout_below="@id/statistics_tab_fragment_info2"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/statistics_tab_fragment_info4"
-            android:text=""
-            android:layout_below="@id/statistics_tab_fragment_info3" />
+            <!-- Leave a margin between these textviews -->
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statistics_tab_fragment_info4"
+                android:text=""
+                android:layout_below="@id/statistics_tab_fragment_info3" />
+
+            <!-- add a separator line -->
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dip"
+                android:background="@color/colorGrey"
+                android:id="@+id/fragment_statistics_tab_view_separator"
+                android:layout_below="@id/statistics_tab_fragment_info3"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+
+            <!-- Payments -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statistics_tab_fragment_payment_distribution_title"
+                android:text="Distribution of transactions"
+                android:layout_below="@id/fragment_statistics_tab_view_separator" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/fragment_statistics_linear_layout_payments_distribution"
+                android:layout_below="@id/statistics_tab_fragment_payment_distribution_title">
+            </LinearLayout>
+
+
+            <!-- Incomes -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statistics_tab_fragment_income_distribution_title"
+                android:text="Distribution of transactions"
+                android:layout_below="@id/fragment_statistics_linear_layout_payments_distribution" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_statistics_linear_layout_incomes_distribution"
+                android:layout_below="@id/statistics_tab_fragment_income_distribution_title">
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
 
 
 

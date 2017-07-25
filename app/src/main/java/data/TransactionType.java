@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class TransactionType implements Serializable {
     private String objectId;
+    private String userGroupId;
     private String name;
     private int colorId;
     private boolean payment;
@@ -55,5 +56,23 @@ public class TransactionType implements Serializable {
 
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    public String getUserGroupId() {
+        return userGroupId;
+    }
+
+    public void setUserGroupId(String userGroupId) {
+        this.userGroupId = userGroupId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null)
+            if (o instanceof TransactionType)
+                if (objectId != null)
+                    if (((TransactionType) o).getObjectId().equals(objectId))
+                        return true;
+        return false;
     }
 }

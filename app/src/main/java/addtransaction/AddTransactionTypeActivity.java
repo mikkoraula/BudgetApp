@@ -10,9 +10,11 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import data.TransactionType;
+import data.UserGroup;
 import datahandler.BackendlessDataSaverInterface;
 import datahandler.BackendlessDataSaver;
 
+import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.MyBaseActivity;
 import com.example.mikko.budgetapplication.R;
 
@@ -34,6 +36,7 @@ public class AddTransactionTypeActivity extends AppCompatActivity implements Bac
 
     private EditText newTypeNameEditText;
     private boolean isPayment;
+    private UserGroup userGroup;
 
 
     private TransactionType newTransactionType;
@@ -43,7 +46,7 @@ public class AddTransactionTypeActivity extends AppCompatActivity implements Bac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_transaction_type_creator);
 
-
+        userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
         isPayment = getIntent().getBooleanExtra(AddTransactionFragment.TRANSACTION_TYPE_CHECKER, true);
 
         newTypeNameEditText = (EditText) findViewById(R.id.edit_text_new_transaction_type_name);
@@ -118,12 +121,12 @@ public class AddTransactionTypeActivity extends AppCompatActivity implements Bac
 
             // isPayment
             newTransactionType.setPayment(isPayment);
-            System.out.println("isPayment= " + newTransactionType.isPayment());
 
             // get the chosen color
             int colorId = ((TransactionTypePickAdapter) transactionTypeColorPickerGridView.getAdapter()).getCurrentButton().getTransactionType().getColorId();
             newTransactionType.setColorId(colorId);
-            System.out.println("colorID= " + colorId);
+
+            newTransactionType.setUserGroupId(userGroup.getObjectId());
 
             // save the new incomeType
             new BackendlessDataSaver(this, newTransactionType, new ArrayList<>(), "", TransactionType.class).saveObject();

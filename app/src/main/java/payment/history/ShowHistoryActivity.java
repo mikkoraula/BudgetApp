@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import data.Transaction;
+import data.UserGroup;
 import datahandler.BackendlessDataLoaderInterface;
 
 import com.example.mikko.budgetapplication.ConstantVariableSettings;
@@ -17,7 +18,7 @@ import com.example.mikko.budgetapplication.SharedPreferencesHandler;
 import java.util.ArrayList;
 import java.util.Date;
 
-import datahandler.TransactionsLoader;
+import datahandler.TransactionsHandler;
 import statistics.ShowStatisticsActivity;
 
 /**
@@ -27,6 +28,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
 
     private ArrayList<Transaction> payments;
     private ArrayList<Transaction> incomes;
+    private UserGroup userGroup;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -41,6 +43,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         super.onCreate(savedInstanceState);
         setHelpString(R.string.help_show_history);
 
+        userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
 
         // set three tabs from which the user can view payments and incomes:
         // Both shows all the transactions
@@ -94,7 +97,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
             // this will communicate back via the BackendlessDataLoaderInterface (Load successful)
             payments = new ArrayList<>();
             incomes = new ArrayList<>();
-            new TransactionsLoader(this).loadTransactions();
+            new TransactionsHandler(this, userGroup).loadTransactions();
         }
 
 
@@ -163,7 +166,7 @@ public class ShowHistoryActivity extends MyBaseActivity implements BackendlessDa
         }
         // combine the lists and save the transactions in internal storage
         payments.addAll(incomes);
-        TransactionsLoader.saveTransactions(this, payments, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
+        TransactionsHandler.saveTransactions(this, payments, ConstantVariableSettings.TRANSACTIONS_KEY_STRING);
 
         // then reload the activity so that the removed transaction doesn't show up anymore
         finish();

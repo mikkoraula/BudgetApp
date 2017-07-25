@@ -98,4 +98,19 @@ public class UserGroup implements Serializable {
                 ", ownerId='" + ownerId + '\'' +
                 '}';
     }
+
+    /**
+     * Checks if the user given as parameter is in this group
+     *
+     * @param paramUser
+     * @return boolean
+     */
+    public boolean isInGroup(BackendlessUser paramUser) {
+        for (BackendlessUser user : users) {
+            if (paramUser.getObjectId().equals(user.getObjectId())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

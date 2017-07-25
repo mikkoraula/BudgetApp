@@ -45,7 +45,7 @@ public class LoginHandler {
 
             LoadingCallback<BackendlessUser> loginCallback = createLoginCallback();
 
-            loginCallback.showLoading();
+            //loginCallback.showLoading();
             loginUser( email, password, loginCallback );
         }
     }

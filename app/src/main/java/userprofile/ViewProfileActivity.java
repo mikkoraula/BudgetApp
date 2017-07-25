@@ -1,6 +1,7 @@
 package userprofile;
 
 import android.content.Intent;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.backendless.BackendlessUser;
 import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.MyBaseActivity;
 import com.example.mikko.budgetapplication.R;
+import com.example.mikko.budgetapplication.SettingsActivity;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -35,7 +37,7 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
 
     private BackendlessUser currentUser;
 
-    private ArrayList<UserGroup> userGroups;
+    //private ArrayList<UserGroup> userGroups;
     // the user's current group
     private UserGroup userGroup;
 
@@ -48,22 +50,13 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // get the usergroups from the mainactivity's intent
-        userGroups = (ArrayList<UserGroup>) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUPS);
-        System.out.println("usergroups: " + userGroups);
+        // get the usergroup from the mainactivity's intent
+
+        userGroup = (UserGroup) getIntent().getSerializableExtra(ConstantVariableSettings.SEND_USER_GROUP);
+        System.out.println("usergroup: " + userGroup);
 
         currentUser = Backendless.UserService.CurrentUser();
 
-        // check if the user belongs to a group
-        for (UserGroup userGroup : userGroups) {
-            System.out.println("number of users: " + userGroup.getUsers().size());
-            for (BackendlessUser user : userGroup.getUsers()) {
-                System.out.println("comparison: " + user.getObjectId() + " vs. current user id " + currentUser.getObjectId());
-                if (user.getObjectId().equals(currentUser.getObjectId())) {
-                    this.userGroup = userGroup;
-                }
-            }
-        }
 
         initProfile();
 
@@ -144,7 +137,6 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
             Intent groupViewerIntent = new Intent(this, ViewUserGroupActivity.class);
             // we want to send the activity information about the group
             groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
-            groupViewerIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, userGroups);
             startActivityForResult(groupViewerIntent, ConstantVariableSettings.VIEW_USER_GROUP_RESULT);
         }
     }
@@ -205,6 +197,7 @@ public class ViewProfileActivity extends MyBaseActivity implements BackendlessDa
                 System.out.println(user.getEmail());
             }
 
+            SettingsActivity.deleteTransactionsFromInternalStorage(getBaseContext());
 
             // remove the relation from the backendless and then wait for response
             new BackendlessDataSaver(this, userGroup, Backendless.UserService.CurrentUser(), "users", UserGroup.class).removeRelation();

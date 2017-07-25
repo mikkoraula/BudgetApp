@@ -1,5 +1,6 @@
 package com.example.mikko.budgetapplication;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,13 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
     // user groups are loaded at the start of the application
     private ArrayList<UserGroup> userGroups;
+    // the user group the logged in user is in
+    // null if he doesn't belong in any group
+    private UserGroup userGroup;
+    private int loadCounter;
+
+    // this is used to show the loading screen in the main menu, because it loads multiple things at the same time
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +60,13 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         // init Backendless
         Backendless.initApp(this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY);
 
+        // start the loading screen
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+
         // load the usergroups
-        BackendlessDataLoader.loadUserGroups(this);
+        BackendlessDataLoader.loadUserGroups(this, false);
 
         // for difficult loop reasons, we need to check if user is already logged in at this point
         if (Backendless.UserService.isValidLogin()) {
@@ -101,11 +114,12 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_view_profile) {
+            // send the usergroup to the viewprofile activity
             Intent viewProfileIntent = new Intent(this, ViewProfileActivity.class);
-            System.out.println("putting this usergroup to next activity_: " + userGroups);
-            viewProfileIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUPS, userGroups);
+            System.out.println("putting this usergroup to next activity_: " + userGroup);
+            viewProfileIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
+            // We want to know when the user comes back from viewing the profile, so we can reload the usergroups
             startActivityForResult(viewProfileIntent, ConstantVariableSettings.VIEW_PROFILE_RESULT);
             return true;
         }
@@ -115,6 +129,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
 
     public void goToLoginActivity() {
+        loadCounter = 0;
         Intent loginIntent = new Intent( this, LoginActivity.class );
         startActivity(loginIntent);
         finish();
@@ -145,6 +160,43 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         System.out.println("Your last login was on : " + new Date(lastLoginPreferences.getLong(userId, 0)));
         System.out.println("Your current login is on : " + new Date(currentLoginPreferences.getLong(userId, 0)));
         System.out.println(" ");
+
+
+        loadingsReady();
+    }
+
+
+
+    @Override
+    public void loadSuccessful(ArrayList<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+        loadingsReady();
+    }
+
+    // this is a centralized method that is called each time a loading has occurred
+    // ( from either login or usergroup loading )
+    // when both of this loadings have been done, the loadCounter will be at 2 and it means that
+    // the user has logged in AND all the usergroups have been loaded
+    private void loadingsReady() {
+        loadCounter++;
+
+        if (loadCounter >= 2) {
+            // set the user group, if the logged in is in a group
+            for (UserGroup userGroup : userGroups)
+                if (userGroup.isInGroup(Backendless.UserService.CurrentUser()))
+                    this.userGroup = userGroup;
+
+            // dismiss the loading window
+            progressDialog.dismiss();
+        }
+    }
+
+
+    @Override
+    public void loadFailed() {
+        System.out.println("failed to load usergroups");
+        userGroups = new ArrayList<>();
+        loadingsReady();
     }
 
     @Override
@@ -163,8 +215,9 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
      */
 
     public void addTransaction(View view) {
-        Intent addIncomeIntent = new Intent(this, AddTransactionActivity.class);
-        startActivity(addIncomeIntent);
+        Intent addTransactionIntent = new Intent(this, AddTransactionActivity.class);
+        addTransactionIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
+        startActivity(addTransactionIntent);
     }
 
     public void manageRepetitiveTransactions(View view) {
@@ -175,11 +228,14 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
 
     public void showHistory(View view) {
         Intent showHistoryIntent = new Intent(this, ShowHistoryActivity.class);
+        System.out.println("userGroup " + userGroup);
+        showHistoryIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
         startActivity(showHistoryIntent);
     }
 
     public void showStatistics(View view) {
         Intent showStatisticsIntent = new Intent(this, ShowStatisticsActivity.class);
+        showStatisticsIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
         startActivity(showStatisticsIntent);
     }
 
@@ -208,16 +264,6 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         System.exit(0);
     }
 
-    @Override
-    public void loadSuccessful(ArrayList<UserGroup> userGroups) {
-        this.userGroups = userGroups;
-    }
-
-    @Override
-    public void loadFailed() {
-        System.out.println("failed to load usergroups");
-    }
-
 
     // check if the user comes back from viewing his profile
     // the user might have made some changes to the user groups, so we need to reload them
@@ -226,7 +272,7 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
         System.out.println("results from coming back");
         if (requestCode == ConstantVariableSettings.VIEW_PROFILE_RESULT) {
             System.out.println("found view profile");
-            BackendlessDataLoader.loadUserGroups(this);
+            BackendlessDataLoader.loadUserGroups(this, true);
         }
     }
 }

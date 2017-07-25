@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ToggleButton;
 
 import com.backendless.Backendless;
+import com.example.mikko.budgetapplication.ConstantVariableSettings;
 import com.example.mikko.budgetapplication.R;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Date;
 import data.Transaction;
 import data.TransactionType;
 import data.TransactionTypeData;
+import data.UserGroup;
 import datahandler.BackendlessDataSaver;
 import datahandler.BackendlessDataSaverInterface;
 import payment.history.MonthlyPagerAdapter;
@@ -54,13 +56,13 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
 
     private ChoicePickerButton[] visibilityButtons;
     private ChoicePickerButton[] repetitionButtons;
-    //private ChoicePickerButton buttonPersonal, buttonShared;
-    //private ChoicePickerButton buttonNone, buttonMonthly, buttonYearly;
+
     private EditText expenseAmountEditText;
     private EditText locationText;
     private EditText additionalInformationText;
 
 
+    private UserGroup userGroup;
     private ArrayList<TransactionType> transactionTypes;
 
     private ViewPager viewPager;
@@ -73,11 +75,12 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
 
 
     // newInstance constructor for creating fragment with arguments
-    public static AddTransactionFragment newInstance(boolean isPayment, TransactionTypeData transactionTypeData) {
+    public static AddTransactionFragment newInstance(boolean isPayment, TransactionTypeData transactionTypeData, UserGroup userGroup) {
         AddTransactionFragment tabFragment = new AddTransactionFragment();
         Bundle args = new Bundle();
         args.putBoolean("isPayment", isPayment);
         args.putSerializable("transactionTypeData", transactionTypeData);
+        args.putSerializable("userGroup", userGroup);
         tabFragment.setArguments(args);
         return tabFragment;
     }
@@ -88,6 +91,7 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         isPayment = getArguments().getBoolean("isPayment");
         transactionTypes = ((TransactionTypeData) getArguments().getSerializable("transactionTypeData")).getTransactionTypeList();
+        userGroup = (UserGroup) getArguments().getSerializable("userGroup");
 
     }
 
@@ -239,6 +243,7 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
         Intent addTransactionTypeIntent = new Intent(getContext(), AddTransactionTypeActivity.class);
         // inform the type creator activity which kind of transaction type we are about to create (payment/income)
         addTransactionTypeIntent.putExtra(TRANSACTION_TYPE_CHECKER, isPayment);
+        addTransactionTypeIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
         startActivityForResult(addTransactionTypeIntent, NEW_TRANSACTION_TYPE_CODE);
 
     }
@@ -287,6 +292,9 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
 
             // set the transactionType
             newTransaction.setTransactionType(transactionTypePickAdapter.getCurrentType());
+
+            // userGroup id
+            newTransaction.setUserGroupId(userGroup.getObjectId());
 
             // set the date of transaction
             newTransaction.setDateInMilliseconds(new Date().getTime());
