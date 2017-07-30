@@ -118,7 +118,7 @@ public class TransactionsHandler {
     // the app loads all the transactions to the memory and only downloads newest transactions
     // which makes for less transactions queried over internet
     // only the transactions that have the userGroup's id are fetched
-    public  void loadTransactionsFromBackendless(long lastLoadDateInMillis) {
+    private  void loadTransactionsFromBackendless(long lastLoadDateInMillis) {
 
         String whereClause = "dateInMilliseconds > " + lastLoadDateInMillis + " and userGroupId = '" + userGroup.getObjectId() + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -150,7 +150,7 @@ public class TransactionsHandler {
      * rest of the things
      * @param loadedTransactionList
      */
-    public void loadSuccessful(ArrayList<Transaction> loadedTransactionList) {
+    private void loadSuccessful(ArrayList<Transaction> loadedTransactionList) {
         if (loadedTransactionList.size() == 0) {
             //System.out.println("didn't find any of that transaction in backendlessload");
         }
@@ -174,7 +174,7 @@ public class TransactionsHandler {
     }
 
 
-    public void loadFailed() {
+    private void loadFailed() {
         ((BackendlessDataLoaderInterface) context).loadFailed();
     }
 }

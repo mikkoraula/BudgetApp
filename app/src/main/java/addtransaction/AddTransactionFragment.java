@@ -284,6 +284,9 @@ public class AddTransactionFragment extends Fragment implements View.OnClickList
             // set the owner Name from ownerid
             newTransaction.setOwnerName(Backendless.UserService.CurrentUser().getProperties().get("name").toString());
 
+            // set the repetition
+            newTransaction.setRepetition(repetition);
+
             // set ispayment
             newTransaction.setPayment(isPayment);
 

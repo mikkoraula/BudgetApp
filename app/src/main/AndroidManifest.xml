@@ -72,8 +72,8 @@
             android:label="@string/title_view_group"
             android:theme="@style/Theme.Transparent"/>
         <activity
-            android:name="userprofile.TestActivity"
-            android:label="@string/title_view_profile"
+            android:name=".ManageRepetitiveTransactionsActivity"
+            android:label="@string/title_manage_repetitive_transactions"
             android:theme="@style/AppTheme"/>
     </application>
 

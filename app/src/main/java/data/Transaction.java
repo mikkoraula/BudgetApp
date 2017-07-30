@@ -8,10 +8,13 @@ import java.util.Map;
  * - amount             the transaction amount
  * - objectId
  * - ownerId              who created the transaction
+ * - userGroupId        to what group the transaction belongs
  * - ownerName          used to simplify transaction information showing
  * - additionalInfo             additional information about the transaction
- * - shared           if the transaction is shared with everyone(true) or private(false)
- * - payment          if the transaction is a payment or an income
+ *
+ * - repetition         if the transaction is repeated ('none', monthly', 'yearly'
+ * - shared             if the transaction is shared with everyone(true) or private(false)
+ * - payment            if the transaction is a payment or an income
  * - dateInMillis       Date when created in milliseconds
  * - transactionType    tells the transaction type (for example groceries)
  *
@@ -26,6 +29,8 @@ public class Transaction implements Serializable, Comparable<Transaction> {
     private String ownerName;
     // additional information
     private String additionalInfo;
+
+    private String repetition;
     private boolean shared;
     private boolean payment;
     private long dateInMilliseconds;
@@ -151,5 +156,13 @@ public class Transaction implements Serializable, Comparable<Transaction> {
             return 0;
         else
             return -1;
+    }
+
+    public String getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(String repetition) {
+        this.repetition = repetition;
     }
 }

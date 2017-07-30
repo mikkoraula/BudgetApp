@@ -12,12 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import addtransaction.AddTransactionActivity;
 import data.UserGroup;
@@ -212,31 +209,40 @@ public class MainActivity extends MyBaseActivity implements LoginHandlerInterfac
      * Manage repetitive transactions
      * Show History
      * Show Statistics
+     *
+     * None of these are allowed presses, if the user is not in a group yet
      */
 
     public void addTransaction(View view) {
-        Intent addTransactionIntent = new Intent(this, AddTransactionActivity.class);
-        addTransactionIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
-        startActivity(addTransactionIntent);
+        goToActivityWithUserGroup(AddTransactionActivity.class);
+
     }
 
     public void manageRepetitiveTransactions(View view) {
-        //Intent startSettings = new Intent(this, ManageRepetitiveTransactionsActivity?.class);
-        //startActivity(startSettings);
+        goToActivityWithUserGroup(ManageRepetitiveTransactionsActivity.class);
         System.out.println("unimplemented");
     }
 
     public void showHistory(View view) {
-        Intent showHistoryIntent = new Intent(this, ShowHistoryActivity.class);
-        System.out.println("userGroup " + userGroup);
-        showHistoryIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
-        startActivity(showHistoryIntent);
+        goToActivityWithUserGroup(ShowHistoryActivity.class);
+
     }
 
     public void showStatistics(View view) {
-        Intent showStatisticsIntent = new Intent(this, ShowStatisticsActivity.class);
-        showStatisticsIntent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
-        startActivity(showStatisticsIntent);
+        goToActivityWithUserGroup(ShowStatisticsActivity.class);
+
+    }
+
+    private void goToActivityWithUserGroup(Class goToClass) {
+        if (userGroup == null) {
+            DialogHelper.createErrorDialog(this, "Not in a UserGroup",
+                    "You are not in a usergroup yet. To create a new Usergroup, go to your profile" +
+                            ", or ask someone else to add them to their group.");
+        } else {
+            Intent intent = new Intent(this, goToClass);
+            intent.putExtra(ConstantVariableSettings.SEND_USER_GROUP, userGroup);
+            startActivity(intent);
+        }
     }
 
     /***************************************

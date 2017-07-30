@@ -11,11 +11,6 @@ TODO
 	- how the incomes and payments are distributed between different transaction types
 
 *******
-- user profiles
-	- user can leave the group by pressing button
-
-=> ONLY SHOW TRANSACTIONS FROM THE USERS GROUP THROUGHOUT !!!!!!!!!!!!!!
-
 *******
 
 important and bigger thing:
@@ -44,8 +39,7 @@ Menu buttons:
 
 ***************************
 changelog
-- Show statistics now shows some basic information about each month's transactions and their relations
-- Started on User profiles
+- Transactions and TransactionTypes are now linked to user groups. User can only see and add transactions in his usergroup.
 
 
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <include layout="@layout/app_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repetitive payments"
+            android:id="@+id/manage_repetitive_transactions_header_payments"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manage_repetitive_transactions_header_payments"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:id="@+id/manage_repetitive_transactions_linear_layout_payments"></LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repetitive incomes"
+            android:id="@+id/manage_repetitive_transactions_header_incomes"
+            android:layout_below="@id/manage_repetitive_transactions_linear_layout_payments"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manage_repetitive_transactions_header_incomes"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:id="@+id/manage_repetitive_transactions_linear_layout_incomes"></LinearLayout>
+
+        </RelativeLayout>
+
+</RelativeLayout>
