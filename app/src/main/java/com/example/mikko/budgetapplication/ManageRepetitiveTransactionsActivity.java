@@ -58,7 +58,7 @@ public class ManageRepetitiveTransactionsActivity extends MyBaseActivity impleme
 
     }
 
-    private void drawTransction(Transaction transaction, LinearLayout linearLayout) {
+    private void drawTransction(Transaction transaction, LinearLayout parentLayout) {
 
     }
 }
